@@ -4,7 +4,7 @@ require 'openssl'
 
 class PlaceController < ApplicationController
   def index
-    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
+    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid}", :headers=>{"X-RapidAPI-Key"=>'',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
     puts results["data"]
 =begin
@@ -32,7 +32,7 @@ class PlaceController < ApplicationController
     request = Net::HTTP::Post.new(url)
     request["content-type"] = 'application/x-www-form-urlencoded'
     request["Accept-Encoding"] = 'application/json'
-    request["X-RapidAPI-Key"] = 'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226'
+    request["X-RapidAPI-Key"] = ''
     request["X-RapidAPI-Host"] = 'google-translate1.p.rapidapi.com'
     request.body = "q=#{params[:name].downcase.capitalize()}&target=en"
 
