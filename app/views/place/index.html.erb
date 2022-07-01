@@ -1,2 +1,62 @@
 <h1><%=params[:name].downcase.capitalize()%></h1>
-<p>Find me in app/views/place/index.html.erb</p>
+<%if @errorinfo%>
+    <p><%=@errorinfo%></p>
+<%else%>
+    <%if @type%><p><b>Tipo: </b><%=@type%><p><%end%>
+    <%if @country%><p><b>Nazione: </b><%=@country%><p><%end%>
+    <%if @region%><p><b>Regione: </b><%=@region%><p><%end%>
+    <%if @elevationmeters%><p><b>Altitudine: </b><%=@elevationmeters%> m<p><%end%>
+    <%if @population%><p><b>Popolazione: </b><%=@population%> abitanti<p><%end%>
+    <%if @longitude%><p><b>Longitudine: </b><%=@longitude%><p><%end%>
+    <%if @latitude%><p><b>Latitudine: </b><%=@latitude%><p><%end%>
+    <%if @capital%><p><b>Capitale: </b><%=@capital%><p><%end%>
+    <%if @numregions%><p><b>Numero di regioni: </b><%=@numregions%><p><%end%>
+<%end%>
+
+<%if @hotels%>
+    <ul>
+        <%(0...2).each do |i|%>
+            <%if @hotels[i]%>
+                <img src="<%=@hotels[i]["main_photo_url"]%>">
+                <a href="<%=@hotels[i]["url"]%>"><%=@hotels[i]["hotel_name"]%></a>
+                <p>Prezzo: <%=@hotels[i]["price_breakdown"]["all_inclusive_price"]%>€</p>
+                <%if @hotels[i]["is_free_cancellable"]==1%>
+                    <p>Cancellazione gratuita</p>
+                <%end%>
+                <p>Review Score: <%=@hotels[i]["review_score"]%></p>
+                <p>
+                    <%if @hotels[i]["hotel_include_breakfast"]==0%>
+                        Colazione inclusa: NO
+                    <%else%>
+                        Colazione inclusa: SI
+                    <%end%>
+                </p>
+                <p>Check-in 
+                    <%if @hotels[i]["checkin"]["from"]!=""%>
+                        dalle <%=@hotels[i]["checkin"]["from"]%> 
+                    <%end%>
+                    <%if @hotels[i]["checkin"]["until"]!=""%>
+                        <%if @hotels[i]["checkin"]["from"]!=""%>
+                            alle <%=@hotels[i]["checkin"]["until"]%>
+                        <%else%>
+                            fino alle <%=@hotels[i]["checkin"]["until"]%>
+                        <%end%>
+                    <%end%>
+                </p>
+                <p>Check-out
+                    <%if @hotels[i]["checkout"]["from"]!=""%>
+                        dalle <%=@hotels[i]["checkout"]["from"]%> 
+                    <%end%>
+                    <%if @hotels[i]["checkout"]["until"]!=""%>
+                        <%if @hotels[i]["checkout"]["from"]!=""%>
+                            alle <%=@hotels[i]["checkout"]["until"]%>
+                        <%else%>
+                            fino alle <%=@hotels[i]["checkout"]["until"]%>
+                        <%end%>
+                    <%end%>
+                </p>
+            <%end%>
+        <%end%>
+    </ul>
+<%end%>
+<a href="<%=params[:checkindate]%>/<%=params[:checkoutdate]%>/<%=params[:numpersone]%>/place/<%=params[:name]%>/viewmorehotels"><button>View more hotels</button></a>

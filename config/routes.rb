@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  get "/place/:name", to:"place#index"
+  get ":checkindate/:checkoutdate/:numpersone/place/:name", to:"place#index"
+  get ":checkindate/:checkoutdate/:numpersone/place/:name/viewmorehotels", to:"place#viewmorehotels"
 end
