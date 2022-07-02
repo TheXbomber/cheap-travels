@@ -71,3 +71,6 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "rspec"
+gem "http"
