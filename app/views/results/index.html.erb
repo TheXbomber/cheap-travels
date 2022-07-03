@@ -1,4 +1,3 @@
-<h1>Risultati della ricerca</h1>
 
 <script
       type="text/javascript"
@@ -15,15 +14,42 @@
       body,
       #my-map {
         width: 100%;
-        height: 100%;
+        height: 80%;
         margin: 0;
       }
     </style>
   </head>
+
+<%
+=begin
+%>
+  
+<% if @flights%>
+  <% @cheap.each do |c|%>
+    <% @dest = c[0]%>
+    <% @n = c[1]%>
+    <% @volo= @flights[@dest][@n]%>
+    <%= @dest%>
+
+    <%= @volo["price"]%> 
+    <%= @volo["airline"]%>
+    <%= @volo["flight_number"]%>
+    <%= @volo["departure_at"]%>
+    <%= @volo["return_at"]%>
+    <%= @volo["expires_at"]%>
+  
+    <br>
+  <%end%>
+<%end%>
+
+<%
+=end
+%> 
+
   <body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
     <div id="my-map"></div>
     <script type="text/javascript">
-      var map = L.map("my-map").setView([48.1500327, 11.5753989], 10);
+      var map = L.map("my-map").setView([42.950000, 13.883333], 10);
 
       // Get your own API Key on https://myprojects.geoapify.com
       var myAPIKey = "a612f4f8e5d644869554d6f04a4e4a27";
@@ -41,7 +67,7 @@
         attribution:
           'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | © OpenStreetMap <a href="https://www.openstreetmap.org/copyright" target="_blank">contributors</a>',
         apiKey: myAPIKey,
-        maxZoom: 5,
+        maxZoom: 3,
         id: "klokantech-basic",
       }).addTo(map);
 
@@ -52,15 +78,40 @@
     popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
         });
 
-    const zooMarkerPopup = L.popup().setContent("This is Munich Zoo");
-    const zooMarker = L.marker(<%= @locations%> , {
-    icon: markerIcon
-    }).bindPopup(zooMarkerPopup).addTo(map);
-
-    const zooMarkerPopup2 = L.popup().setContent("This is Munich Zoo");
-    const zooMarker2 = L.marker([48.096980, 11.555466], {
-    icon: markerIcon
-    }).bindPopup(zooMarkerPopup2).addTo(map);
-
-
+    
+    <% @k = @locations.keys%>
+    <% @k.each do |dest|%> 
+     
+      L.marker(<%= @locations[dest]["geocode"]%> , {
+        icon: markerIcon
+        }).bindPopup(L.popup().setContent("<%= @locations[dest]["name"]%>, <%= @locations[dest]["countryCode"]%>")).addTo(map);
+      
+    <%end%>
+    
     </script> 
+
+<h3>Destinazioni economiche trovate</h3>
+
+ <% @cheap.each do |dest|%> 
+  <% @code = dest[0]%>
+  <ul>
+    Città: <%= @locations[@code]["name"]%>
+    (<%= @locations[@code]["countryCode"]%>)
+    Aereoporto: <%= @locations[@code]["iata"]%>
+    Voli a partire da: <%= dest[2]%>
+    
+  </ul>
+ <%end%>
+
+
+    
+
+
+
+  
+  
+
+            
+            
+
+
