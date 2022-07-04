@@ -1,0 +1,11 @@
+<!-- Alessandro -->
+<h1>Home#index</h1>
+<p>This is the home page</p>
+<p>Il contenuto di questa pagina è un test per verificare il funzionamento dell'autenticazione</p>
+<% if user_signed_in? %>
+	<p> Signed in as <%= current_user.email %> <p>
+	<%= link_to "Profile", users_profile_path %>
+	<%= link_to "Edit Account", edit_user_registration_path %>
+<% else %>
+	<p> Currently not signed in <p>
+<% end %>
