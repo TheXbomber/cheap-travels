@@ -48,8 +48,6 @@ class PlaceController < ApplicationController
       @longitude=results["data"]["longitude"]
     end
 
-    @favourite=favourite? destinationplace
-
 =begin
     #TROVA GLI HOTEL
     response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
@@ -200,7 +198,7 @@ class PlaceController < ApplicationController
     end
     output=[originiatacode, destinationiatacode]
   end
-
+  
   def favourite? (place)
     before_action :authenticate_user!
     @users=User.all

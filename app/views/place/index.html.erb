@@ -16,15 +16,6 @@
         <%if @numregions%><p><b>Numero di regioni: </b><%=@numregions%><p><%end%>
     <%end%>
 
-    <%if !user_signed_in%>
-        <%before_action :authenticate_user!%>
-        <%if @favourite%>
-            <button>Remove from favourite</button>
-        <%else%>
-            <button>Add to favourite</button>
-        <%end%>
-    <%end%>
-
     <%if @hotels%>
         <ul>
             <%(0...2).each do |i|%>
