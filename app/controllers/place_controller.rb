@@ -47,17 +47,20 @@ class PlaceController < ApplicationController
       @latitude=results["data"]["latitude"]
       @longitude=results["data"]["longitude"]
     end
+
+    @favourite=favourite? destinationplace
+
 =begin
     #TROVA GLI HOTEL
     response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
     results=JSON.parse(response)
     @hotels=results["result"]
 =end
-
+=begin
     #TROVA I VOLI
     @iataarr=iata_code originplace, destinationplace
     puts @iataarr
-=begin
+
     #PRENDE IL TOKEN DA AMADEUS
     url = URI("https://test.api.amadeus.com/v1/security/oauth2/token")
 
@@ -79,10 +82,6 @@ class PlaceController < ApplicationController
     @arrvoliritorno=[]
     @arrnumeroscaliandata=[]
     @arrnumeroscaliritorno=[]
-    @arroraripartenzaandata=[]
-    @arrorariarrivoandata=[]
-    @arroraripartenzaritorno=[]
-    @arrorariarrivoritorno=[]
     (0...@numerovoli).each do |k|
       elem=@voliarr[k]
       @arritinerarioandataeritorno[k]=elem["itineraries"]
@@ -98,34 +97,6 @@ class PlaceController < ApplicationController
       elem=@arrvoliritorno[k]
       elem=elem["segments"]
       @arrnumeroscaliritorno[k]=elem.length-1
-
-      elem=@arrvoliandata[k]
-      elem=elem["segments"]
-      elem=elem[0]
-      elem=elem["departure"]["at"]
-      arr=elem.split("T")
-      @arroraripartenzaandata[k]=arr[1]
-
-      elem=@arrvoliandata[k]
-      elem=elem["segments"]
-      elem=elem[@arrnumeroscaliandata[k]]
-      elem=elem["arrival"]["at"]
-      arr=elem.split("T")
-      @arrorariarrivoandata[k]=arr[1]
-
-      elem=@arrvoliritorno[k]
-      elem=elem["segments"]
-      elem=elem[0]
-      elem=elem["departure"]["at"]
-      arr=elem.split("T")
-      @arroraripartenzaritorno[k]=arr[1]
-
-      elem=@arrvoliritorno[k]
-      elem=elem["segments"]
-      elem=elem[@arrnumeroscaliritorno[k]]
-      elem=elem["arrival"]["at"]
-      arr=elem.split("T")
-      @arrorariarrivoritorno[k]=arr[1]
     end
 =end
   end
@@ -230,4 +201,14 @@ class PlaceController < ApplicationController
     output=[originiatacode, destinationiatacode]
   end
 
+  def favourite? (place)
+    before_action :authenticate_user!
+    @users=User.all
+    @users.each do |user|
+      if current_user.email == user.email
+        favourites=user.favouritePlaces
+        return favourites.include? params[:destinationplace]
+      end
+    end
+  end
 end
