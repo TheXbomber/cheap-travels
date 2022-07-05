@@ -5,22 +5,22 @@ require 'openssl'
 class PlaceController < ApplicationController
   def index
     destinationplace=params[:destinationplace].downcase.capitalize()
-    if destinationplace.include? "%20"
-      arr=destinationplace.split("%20")
-      destinationplace=""
-      arr.each do |name|
-        destinationplace=destinationplace+name+" "
-      end
-    end
+    #if destinationplace.include? "%20"
+      #arr=destinationplace.split("%20")
+      #destinationplace=""
+      #arr.each do |name|
+        #destinationplace=destinationplace+name+" "
+      #end
+    #end
 
-    originplace=params[:originplace].downcase.capitalize()
-    if originplace.include? "%20"
-      arr=originplace.split("%20")
-      originplace=""
-      arr.each do |name|
-        originplace=originplace+name+" "
-      end
-    end
+    #originplace=params[:originplace].downcase.capitalize()
+    #if originplace.include? "%20"
+      #arr=originplace.split("%20")
+      #originplace=""
+      #arr.each do |name|
+        #originplace=originplace+name+" "
+      #end
+    #end
 
     #trova le info sulla città
     response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
@@ -47,12 +47,14 @@ class PlaceController < ApplicationController
       @latitude=results["data"]["latitude"]
       @longitude=results["data"]["longitude"]
     end
-
 =begin
     #TROVA GLI HOTEL
     response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
     results=JSON.parse(response)
     @hotels=results["result"]
+=end
+=begin
+    @hotels=gethotels
 =end
 =begin
     #TROVA I VOLI
@@ -100,8 +102,9 @@ class PlaceController < ApplicationController
   end
 
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
-    response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
+    response=HTTP.get("https://it.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
+    puts results
     x=results["query"]["pages"].to_s
     y=x.split("\"")
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
@@ -140,13 +143,27 @@ class PlaceController < ApplicationController
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
   end
 =end
-=begin
+
   def destid place
     #È UNO DEI PARAMETRI PER TROVARE GLI HOTEL
     response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/locations", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:locale=>"en-us",:name=>"#{place}"})
     results=JSON.parse(response)
     arr=results[0]
     dataid=arr["dest_id"]
+  end
+=begin
+  def gethotels
+    destinationplace=params[:destinationplace].downcase.capitalize()
+    if destinationplace.include? "%20"
+      arr=destinationplace.split("%20")
+      destinationplace=""
+      arr.each do |name|
+        destinationplace=destinationplace+name+" "
+      end
+    end
+    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+    results=JSON.parse(response)
+    @hotels=results["result"]
   end
 =end
 
