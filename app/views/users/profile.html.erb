@@ -1,4 +1,7 @@
 <!-- Alessandro -->
-<h1>Users#profile</h1>
-<p>Questa pagina conterrà il profilo utente</p>
-<p> User: <%= current_user.email %> </p>
+<h1> <%= current_user.name %> </h1>
+<p> Email: <%= current_user.email %> </p>
+<p> Tel: <%= current_user.tel %> </p>
+<p> Birthday: <%= current_user.bday %> </p>
+<p> Role: <%= current_user.role %> </p>
+<p> Banned: <%= current_user.banned %> </p>

@@ -1,0 +1,10 @@
+html, body, #my-map {
+    width: 100%;
+    height: 75%;
+    margin: 0;
+    }
+
+#destinazioni, #ricerca, .top {
+    display: inline-block;   
+}
+
