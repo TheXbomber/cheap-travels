@@ -12,38 +12,38 @@ class ResultsController < ApplicationController
     #@hotels=results["result"]
 
     require 'amadeus'
-
     amadeus = Amadeus::Client.new({
       client_id: 'WGG9CFp9tcAAAxjdN9txErfJhXviCCoK',
       client_secret: 'v2bxNaDnO61AZKqz'
     })
 
-
+    #TRAVELPAYOUT CHEAPEST FLIGHTS (voli più economici)
     #response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap", :params=>{:origin=>"AGP", :currency=>"EUR", :token=>"ea6f6d4a8d0b1be515fca155675970bb"})
     response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap?origin=agp&destination=&currency=eur&token=ea6f6d4a8d0b1be515fca155675970bb")
     results=JSON.parse(response)
     @flights=results["data"]
     @keys = @flights.keys
+   
     
-    @max_res = 5
+    
     @cheapest = Array.new(5, ["",0,0])
-    @t = 0
+    t = 0
     
-
+    #ORDINA E SELEZIONA LE 5 DESTINAZIONI PIU ECONOMICHE
     @keys.each do |dest|
-      @num= @flights[dest].keys
-      @num.each do |n|
+      num= @flights[dest].keys
+      num.each do |n|
         @price = @flights[dest][n]["price"]
-        @b=0
+        b=0
         (0...5).each do |j| 
-            if @b==0
-              if @t<5
-                @cheapest[@t] = [dest, n, @price]
-                @t+=1
-                @b=1
+            if b==0
+              if t<5
+                @cheapest[t] = [dest, n, @price]
+                t+=1
+                b=1
               else 
                 if @cheapest[j][2] > @price
-                  @b=1
+                  b=1
                   (j+1...5).reverse_each do |h|
                     @cheapest[h]=@cheapest[h-1]
                   end
@@ -52,19 +52,20 @@ class ResultsController < ApplicationController
               end
             end
           end
-        
       end
     end
 
+    #AMADEUS CITIES AND AIRPORT (OTTIENE I DATI SULLA CITTA DAL CODICE IATA)
     @cheap=@cheapest
     @locations = {}
     @count =0
+    x = 0
     @cheap.each do |c|
 
       @dest = c[0]
       #@n = c[1]
       #@volo= @flights[@dest][@n]
-      sleep 0.5
+      sleep 1
       begin
         response = amadeus.reference_data.locations.get(
           keyword: @dest,
@@ -76,32 +77,27 @@ class ResultsController < ApplicationController
       rescue Amadeus::ResponseError => e
         raise e
       end
-
-      (0...1).each do |i|
-        if @airport[i]
-          @locations[@dest] = {}
-          @locations[@dest]["name"] = @airport[i]["address"]["cityName"]
-          @locations[@dest]["country"] = @airport[i]["address"]["countryName"]
-          @locations[@dest]["countryCode"] = @airport[i]["address"]["countryCode"]
-          @locations[@dest]["region"] = @airport[i]["address"]["regionCode"]
-          @locations[@dest]["iata"] = @airport[i]["iataCode"]
-          @locations[@dest]["geocode"] = [@airport[i]["geoCode"]["latitude"], @airport[i]["geoCode"]["longitude"]]
-
-          @city=@airport[i]["address"]["cityName"].to_s
-          @country= @locations[@dest]["country"] = @airport[i]["address"]["countryName"]
-          @contryCode= @locations[@dest]["countryCode"] = @airport[i]["address"]["countryCode"]
-          @region = @locations[@dest]["region"] = @airport[i]["address"]["regionCode"]
-          @iata = @locations[@dest]["iata"] = @airport[i]["iataCode"]
-          @geocode = @locations[@dest]["geocode"] = [@airport[i]["geoCode"]["latitude"], @airport[i]["geoCode"]["longitude"]]
-
-
+      
+        #SALVA DATI CITTA
+        (0...1).each do |i|
+          if @airport[i]
+            @locations[@dest] = {}
+            @locations[@dest]["name"] = @airport[i]["address"]["cityName"]
+            @locations[@dest]["country"] = @airport[i]["address"]["countryName"]
+            @locations[@dest]["countryCode"] = @airport[i]["address"]["countryCode"]
+            @locations[@dest]["region"] = @airport[i]["address"]["regionCode"]
+            @locations[@dest]["iata"] = @airport[i]["iataCode"]
+            @locations[@dest]["geocode"] = [@airport[i]["geoCode"]["latitude"], @airport[i]["geoCode"]["longitude"]]
+            if x==0
+              @geo_iniziale = [@airport[i]["geoCode"]["latitude"], @airport[i]["geoCode"]["longitude"]]
+              x=1
+            end
+          end
         end
+        @count +=1
       end
-      @count +=1
+
     end
-
-
-        end
-      end
+  end
 
   

@@ -1,25 +1,11 @@
 
-<script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"
-    />
+<%= stylesheet_link_tag "results.css" %>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
 
-    <style id="compiled-css" type="text/css">
-      html,
-      body,
-      #my-map {
-        width: 100%;
-        height: 80%;
-        margin: 0;
-      }
-    </style>
-  </head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  
 <%
 =begin
 %>
@@ -45,11 +31,13 @@
 <%
 =end
 %> 
-
+<!--mappa -->
   <body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
     <div id="my-map"></div>
+    <%if @locations%>
     <script type="text/javascript">
-      var map = L.map("my-map").setView([42.950000, 13.883333], 10);
+    
+      var map = L.map("my-map").setView(<%= @geo_iniziale%>, 9);
 
       // Get your own API Key on https://myprojects.geoapify.com
       var myAPIKey = "a612f4f8e5d644869554d6f04a4e4a27";
@@ -79,36 +67,106 @@
         });
 
     
-    <% @k = @locations.keys%>
-    <% @k.each do |dest|%> 
-     
-      L.marker(<%= @locations[dest]["geocode"]%> , {
-        icon: markerIcon
-        }).bindPopup(L.popup().setContent("<%= @locations[dest]["name"]%>, <%= @locations[dest]["countryCode"]%>")).addTo(map);
+      <% @k = @locations.keys%>
+      <% @k.each do |dest|%> 
       
+        L.marker(<%= @locations[dest]["geocode"]%> , {
+          icon: markerIcon
+          }).bindPopup(L.popup().setContent("<%= @locations[dest]["name"]%>, <%= @locations[dest]["countryCode"]%>")).addTo(map);
+        
+      <%end%>
     <%end%>
     
     </script> 
 
-<h3>Destinazioni economiche trovate</h3>
+<!--risultati ricerca -->
+<div class="pt-2 pb-2 container-fluid">
+  <div class="row d-flex">
+    <div class="col ">
+      <h5>Destinazioni economiche trovate</h5>
+    </div>  
+    <div class="col d-flex justify-content-end pt-1">
+      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ricercaModal">
+          Modifica ricerca
+      </button> 
+    </div>  
+  </div>  
+</div>
 
- <% @cheap.each do |dest|%> 
-  <% @code = dest[0]%>
-  <ul>
-    Città: <%= @locations[@code]["name"]%>
-    (<%= @locations[@code]["countryCode"]%>)
-    Aereoporto: <%= @locations[@code]["iata"]%>
-    Voli a partire da: <%= dest[2]%>
+<div id="results_div" class="container-fluid">
+  <div class="row">
+      <%if @cheap%>
+        <%if @locations%>
+          <% @cheap.each do |dest|%> 
+            <% @code = dest[0]%>
+            <%if @locations[@code]%>
+              <div class="col">
+                <div class="card h-100 shadow-sm" style="width: 100%rem;">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/View_of_Malaga.jpg/1200px-View_of_Malaga.jpg" class="card-img-top" alt="...">
+                  
+                  <div class="card-body">
+                      <h6 class="col card-title">
+                        <%= @locations[@code]["name"]%>(<%= @locations[@code]["countryCode"]%>)
+                      </h6>
+                    <div class="row">
+                      <div class="col"><p class="card-text">
+                        <!--Aereoporto: <%= @locations[@code]["iata"]%><br> -->
+                        Voli a partire da: <%= dest[2]%><br>
+                      </p></div>
+                      <a href="#" class="stretched-link"></a>
+                    </div>
+                    
+                      
+                    
+                  </div>
+                </div>
+              </div>
+            <%end%>
+          <%end%>
+        <%end%>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal cambio ricerca -->
+<div class="modal fade" id="ricercaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalLabel">Modifica parametri di ricerca</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div id="ricerca">
+            <%= form_with scope: "change_search", url: "/results", method: :get do |form| %>  
     
-  </ul>
- <%end%>
+              <%= form.text_field :origin %><br>
+              <%= form.date_field :departure %><br>
+              <%= form.number_field :people, in: 1.0..10.0, step: 1.0 %><br>
+              <%= form.submit :search %>	
+            
+            <%end%> 
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Cerca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
 
     
 
 
 
-  
+
   
 
             
