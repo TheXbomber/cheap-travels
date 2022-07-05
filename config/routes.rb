@@ -15,6 +15,6 @@ Rails.application.routes.draw do
 
   get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace", to:"place#index"
   get ":checkindate/:checkoutdate/:numpersone/place/:name", to:"place#index"
-  get ":checkindate/:checkoutdate/:numpersone/place/:name/viewmorehotels", to:"place#viewmorehotels
+  get ":checkindate/:checkoutdate/:numpersone/place/:name/viewmorehotels", to:"place#viewmorehotels"
 
 end
