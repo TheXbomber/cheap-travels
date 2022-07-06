@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag "place.css" %>
 
-<h1 style="text-align:center">Flights for <%=params[:destinationplace].downcase.capitalize()%></h1>
+<h1 style="text-align:center">Flights for <%=@destinationplace%></h1>
 <%if @voliarr%>
     <ul style="list-style-type:none">
         <%length=@voliarr.length%>
@@ -12,10 +12,10 @@
         <%(0...length).each do |k|%>
             <div style="display: flex; padding: 0px 50px 0px 50px">
                 <li style="width: 50%; padding: 0px 10px 0px 10px">
-                    <div class="elem" style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                    <div style="height:100%; display:flex; border-style: solid; border-radius: 10px">
                         <%@arr=@arrvoliandata[2*k]["segments"]%>
                         <img style="width: 39%; height:auto; border-radius: 7px" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
-                        <div style="width: 70%; padding: 10px 10px 10px 10px">
+                        <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
                             <ul style="list-style-type:none">
                                 <li>
                                     <h5>
@@ -104,10 +104,10 @@
                     </div>
                 </li>
                 <li style="width: 50%; padding: 0px 10px 0px 10px">
-                    <div class="elem" style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                    <div style="height:100%; display:flex; border-style: solid; border-radius: 10px">
                         <%@arr=@arrvoliandata[(2*k)+1]["segments"]%>
                         <img style="width: 39%; height:auto; border-radius: 7px" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
-                        <div style="width: 70%; padding: 10px 10px 10px 10px">
+                        <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
                             <ul style="list-style-type:none">
                                 <li>
                                     <h5>

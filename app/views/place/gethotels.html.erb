@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag "place.css" %>
 
-<h1 style="text-align:center">Hotels in <%=params[:destinationplace].downcase.capitalize()%></h1>
+<h1 style="text-align:center">Hotels in <%=@destinationplace%></h1>
 <%if @hotels%>
     <ul style="list-style-type:none">
         <%length=@hotels.length%>
@@ -14,9 +14,9 @@
                 <%if @hotels[2*i]%>
                     <li style="width: 50%; padding: 0px 10px 0px 10px">
                         <a style="text-decoration:none; color: black" href="<%=@hotels[2*i]["url"]%>">
-                            <div class="elem" style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                            <div style="height:100%; display:flex; border-style: solid; border-radius: 10px">
                                 <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[2*i]["max_1440_photo_url"]%>">
-                                <div style="width: 70%; padding: 10px 10px 10px 10px">
+                                <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
                                     <h3><%=@hotels[2*i]["hotel_name"]%></h3>
                                     <p>Prezzo: <%=@hotels[2*i]["price_breakdown"]["all_inclusive_price"]%>€</p>
                                     <%if @hotels[2*i]["is_free_cancellable"]==1%>
@@ -64,9 +64,9 @@
                 <%if @hotels[(2*i)+1]%>
                     <li style="width: 50%; padding: 0px 10px 0px 10px">
                         <a style="text-decoration:none; color: black" href="<%=@hotels[(2*i)+1]["url"]%>">
-                            <div class="elem" style="height: 100%; display:flex; border-style: solid; border-radius: 10px">
+                            <div style="height: 100%; display:flex; border-style: solid; border-radius: 10px">
                                 <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[(2*i)+1]["max_1440_photo_url"]%>">
-                                <div style="width: 70%; padding: 10px 10px 10px 10px">
+                                <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
                                     <h3><%=@hotels[(2*i)+1]["hotel_name"]%></h3>
                                     <p>Prezzo: <%=@hotels[(2*i)+1]["price_breakdown"]["all_inclusive_price"]%>€</p>
                                     <%if @hotels[(2*i)+1]["is_free_cancellable"]==1%>

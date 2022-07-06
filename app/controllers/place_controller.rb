@@ -4,12 +4,12 @@ require 'openssl'
 
 class PlaceController < ApplicationController
   def index
-    destinationplace=params[:destinationplace].downcase.capitalize()
-    if destinationplace.include? "%20"
-      arr=destinationplace.split("%20")
-      destinationplace=""
+    @destinationplace=params[:destinationplace].downcase.capitalize()
+    if @destinationplace.include? "%20"
+      arr=@destinationplace.split("%20")
+      @destinationplace=""
       arr.each do |name|
-        destinationplace=destinationplace+name+" "
+        @destinationplace=@destinationplace+name+" "
       end
     end
 
@@ -24,18 +24,18 @@ class PlaceController < ApplicationController
 
     @country=""
     #trova le info sulla città
-    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
+    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
     if results.keys[0]=="errors" #non è una città
       sleep 1 #INSERITO PER NON ECCEDERE IL NUMERO DI RICHIESTE/SEC DELLA VERSIONE GRATUITA DI GEO-DB
-      response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
+      response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
       results=JSON.parse(response)
       if results.keys[0]=="errors" #non è una nazione
-        @errorinfo="Non è stato possibile trovare informazioni su #{destinationplace}"
+        @errorinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
       else
         #se è una nazione
         @type="Nazione"
-        @country=destinationplace
+        @country=@destinationplace
         @capital=results["data"]["capital"]
         @numregions=results["data"]["numRegions"]
       end
@@ -49,37 +49,17 @@ class PlaceController < ApplicationController
       @latitude=results["data"]["latitude"]
       @longitude=results["data"]["longitude"]
     end
-=begin
-    response=HTTP.get("https://google-maps28.p.rapidapi.com/maps/api/place/autocomplete/json", :headers=>{'X-RapidAPI-Key'=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226','X-RapidAPI-Host'=>'google-maps28.p.rapidapi.com'}, :params=>{:input=>"#{destinationplace}", :language=>"en", :location=>"#{@latitude},#{@longitude}", :types=>"(cities)"})
+
+    #PRENDE L'IMMAGINE DELLA CITTà
+    response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace}", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
     results=JSON.parse(response)
-    arr=results["predictions"]
-    placeid=""
-    countrycd=countrycode destinationplace
-    arr.each do |elem|
-      if elem["description"].include? countrycd
-        placeid=elem["place_id"]
-      else
-        if elem["description"].include? @country
-          placeid=elem["place_id"]
-        end
-      end 
-    end
-    puts placeid
-    response=HTTP.get("https://google-maps28.p.rapidapi.com/maps/api/place/details/json", :headers=>{'X-RapidAPI-Key'=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226','X-RapidAPI-Host'=>'google-maps28.p.rapidapi.com'}, :params=>{:fields=>"photos", :place_id=>"#{placeid}", :language=>"en"})
-    results=JSON.parse(response)
-    arr=results["result"]["photos"]
-    arr=arr[0]["html_attributions"]
-    urlarr=arr[0].split("\"")
-    @urlimage=urlarr[1]
-=end
-=begin 
+    @imageurl=results["hits"][0]["largeImageURL"]
+
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE UN ARRAY DI 20 HOTEL
-    @hotels=gethotels
-=end
-=begin
+    #@hotels=gethotels
+
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE I VOLI
-    getflights
-=end
+    #getflights
   end
 
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
@@ -133,15 +113,15 @@ class PlaceController < ApplicationController
   end
 
   def gethotels
-    destinationplace=params[:destinationplace].downcase.capitalize()
-    if destinationplace.include? "%20"
-      arr=destinationplace.split("%20")
-      destinationplace=""
+    @destinationplace=params[:destinationplace].downcase.capitalize()
+    if @destinationplace.include? "%20"
+      arr=@destinationplace.split("%20")
+      @destinationplace=""
       arr.each do |name|
-        destinationplace=destinationplace+name+" "
+        @destinationplace=@destinationplace+name+" "
       end
     end
-    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
     results=JSON.parse(response)
     @hotels=results["result"]
   end
@@ -197,12 +177,12 @@ class PlaceController < ApplicationController
 
   def getflights
     #TROVA I VOLI
-    destinationplace=params[:destinationplace].downcase.capitalize()
-    if destinationplace.include? "%20"
-      arr=destinationplace.split("%20")
-      destinationplace=""
+    @destinationplace=params[:destinationplace].downcase.capitalize()
+    if @destinationplace.include? "%20"
+      arr=@destinationplace.split("%20")
+      @destinationplace=""
       arr.each do |name|
-        destinationplace=destinationplace+name+" "
+        @destinationplace=@destinationplace+name+" "
       end
     end
 
@@ -215,7 +195,7 @@ class PlaceController < ApplicationController
       end
     end
 
-    @iataarr=iata_code originplace, destinationplace
+    @iataarr=iata_code originplace, @destinationplace
     puts @iataarr
 
     #PRENDE IL TOKEN DA AMADEUS
@@ -230,6 +210,7 @@ class PlaceController < ApplicationController
     response = https.request(request)
     results=JSON.parse(response.read_body)
 
+    #FA LA RICHIESTA DEI VOLI
     response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{params[:checkindate]}", :returnDate=>"#{params[:checkoutdate]}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
     @dativoli=JSON.parse(response)
     @voliarr=@dativoli["data"]
@@ -256,15 +237,5 @@ class PlaceController < ApplicationController
       @arrnumeroscaliritorno[k]=elem.length-1
     end
   end
-  
-  def favourite? (place)
-    before_action :authenticate_user!
-    @users=User.all
-    @users.each do |user|
-      if current_user.email == user.email
-        favourites=user.favouritePlaces
-        return favourites.include? params[:destinationplace]
-      end
-    end
-  end
+
 end
