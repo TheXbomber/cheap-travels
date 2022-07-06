@@ -1,57 +1,118 @@
+<%= stylesheet_link_tag "place.css" %>
+
 <h1 style="text-align:center">Hotels in <%=params[:destinationplace].downcase.capitalize()%></h1>
 <%if @hotels%>
-        <div style="padding: 0px 50px 0px 50px">
-            <ul style="display: flex; list-style-type:none">
-                <%length=@hotels.length%>
-                <%(0...length).each do |i|%>
-                    <%if @hotels[i]%>
-                        <li style="width: 50%; padding: 0px 10px 0px 10px">
-                            <div style="display:flex; border-style: solid; border-radius: 10px">
-                                <img style="width: 39%; height:100%; border-radius: 7px"src="<%=@hotels[i]["max_1440_photo_url"]%>">
+    <ul style="list-style-type:none">
+        <%length=@hotels.length%>
+        <%if length%2==0%>
+            <%length=length/2%>
+        <%else%>
+            <%length=(length-1)/2%>
+        <%end%>
+        <%(0...length).each do |i|%>
+            <div style="display: flex; padding: 0px 50px 0px 50px">
+                <%if @hotels[2*i]%>
+                    <li style="width: 50%; padding: 0px 10px 0px 10px">
+                        <a style="text-decoration:none; color: black" href="<%=@hotels[2*i]["url"]%>">
+                            <div class="elem" style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                                <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[2*i]["max_1440_photo_url"]%>">
                                 <div style="width: 70%; padding: 10px 10px 10px 10px">
-                                    <h3><a style="text-decoration:none; color: black" href="<%=@hotels[i]["url"]%>"><%=@hotels[i]["hotel_name"]%></a></h3>
-                                    <p>Prezzo: <%=@hotels[i]["price_breakdown"]["all_inclusive_price"]%>€</p>
-                                    <%if @hotels[i]["is_free_cancellable"]==1%>
-                                        <p>Cancellazione gratuita</p>
+                                    <h3><%=@hotels[2*i]["hotel_name"]%></h3>
+                                    <p>Prezzo: <%=@hotels[2*i]["price_breakdown"]["all_inclusive_price"]%>€</p>
+                                    <%if @hotels[2*i]["is_free_cancellable"]==1%>
+                                        <p>Cancellazione gratuita: SI</p>
+                                    <%else%>
+                                        <p>Cancellazione gratuita: NO</p>
                                     <%end%>
-                                    <p>Review Score: <%=@hotels[i]["review_score"]%></p>
+                                    <p>Review Score: <%=@hotels[2*i]["review_score"]%></p>
                                     <p>
-                                        <%if @hotels[i]["hotel_include_breakfast"]==0%>
+                                        <%if @hotels[2*i]["hotel_include_breakfast"]==0%>
                                             Colazione inclusa: NO
                                         <%else%>
                                             Colazione inclusa: SI
                                         <%end%>
                                     </p>
                                     <p>Check-in 
-                                        <%if @hotels[i]["checkin"]["from"]!=""%>
-                                            dalle <%=@hotels[i]["checkin"]["from"]%> 
+                                        <%if @hotels[2*i]["checkin"]["from"]!=""%>
+                                            dalle <%=@hotels[2*i]["checkin"]["from"]%> 
                                         <%end%>
-                                        <%if @hotels[i]["checkin"]["until"]!=""%>
-                                            <%if @hotels[i]["checkin"]["from"]!=""%>
-                                                alle <%=@hotels[i]["checkin"]["until"]%>
+                                        <%if @hotels[2*i]["checkin"]["until"]!=""%>
+                                            <%if @hotels[2*i]["checkin"]["from"]!=""%>
+                                                alle <%=@hotels[2*i]["checkin"]["until"]%>
                                             <%else%>
-                                                fino alle <%=@hotels[i]["checkin"]["until"]%>
+                                                fino alle <%=@hotels[2*i]["checkin"]["until"]%>
                                             <%end%>
                                         <%end%>
                                     </p>
                                     <p>Check-out
-                                        <%if @hotels[i]["checkout"]["from"]!=""%>
-                                            dalle <%=@hotels[i]["checkout"]["from"]%> 
+                                        <%if @hotels[2*i]["checkout"]["from"]!=""%>
+                                            dalle <%=@hotels[2*i]["checkout"]["from"]%> 
                                         <%end%>
-                                        <%if @hotels[i]["checkout"]["until"]!=""%>
-                                            <%if @hotels[i]["checkout"]["from"]!=""%>
-                                                alle <%=@hotels[i]["checkout"]["until"]%>
+                                        <%if @hotels[2*i]["checkout"]["until"]!=""%>
+                                            <%if @hotels[2*i]["checkout"]["from"]!=""%>
+                                                alle <%=@hotels[2*i]["checkout"]["until"]%>
                                             <%else%>
-                                                fino alle <%=@hotels[i]["checkout"]["until"]%>
+                                                fino alle <%=@hotels[2*i]["checkout"]["until"]%>
                                             <%end%>
                                         <%end%>
                                     </p>
                                 </div>
                             </div>
-                        </li>
-                        <br>
-                    <%end%>
+                        </a>
+                    </li>
                 <%end%>
-            </ul>
-        </div>
-    <%end%>
+                <%if @hotels[(2*i)+1]%>
+                    <li style="width: 50%; padding: 0px 10px 0px 10px">
+                        <a style="text-decoration:none; color: black" href="<%=@hotels[(2*i)+1]["url"]%>">
+                            <div class="elem" style="height: 100%; display:flex; border-style: solid; border-radius: 10px">
+                                <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[(2*i)+1]["max_1440_photo_url"]%>">
+                                <div style="width: 70%; padding: 10px 10px 10px 10px">
+                                    <h3><%=@hotels[(2*i)+1]["hotel_name"]%></h3>
+                                    <p>Prezzo: <%=@hotels[(2*i)+1]["price_breakdown"]["all_inclusive_price"]%>€</p>
+                                    <%if @hotels[(2*i)+1]["is_free_cancellable"]==1%>
+                                        <p>Cancellazione gratuita: SI</p>
+                                    <%else%>
+                                        <p>Cancellazione gratuita: NO</p>
+                                    <%end%>
+                                    <p>Review Score: <%=@hotels[(2*i)+1]["review_score"]%></p>
+                                    <p>
+                                        <%if @hotels[(2*i)+1]["hotel_include_breakfast"]==0%>
+                                            Colazione inclusa: NO
+                                        <%else%>
+                                            Colazione inclusa: SI
+                                        <%end%>
+                                    </p>
+                                    <p>Check-in 
+                                        <%if @hotels[(2*i)+1]["checkin"]["from"]!=""%>
+                                            dalle <%=@hotels[(2*i)+1]["checkin"]["from"]%> 
+                                        <%end%>
+                                        <%if @hotels[(2*i)+1]["checkin"]["until"]!=""%>
+                                            <%if @hotels[(2*i)+1]["checkin"]["from"]!=""%>
+                                                alle <%=@hotels[(2*i)+1]["checkin"]["until"]%>
+                                            <%else%>
+                                                fino alle <%=@hotels[(2*i)+1]["checkin"]["until"]%>
+                                            <%end%>
+                                        <%end%>
+                                    </p>
+                                    <p>Check-out
+                                        <%if @hotels[(2*i)+1]["checkout"]["from"]!=""%>
+                                            dalle <%=@hotels[(2*i)+1]["checkout"]["from"]%> 
+                                        <%end%>
+                                        <%if @hotels[(2*i)+1]["checkout"]["until"]!=""%>
+                                            <%if @hotels[(2*i)+1]["checkout"]["from"]!=""%>
+                                                alle <%=@hotels[(2*i)+1]["checkout"]["until"]%>
+                                            <%else%>
+                                                fino alle <%=@hotels[(2*i)+1]["checkout"]["until"]%>
+                                            <%end%>
+                                        <%end%>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                <%end%>
+            </div>
+            <br>
+        <%end%>
+    </ul>
+<%end%>

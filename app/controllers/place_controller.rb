@@ -5,23 +5,24 @@ require 'openssl'
 class PlaceController < ApplicationController
   def index
     destinationplace=params[:destinationplace].downcase.capitalize()
-    #if destinationplace.include? "%20"
-      #arr=destinationplace.split("%20")
-      #destinationplace=""
-      #arr.each do |name|
-        #destinationplace=destinationplace+name+" "
-      #end
-    #end
+    if destinationplace.include? "%20"
+      arr=destinationplace.split("%20")
+      destinationplace=""
+      arr.each do |name|
+        destinationplace=destinationplace+name+" "
+      end
+    end
 
-    #originplace=params[:originplace].downcase.capitalize()
-    #if originplace.include? "%20"
-      #arr=originplace.split("%20")
-      #originplace=""
-      #arr.each do |name|
-        #originplace=originplace+name+" "
-      #end
-    #end
+    originplace=params[:originplace].downcase.capitalize()
+    if originplace.include? "%20"
+      arr=originplace.split("%20")
+      originplace=""
+      arr.each do |name|
+        originplace=originplace+name+" "
+      end
+    end
 
+    @country=""
     #trova le info sulla città
     response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
@@ -34,6 +35,7 @@ class PlaceController < ApplicationController
       else
         #se è una nazione
         @type="Nazione"
+        @country=destinationplace
         @capital=results["data"]["capital"]
         @numregions=results["data"]["numRegions"]
       end
@@ -48,63 +50,41 @@ class PlaceController < ApplicationController
       @longitude=results["data"]["longitude"]
     end
 =begin
-    #TROVA GLI HOTEL
-    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+    response=HTTP.get("https://google-maps28.p.rapidapi.com/maps/api/place/autocomplete/json", :headers=>{'X-RapidAPI-Key'=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226','X-RapidAPI-Host'=>'google-maps28.p.rapidapi.com'}, :params=>{:input=>"#{destinationplace}", :language=>"en", :location=>"#{@latitude},#{@longitude}", :types=>"(cities)"})
     results=JSON.parse(response)
-    @hotels=results["result"]
+    arr=results["predictions"]
+    placeid=""
+    countrycd=countrycode destinationplace
+    arr.each do |elem|
+      if elem["description"].include? countrycd
+        placeid=elem["place_id"]
+      else
+        if elem["description"].include? @country
+          placeid=elem["place_id"]
+        end
+      end 
+    end
+    puts placeid
+    response=HTTP.get("https://google-maps28.p.rapidapi.com/maps/api/place/details/json", :headers=>{'X-RapidAPI-Key'=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226','X-RapidAPI-Host'=>'google-maps28.p.rapidapi.com'}, :params=>{:fields=>"photos", :place_id=>"#{placeid}", :language=>"en"})
+    results=JSON.parse(response)
+    arr=results["result"]["photos"]
+    arr=arr[0]["html_attributions"]
+    urlarr=arr[0].split("\"")
+    @urlimage=urlarr[1]
 =end
-=begin
+=begin 
+    #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE UN ARRAY DI 20 HOTEL
     @hotels=gethotels
 =end
 =begin
-    #TROVA I VOLI
-    @iataarr=iata_code originplace, destinationplace
-    puts @iataarr
-
-    #PRENDE IL TOKEN DA AMADEUS
-    url = URI("https://test.api.amadeus.com/v1/security/oauth2/token")
-
-    https = Net::HTTP.new(url.host, url.port)
-    https.use_ssl = true
-
-    request = Net::HTTP::Post.new(url)
-    request.body = "client_id=vekSTCdgC3urGqAhreQlRXA8EBMgGkjS&client_secret=hkFGCQVxWBUkTsLL&grant_type=client_credentials"
-
-    response = https.request(request)
-    results=JSON.parse(response.read_body)
-
-    response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{params[:checkindate]}", :returnDate=>"#{params[:checkoutdate]}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
-    @dativoli=JSON.parse(response)
-    @voliarr=@dativoli["data"]
-    @numerovoli=@voliarr.length
-    @arritinerarioandataeritorno=[]
-    @arrvoliandata=[]
-    @arrvoliritorno=[]
-    @arrnumeroscaliandata=[]
-    @arrnumeroscaliritorno=[]
-    (0...@numerovoli).each do |k|
-      elem=@voliarr[k]
-      @arritinerarioandataeritorno[k]=elem["itineraries"]
-
-      elem=@arritinerarioandataeritorno[k]
-      @arrvoliandata[k]=elem[0]
-      @arrvoliritorno[k]=elem[1]
-
-      elem=@arrvoliandata[k]
-      elem=elem["segments"]
-      @arrnumeroscaliandata[k]=elem.length-1
-
-      elem=@arrvoliritorno[k]
-      elem=elem["segments"]
-      @arrnumeroscaliritorno[k]=elem.length-1
-    end
+    #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE I VOLI
+    getflights
 =end
   end
 
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
-    response=HTTP.get("https://it.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
+    response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
-    puts results
     x=results["query"]["pages"].to_s
     y=x.split("\"")
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
@@ -151,7 +131,7 @@ class PlaceController < ApplicationController
     arr=results[0]
     dataid=arr["dest_id"]
   end
-=begin
+
   def gethotels
     destinationplace=params[:destinationplace].downcase.capitalize()
     if destinationplace.include? "%20"
@@ -165,7 +145,6 @@ class PlaceController < ApplicationController
     results=JSON.parse(response)
     @hotels=results["result"]
   end
-=end
 
   def countrycode (place)
     output=""
@@ -214,6 +193,68 @@ class PlaceController < ApplicationController
       end
     end
     output=[originiatacode, destinationiatacode]
+  end
+
+  def getflights
+    #TROVA I VOLI
+    destinationplace=params[:destinationplace].downcase.capitalize()
+    if destinationplace.include? "%20"
+      arr=destinationplace.split("%20")
+      destinationplace=""
+      arr.each do |name|
+        destinationplace=destinationplace+name+" "
+      end
+    end
+
+    originplace=params[:originplace].downcase.capitalize()
+    if originplace.include? "%20"
+      arr=originplace.split("%20")
+      originplace=""
+      arr.each do |name|
+        originplace=originplace+name+" "
+      end
+    end
+
+    @iataarr=iata_code originplace, destinationplace
+    puts @iataarr
+
+    #PRENDE IL TOKEN DA AMADEUS
+    url = URI("https://test.api.amadeus.com/v1/security/oauth2/token")
+
+    https = Net::HTTP.new(url.host, url.port)
+    https.use_ssl = true
+
+    request = Net::HTTP::Post.new(url)
+    request.body = "client_id=vekSTCdgC3urGqAhreQlRXA8EBMgGkjS&client_secret=hkFGCQVxWBUkTsLL&grant_type=client_credentials"
+
+    response = https.request(request)
+    results=JSON.parse(response.read_body)
+
+    response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{params[:checkindate]}", :returnDate=>"#{params[:checkoutdate]}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
+    @dativoli=JSON.parse(response)
+    @voliarr=@dativoli["data"]
+    @numerovoli=@voliarr.length
+    @arritinerarioandataeritorno=[]
+    @arrvoliandata=[]
+    @arrvoliritorno=[]
+    @arrnumeroscaliandata=[]
+    @arrnumeroscaliritorno=[]
+    (0...@numerovoli).each do |k|
+      elem=@voliarr[k]
+      @arritinerarioandataeritorno[k]=elem["itineraries"]
+
+      elem=@arritinerarioandataeritorno[k]
+      @arrvoliandata[k]=elem[0]
+      @arrvoliritorno[k]=elem[1]
+
+      elem=@arrvoliandata[k]
+      elem=elem["segments"]
+      @arrnumeroscaliandata[k]=elem.length-1
+
+      elem=@arrvoliritorno[k]
+      elem=elem["segments"]
+      @arrnumeroscaliritorno[k]=elem.length-1
+    end
   end
   
   def favourite? (place)
