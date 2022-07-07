@@ -92,7 +92,7 @@
     </div>  
   </div>  
 </div>
-<% @numero_dest=0%>
+
 <div id="results_div" class="container-fluid">
   <div class="row">
       <%if @cheap%>
@@ -124,8 +124,8 @@
               </div>
             <%end%>
           <%end%>
-          <%if @numero_dest<4 %>
-          <%(0...(4-@numero_dest)).each do |k|%>
+          <%if @count<4 %>
+          <%(0...(4-@count)).each do |k|%>
             <div class="col">
               <div class="card h-100 shadow-sm" style="width: 100%rem;" aria-hidden="true">
                 <img src="https://img.freepik.com/free-vector/silhouette-skyline-illustration_53876-78786.jpg" class="card-img-top photo" alt="...">
