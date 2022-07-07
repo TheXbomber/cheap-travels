@@ -26,6 +26,14 @@
 		<p>This user is banned from posting reviews</p>
 	<% else %>
 		<div id="reviews-div" style="outline: solid; width: 100%; height: 100%; margin: 1%">
+			<%
+=begin%>
+ <% @user.reviews.each do |r| %>
+				<p><%= r.user %></p>
+				<p><%= r.rating %></p>
+			<% end %> 
+<%
+=end%>
 			Reviews here ...<br>
 			1<br>
 			2<br>
@@ -35,6 +43,7 @@
 		</div>
 	<% end %>
 	<div id="favorites-div" style="outline: solid; width: 100%; height: 100%; margin: 1%">
+		<p><%= @user.favourites %></p>
 		Favorite places here ...<br>
 		1<br>
 		2<br>
