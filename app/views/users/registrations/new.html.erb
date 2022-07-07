@@ -46,6 +46,11 @@
     <%= f.check_box :banned, value: false %>
   </div>
 
+  <div class="field" hidden>
+    <%= f.label :favourites, type: :hidden%><br />
+    <%= f.text_field :favourites, value: "" %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
