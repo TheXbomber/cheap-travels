@@ -238,4 +238,45 @@ class PlaceController < ApplicationController
     end
   end
 
+  def add_to_favourites
+    #before_action :authenticate_user!
+    @user = User.find(current_user.id)
+    if !@user.favourites.include? params[:place]
+      str = @user.favourites
+      if str==""
+        str+=params[:place]
+      else
+        str=str+","+params[:place]
+      end
+      @user.update(favourites: str)
+      @user.save
+      redirect_back(fallback_location: root_path)
+    else
+      redirect_back(fallback_location: root_path)
+    end
+  end
+
+  def remove_from_favourites
+    #before_action :authenticate_user!
+    @user = User.find(current_user.id)
+    if !@user.favourites.include? params[:place]
+      redirect_back(fallback_location: root_path)
+    else
+      str=""
+      if @user.favourites.include? ","
+        arr=@user.favourites.split(",")
+        arr.delete(params[:place])
+        (0...arr.length).each do |i|
+          if (i==arr.length-1)
+            str=str+arr[i]
+          else
+            str=str+arr[i]+","
+          end
+        end
+      end
+      @user.update(favourites: str)
+      @user.save
+      redirect_back(fallback_location: root_path)
+    end
+  end
 end

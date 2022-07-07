@@ -20,8 +20,13 @@
                 <%if @capital%><p><b>Capitale: </b><%=@capital%><p><%end%>
                 <%if @numregions%><p><b>Numero di regioni: </b><%=@numregions%><p><%end%>
                 <%if user_signed_in?%>
-                    <%= link_to "Add to favourite", users_add_to_favourites_path(:place => @destinationplace), controller: "place", action: "add_to_favourites" %>
+                    <%user=User.find(current_user.id)%>
+                    <%if !user.favourites.include? @destinationplace%>
+                        <%= link_to "Add to favourite", place_add_to_favourites_path(:place => @destinationplace)%>
                     <!--current_user.add_favourite(@destinationplace)-->
+                    <%else%>
+                        <%= link_to "Remove from favourite", place_remove_from_favourites_path(:place => @destinationplace)%>
+                    <%end%>
                 <%end%>
             <%end%>
         </div>
