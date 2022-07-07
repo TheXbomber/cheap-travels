@@ -15,10 +15,11 @@
 <!--<div class="autocomplete-container" id="autocomplete-container"></div>-->
 
 <!--form ricerca -->
-<%= form_with scope: "search", url: "/results", method: :get do |form| %>  
+<%= form_with scope: "search", url: search_results_path, method: :post do |form| %>  
 	
   <%= form.text_field :origin %>
 	<%= form.date_field :departure %>
+	<%= form.text_field :budget %><br>
 	<%= form.number_field :people, in: 1.0..10.0, step: 1.0 %>
 	<%= form.submit :search %>	
 <% end %>  

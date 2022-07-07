@@ -8,13 +8,8 @@ Rails.application.routes.draw do
   # resources :users, only: [:show, :edit, :update]
   #home
   get 'home/index'
-
-  get "/results", to: "results#index"
-  get '/airport', to: 'home#airport' 
-  post '/airport', to: 'home#airport' 
-
-  put "/send_results", to: "results#index", as: 'send_results'  
- 
+  post "/results", to: "results#index", as: "search_results"
+  get "/results/:origin/:departure/:people", to: "results#index", as: "searchget"
   # Defines the root path route ("/")
   root "home#index"
 
