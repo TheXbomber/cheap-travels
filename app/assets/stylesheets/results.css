@@ -8,3 +8,8 @@ html, body, #my-map {
     display: inline-block;   
 }
 
+.photo {
+    height: 30vh;
+    object-fit: cover;
+
+}

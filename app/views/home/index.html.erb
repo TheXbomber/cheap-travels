@@ -4,7 +4,6 @@
 
 <h1>Home#index</h1>
 
-
 <% if user_signed_in? %>
 	<p> Signed in as <%= current_user.email %> <p>
 	<%= link_to "Profile", users_profile_path %>
@@ -16,7 +15,7 @@
 <!--<div class="autocomplete-container" id="autocomplete-container"></div>-->
 
 <!--form ricerca -->
-<%= form_with scope: "search", url: "/results", method: :get do |form| %>  
+<%= form_with scope: "/search", url: "/results", method: :get do |form| %>  
 	
   <%= form.text_field :origin %>
 	<%= form.date_field :departure %>

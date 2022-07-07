@@ -92,7 +92,7 @@
     </div>  
   </div>  
 </div>
-
+<% @numero_dest=0%>
 <div id="results_div" class="container-fluid">
   <div class="row">
       <%if @cheap%>
@@ -100,9 +100,10 @@
           <% @cheap.each do |dest|%> 
             <% @code = dest[0]%>
             <%if @locations[@code]%>
+              <% @numero_dest=+1%>
               <div class="col">
                 <div class="card h-100 shadow-sm" style="width: 100%rem;">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/View_of_Malaga.jpg/1200px-View_of_Malaga.jpg" class="card-img-top" alt="...">
+                  <img src="<%= @locations[@code]["photo"]%>" class="card-img-top photo" alt="...">
                   
                   <div class="card-body">
                       <h6 class="col card-title">
@@ -123,11 +124,34 @@
               </div>
             <%end%>
           <%end%>
+          <%if @numero_dest<4 %>
+          <%(0...(4-@numero_dest)).each do |k|%>
+            <div class="col">
+              <div class="card h-100 shadow-sm" style="width: 100%rem;" aria-hidden="true">
+                <img src="https://img.freepik.com/free-vector/silhouette-skyline-illustration_53876-78786.jpg" class="card-img-top photo" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title placeholder-glow">
+                    <span class="placeholder col-6"></span>
+                  </h5>
+                  <p class="card-text placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                    <span class="placeholder col-4"></span>
+                  </p>
+                  
+                </div>
+              </div>
+            </div>
+          <%end%>
+        <%end%>
+        
+
         <%end%>
       <%end%>
     </div>
   </div>
 </div>
+
+
 
 
 <!-- Modal cambio ricerca -->

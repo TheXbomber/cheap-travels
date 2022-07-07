@@ -17,9 +17,17 @@ class ResultsController < ApplicationController
       client_secret: 'v2bxNaDnO61AZKqz'
     })
 
+    Unsplash.configure do |config|
+      config.application_access_key = "pzUPOA8ytHfwfzv3E2a8zAEuw-Gh9X2AHjv9dB0CzwM"
+      config.application_secret = "hZzddCgFD2jVED-craiFSiUNh7VHrEUsY0FafKVhQjE"
+      config.application_redirect_uri = "https://your-application.com/oauth/callback"
+      config.utm_source = "alices_terrific_client_app"
+  
+    end
+
     #TRAVELPAYOUT CHEAPEST FLIGHTS (voli più economici)
     #response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap", :params=>{:origin=>"AGP", :currency=>"EUR", :token=>"ea6f6d4a8d0b1be515fca155675970bb"})
-    response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap?origin=agp&destination=&currency=eur&token=ea6f6d4a8d0b1be515fca155675970bb")
+    response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap?origin=fco&destination=&currency=eur&token=ea6f6d4a8d0b1be515fca155675970bb")
     results=JSON.parse(response)
     @flights=results["data"]
     @keys = @flights.keys
@@ -77,10 +85,23 @@ class ResultsController < ApplicationController
       rescue Amadeus::ResponseError => e
         raise e
       end
+
       
-        #SALVA DATI CITTA
+        
+      #SALVA DATI CITTA
         (0...1).each do |i|
           if @airport[i]
+            
+            @city= @airport[i]["address"]["cityName"]
+            #@city_noblank= @airport[i]["address"]["cityName"]
+            #@city_noblank.gsub!(" ","-").to_s
+            #@city2 = ["barcelona", "malaga", "london", "milan"]
+
+            #unspl=HTTP.get("https://api.unsplash.com/search/photos?query=malaga&per_page=1&orientation=landscape&page=1?&client_id=6fa91622109e859b1c40218a5dead99f7262cf4f698b1e2cb89dd18fc5824d15&ar=9:3&fit=fill&fill=solid&fill-color=orange")
+            #r=JSON.parse(unspl)
+
+            @photos = Unsplash::Photo.search("#{@city}-city-landscape")
+            #@p = @photos[0]["urls"]["full"]
             @locations[@dest] = {}
             @locations[@dest]["name"] = @airport[i]["address"]["cityName"]
             @locations[@dest]["country"] = @airport[i]["address"]["countryName"]
@@ -88,6 +109,10 @@ class ResultsController < ApplicationController
             @locations[@dest]["region"] = @airport[i]["address"]["regionCode"]
             @locations[@dest]["iata"] = @airport[i]["iataCode"]
             @locations[@dest]["geocode"] = [@airport[i]["geoCode"]["latitude"], @airport[i]["geoCode"]["longitude"]]
+            @locations[@dest]["photo"] =@photos[rand(1)]["urls"]["full"]
+            
+              #@locations[@dest]["photo"] = r["results"][0]["urls"]["full"]
+            
             if x==0
               @geo_iniziale = [@airport[i]["geoCode"]["latitude"], @airport[i]["geoCode"]["longitude"]]
               x=1
