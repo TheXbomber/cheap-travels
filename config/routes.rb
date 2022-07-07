@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  get 'users/profile' # Alessandro
-  devise_for :users   # Alessandro
-  get 'home/index'    # Alessandro
+  # profili
+  get 'users/profile'
+  devise_for :users
+  #home
+  get 'home/index'
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get "/results", to: "results#index"
   get '/airport', to: 'home#airport' 
   post '/airport', to: 'home#airport' 

@@ -1,6 +1,11 @@
 # Alessandro
 class UsersController < ApplicationController
-  before_action :authenticate_user!
   def profile
+    id = params[:id]
+    @user = User.find(id)
+  end
+
+  def edit
+    before_action :authenticate_user!
   end
 end
