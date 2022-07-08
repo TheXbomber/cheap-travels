@@ -16,7 +16,7 @@
 			<button type="button" class="btn btn-dark" style="margin: 1px">Ban user</button>
 			<button type="button" class="btn btn-dark" style="margin: 1px">Promote to moderator</button>
 		<% end %>
-		<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path %></button>
+		<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path, style: "text-decoration: none; color: white" %></button>
 	</div>
 <% end %>
 <br>
@@ -26,14 +26,14 @@
 		<p>This user is banned from posting reviews</p>
 	<% else %>
 		<div id="reviews-div" style="outline: solid; width: 100%; height: 100%; margin: 1%">
-			<%
-=begin%>
- <% @user.reviews.each do |r| %>
-				<p><%= r.user %></p>
-				<p><%= r.rating %></p>
+
+ 			<% @user.reviews.each do |r| %>
+				<%= r.user.name %>
+				<%= r.rating %><br>
+				<%= r.place %><br>
+				<%= r.body %><br>
 			<% end %> 
-<%
-=end%>
+
 			Reviews here ...<br>
 			1<br>
 			2<br>
@@ -43,7 +43,7 @@
 		</div>
 	<% end %>
 	<div id="favorites-div" style="outline: solid; width: 100%; height: 100%; margin: 1%">
-		<p><%= @user.favourites %></p>
+		<%= @user.favourites %><br>
 		Favorite places here ...<br>
 		1<br>
 		2<br>

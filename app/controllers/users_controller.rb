@@ -1,4 +1,3 @@
-# Alessandro
 class UsersController < ApplicationController
   def profile
     id = params[:id]

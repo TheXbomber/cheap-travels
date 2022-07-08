@@ -1,27 +1,39 @@
-<%= form_with(model: review) do |form| %>
-  <% if review.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(review.errors.count, "error") %> prohibited this review from being saved:</h2>
+<div style="width: fit-content; margin: auto">
+  <%= form_with(model: review) do |form| %>
+    <% if review.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(review.errors.count, "error") %> prohibited this review from being saved:</h2>
 
-      <ul>
-        <% review.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% review.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div hidden>
+      <%= form.label :user_id %><br />
+      <%= form.number_field :user_id, value: current_user.id, autofocus: true%>
+    </div>
+
+    <div>
+      <%= form.label :body, style: "display: block" %>
+      <%= form.text_area :body %>
+    </div>
+
+    <div hidden>
+      <%= form.label :place %><br />
+      <%= form.text_field :place, value: @destinationplace, autofocus: true%>
+    </div>
+
+    <div>
+      <%= form.label :rating %><br />
+      <%= form.select :rating, [1, 2, 3, 4, 5], autofocus: true%>
+    </div>
+
+    <div>
+      <%= form.submit %>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.text_area :body %>
-  </div>
-
-  <div>
-    <%= form.label :rating, style: "display: block" %>
-    <%= form.number_field :rating %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

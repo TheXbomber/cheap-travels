@@ -213,4 +213,19 @@
     <div style="padding: 50px 0px 0px 0px">
         <h3 style="text-align:center">Reviews</h3>
     </div>
+    
+    <% if user_signed_in? %>
+        <% current_user.reviews.each do |r| %>
+            <% if r.place = @destinationplace %>
+               <% @review = r %>
+            <% end %>
+        <% end %>
+        <% if @review %>
+            <%= render "reviews/form", review: @review %>
+        <% else %>
+            <% @review = Review.new %>
+            <%= render "reviews/form", review: @review %>
+        <% end %>
+    <% end %>
+
 <%end%>
