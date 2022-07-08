@@ -216,7 +216,7 @@
     
     <% if user_signed_in? %>
         <% current_user.reviews.each do |r| %>
-            <% if r.place = @destinationplace %>
+            <% if r.place == @destinationplace %>
                <% @review = r %>
             <% end %>
         <% end %>

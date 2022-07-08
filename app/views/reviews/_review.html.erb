@@ -1,12 +1,25 @@
 <div id="<%= dom_id review %>">
+  
+  <% unless @hide_user %>   <!-- Nasconde nome utente nel profilo -->
   <p>
-    <strong>Body:</strong>
-    <%= review.body %>
+    <strong>User:</strong>
+    <%= review.user.name %>
+  </p>
+  <% end %>
+
+  <p>
+    <strong>Place:</strong>
+    <%= review.place %>
   </p>
 
   <p>
     <strong>Rating:</strong>
     <%= review.rating %>
+  </p>
+
+  <p>
+    <strong>Body:</strong>
+    <%= review.body %>
   </p>
 
 </div>
