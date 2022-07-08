@@ -1,5 +1,5 @@
 <!-- Alessandro -->
-<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
 <%= stylesheet_link_tag "home.css" %>
 
 <h1>Home#index</h1>
@@ -15,17 +15,18 @@
 <!--<div class="autocomplete-container" id="autocomplete-container"></div>-->
 
 <!--form ricerca -->
-<%= form_with scope: "search", url: search_results_path, method: :post do |form| %>  
-	
-  <%= form.text_field :origin %>
-	<%= form.date_field :departure %>
-	<%= form.text_field :budget %><br>
-	<%= form.number_field :people, in: 1.0..10.0, step: 1.0 %>
-	<%= form.submit :search %>	
-<% end %>  
+<div class="row">
+	<div class="col">
+		<%= form_with scope: "search", url: search_results_path, method: :post do |form| %>  
 
-
-
-
-
+			<%= form.text_field :origin, placeholder: "Inserisci luogo di partenza" %>
+			<!--<%= form.select :origin, [["Roma", "AGP"], ["Malaga", "AGP"], ["Milano", "LIN"]],  presence: true%> -->
+			
+			<%= form.date_field :departure, :value => Time.now.strftime('%Y-%m-%d') %>
+			<%= form.text_field :budget, placeholder: "Inserisci budget" %>
+			<%= form.number_field :people, in: 1.0..10.0, step: 1.0, placeholder: "Persone" %>
+			<%= form.submit :search  %>	
+		<% end %>  
+	</div>
+</div>
 

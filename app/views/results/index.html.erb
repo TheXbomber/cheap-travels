@@ -2,10 +2,12 @@
 <%= stylesheet_link_tag "results.css" %>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-  
+
+
 <%
 =begin
 %>
@@ -80,6 +82,10 @@
     </script> 
 
 <!--risultati ricerca -->
+
+
+
+
 <div class="pt-2 pb-2 container-fluid">
   <div class="row d-flex">
     <div class="col ">
@@ -143,8 +149,7 @@
             </div>
           <%end%>
         <%end%>
-        
-
+      
         <%end%>
       <%end%>
     </div>
@@ -154,30 +159,35 @@
 
 
 
+<%if @cheapest.count()==0%>
+ 
+   
+  
+<%end%>
+
 <!-- Modal cambio ricerca -->
-<div class="modal fade" id="ricercaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ricercaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target="ricercaModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
+    <%= form_with scope: "search", url: "/results", method: :post do |form| %>  
       <div class="modal-header">
         <h6 class="modal-title" id="exampleModalLabel">Modifica parametri di ricerca</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <div id="ricerca">
-            <%= form_with scope: "change_search", url: "/results", method: :get do |form| %>  
-    
-              <%= form.text_field :origin %><br>
-              <%= form.date_field :departure %><br>
-              <%= form.text_field :budget %><br>
-              <%= form.number_field :people, in: 1.0..10.0, step: 1.0 %><br>
-              <%= form.submit :search %>	
             
-            <%end%> 
+             <%= form.text_field :origin, value: params["search"]["origin"] %><br>
+              <%= form.date_field :departure, value: params["search"]["departure"] %><br>
+              <%= form.text_field :budget, value: params["search"]["budget"] %><br>
+              <%= form.number_field :people, in: 1.0..10.0, step: 1.0, value: params["search"]["people"] %><br>
+               
       </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Cerca</button>
+        <%= form.submit :search %>	
       </div>
+      <%end%>
     </div>
   </div>
 </div>

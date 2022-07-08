@@ -4,7 +4,7 @@ require 'openssl'
 require "http"
 
 class ResultsController < ApplicationController
- 
+
   def cheapest_flights(origin, departure)
     #TRAVELPAYOUT CHEAPEST FLIGHTS (voli più economici)
     #response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap", :params=>{:origin=>"AGP", :currency=>"EUR", :token=>"ea6f6d4a8d0b1be515fca155675970bb"})
@@ -13,7 +13,7 @@ class ResultsController < ApplicationController
     @flights=results["data"]
     @keys = @flights.keys
     @numero_d = @keys.count
-    @cheapest = Array.new(5, ["",0,0])
+    @cheapest = Array.new()
   end
 
   def airlabs_iata(iata_code)
@@ -35,9 +35,7 @@ class ResultsController < ApplicationController
     Unsplash.configure do |config|
       config.application_access_key = "pzUPOA8ytHfwfzv3E2a8zAEuw-Gh9X2AHjv9dB0CzwM"
       config.application_secret = "hZzddCgFD2jVED-craiFSiUNh7VHrEUsY0FafKVhQjE"
-      config.application_redirect_uri = "https://your-application.com/oauth/callback"
       config.utm_source = "cheap_travels_app"
-  
     end
     
     cheapest_flights(params["search"]["origin"], params["search"]["departure"])
@@ -54,7 +52,7 @@ class ResultsController < ApplicationController
             (0...5).each do |j|
                 if a==0  
                   if inseriti<5
-                    @cheapest[inseriti] = [dest, n, @price]
+                    @cheapest.append([dest, n, @price])
                     inseriti+=1
                     assegnato=1
                     a=1
@@ -75,10 +73,12 @@ class ResultsController < ApplicationController
       end
     end
 
+
     @cheap=@cheapest  
     @locations = {}
     @count =0
     x = 0
+    puts @cheapest.inspect
 
     @cheap.each do |c|
       @dest = c[0]
@@ -104,7 +104,7 @@ class ResultsController < ApplicationController
             #@locations[@dest]["region"] = @airport[i]["address"]["regionCode"]
             @locations[@dest]["iata"] = @airport[i]["city_code"]
             @locations[@dest]["geocode"] = [@airport[i]["lat"], @airport[i]["lng"]]
-            @locations[@dest]["photo"] =@photos[rand(1)]["urls"]["full"]
+            @locations[@dest]["photo"] =@photos[rand(2)]["urls"]["regular"]
             
             #@locations[@dest]["photo"] = r["results"][0]["urls"]["full"]
             
