@@ -1,41 +1,30 @@
 <div id="<%= dom_id review %>">
   
   <% unless @hide_user %>   <!-- Nasconde nome utente nel profilo -->
-  <p>
     <strong>User:</strong>
-    <%= review.user.name %>
-  </p>
+    <%= review.user.name %><br>
   <% end %>
 
-  <p>
-    <strong>Place:</strong>
-    <%= review.place %>
-  </p>
+  <strong>Place:</strong>
+  <%= review.place %><br>
 
-  <p>
-    <strong>Rating:</strong>
-    <%= review.rating %>
-    <!--<%rating=review.rating %>
+  <strong>Rating:</strong>
+  <%= review.rating %><br>
+  <!--<%rating=review.rating %>
+  <%(1..rating).each do |i|%>
+    <img src="/star-on.png">
+  <%end%>
+  <%rating=5-rating%>
+  <%if rating>0%>
     <%(1..rating).each do |i|%>
-      <img src="/star-on.png">
+      <img src="/star-off.png">
     <%end%>
-    <%rating=5-rating%>
-    <%if rating>0%>
-      <%(1..rating).each do |i|%>
-        <img src="/star-off.png">
-      <%end%>
-    <%end%>-->
-  </p>
+  <%end%>-->
+  <strong>Body:</strong>
+  <%= review.body %><br>
 
-  <p>
-    <strong>Body:</strong>
-    <%= review.body %>
-  </p>
-
-  <p>
-    <strong>Data:</strong>
-    <%=review.created_at%>
-  </p>
+  <strong>Data:</strong>
+  <%=review.created_at%><br>
 
   <%if review.user.name==current_user.name%>
     <%= link_to "Edit this review", edit_review_path(review) %>
