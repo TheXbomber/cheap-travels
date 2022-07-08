@@ -15,6 +15,16 @@
   <p>
     <strong>Rating:</strong>
     <%= review.rating %>
+    <!--<%rating=review.rating %>
+    <%(1..rating).each do |i|%>
+      <img src="/star-on.png">
+    <%end%>
+    <%rating=5-rating%>
+    <%if rating>0%>
+      <%(1..rating).each do |i|%>
+        <img src="/star-off.png">
+      <%end%>
+    <%end%>-->
   </p>
 
   <p>
@@ -22,4 +32,19 @@
     <%= review.body %>
   </p>
 
+  <p>
+    <strong>Data:</strong>
+    <%=review.created_at%>
+  </p>
+
+  <%if review.user.name==current_user.name%>
+    <%= link_to "Edit this review", edit_review_path(review) %>
+    <%= button_to "Destroy this review", review, method: :delete %>
+  <%elsif current_user.role=="admin"%>
+    <%= link_to "Edit this review", edit_review_path(review) %>
+    <%= button_to "Destroy this review", review, method: :delete %>
+  <%elsif current_user.role=="moderator"%>
+    <%= link_to "Edit this review", edit_review_path(review) %>
+    <%= button_to "Destroy this review", review, method: :delete %>
+  <%end%>
 </div>
