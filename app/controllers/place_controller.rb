@@ -4,21 +4,75 @@ require 'openssl'
 
 class PlaceController < ApplicationController
   def index
-    @destinationplace=params[:destinationplace].downcase.capitalize()
-    if @destinationplace.include? "%20"
-      arr=@destinationplace.split("%20")
-      @destinationplace=""
-      arr.each do |name|
-        @destinationplace=@destinationplace+name+" "
+    begin
+      Date.parse(params[:checkindate])
+      if Date.parse(params[:checkindate]) < Date.today
+        @message="La data di partenza inserita non è valida"
+        return
       end
-    end
-
-    originplace=params[:originplace].downcase.capitalize()
-    if originplace.include? "%20"
-      arr=originplace.split("%20")
-      originplace=""
-      arr.each do |name|
-        originplace=originplace+name+" "
+    rescue 
+      @message="La data di partenza inserita non è valida"
+      return
+    else
+      begin
+        Date.parse(params[:checkoutdate])
+        if Date.parse(params[:checkoutdate]) < Date.today 
+          @message="La data di ritorno inserita non è valida"
+          return 
+        end
+        if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
+          @message="La data di ritorno non può precedere quella di andata"
+          return
+        end
+      rescue
+        @message="La data di ritorno inserita non è valida"
+        return
+      else
+        begin
+          if params[:numpersone].to_i == 0
+            @message="Il numero di persone inserito non è valido"
+            return
+          end
+        rescue
+          @message="Il numero di persone inserito non è valido"
+          return
+        else
+          begin
+            @destinationplace=params[:destinationplace].downcase.capitalize()
+            if @destinationplace.include? "%20"
+              arr=@destinationplace.split("%20")
+              @destinationplace=""
+              arr.each do |name|
+                @destinationplace=@destinationplace+name.capitalize()+" "
+              end
+            end
+            if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
+              @message="La città di destinazione non è valida"
+              return
+            end
+          rescue
+            @message="La città di destinazione non è valida"
+            return
+          else
+            begin
+              originplace=params[:originplace].downcase.capitalize()
+              if originplace.include? "%20"
+                arr=originplace.split("%20")
+                originplace=""
+                arr.each do |name|
+                  originplace=originplace+name.capitalize()+" "
+                end
+              end
+              if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
+                @message="La città di partenza non è valida"
+                return
+              end
+            rescue
+              @message="La città di partenza non è valida"
+              return
+            end
+          end
+        end 
       end
     end
 
@@ -65,6 +119,8 @@ class PlaceController < ApplicationController
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
     response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
+    puts results
+    puts results.keys
     x=results["query"]["pages"].to_s
     y=x.split("\"")
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
@@ -113,12 +169,75 @@ class PlaceController < ApplicationController
   end
 
   def gethotels
-    @destinationplace=params[:destinationplace].downcase.capitalize()
-    if @destinationplace.include? "%20"
-      arr=@destinationplace.split("%20")
-      @destinationplace=""
-      arr.each do |name|
-        @destinationplace=@destinationplace+name+" "
+    begin
+      Date.parse(params[:checkindate])
+      if Date.parse(params[:checkindate]) < Date.today
+        @messagehotels="La data di partenza inserita non è valida"
+        return
+      end
+    rescue 
+      @messagehotels="La data di partenza inserita non è valida"
+      return
+    else
+      begin
+        Date.parse(params[:checkoutdate])
+        if Date.parse(params[:checkoutdate]) < Date.today 
+          @messagehotels="La data di ritorno inserita non è valida"
+          return 
+        end
+        if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
+          @messagehotels="La data di ritorno non può precedere quella di andata"
+          return
+        end
+      rescue
+        @messagehotels="La data di ritorno inserita non è valida"
+        return
+      else
+        begin
+          if params[:numpersone].to_i == 0
+            @messagehotels="Il numero di persone inserito non è valido"
+            return
+          end
+        rescue
+          @messagehotels="Il numero di persone inserito non è valido"
+          return
+        else
+          begin
+            @destinationplace=params[:destinationplace].downcase.capitalize()
+            if @destinationplace.include? "%20"
+              arr=@destinationplace.split("%20")
+              @destinationplace=""
+              arr.each do |name|
+                @destinationplace=@destinationplace+name.capitalize()+" "
+              end
+            end
+            if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
+              @messagehotels="La città di destinazione non è valida"
+              return
+            end
+          rescue
+            @messagehotels="La città di destinazione non è valida"
+            return
+          else
+            begin
+              originplace=params[:originplace].downcase.capitalize()
+              if originplace.include? "%20"
+                arr=originplace.split("%20")
+                originplace=""
+                arr.each do |name|
+                  originplace=originplace+name.capitalize()+" "
+                end
+              end
+              if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
+                @messagehotels="La città di partenza non è valida"
+                return
+              end
+            rescue
+              @messagehotels="La città di partenza non è valida"
+              return
+            end
+          end
+        end 
       end
     end
     response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
@@ -177,21 +296,75 @@ class PlaceController < ApplicationController
 
   def getflights
     #TROVA I VOLI
-    @destinationplace=params[:destinationplace].downcase.capitalize()
-    if @destinationplace.include? "%20"
-      arr=@destinationplace.split("%20")
-      @destinationplace=""
-      arr.each do |name|
-        @destinationplace=@destinationplace+name+" "
+    begin
+      Date.parse(params[:checkindate])
+      if Date.parse(params[:checkindate]) < Date.today
+        @messageflights="La data di partenza inserita non è valida"
+        return
       end
-    end
-
-    originplace=params[:originplace].downcase.capitalize()
-    if originplace.include? "%20"
-      arr=originplace.split("%20")
-      originplace=""
-      arr.each do |name|
-        originplace=originplace+name+" "
+    rescue 
+      @messageflights="La data di partenza inserita non è valida"
+      return
+    else
+      begin
+        Date.parse(params[:checkoutdate])
+        if Date.parse(params[:checkoutdate]) < Date.today 
+          @messageflights="La data di ritorno inserita non è valida"
+          return 
+        end
+        if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
+          @messageflights="La data di ritorno non può precedere quella di andata"
+          return
+        end
+      rescue
+        @messageflights="La data di ritorno inserita non è valida"
+        return
+      else
+        begin
+          if params[:numpersone].to_i == 0
+            @messageflights="Il numero di persone inserito non è valido"
+            return
+          end
+        rescue
+          @messageflights="Il numero di persone inserito non è valido"
+          return
+        else
+          begin
+            @destinationplace=params[:destinationplace].downcase.capitalize()
+            if @destinationplace.include? "%20"
+              arr=@destinationplace.split("%20")
+              @destinationplace=""
+              arr.each do |name|
+                @destinationplace=@destinationplace+name.capitalize()+" "
+              end
+            end
+            if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
+              @messageflights="La città di destinazione non è valida"
+              return
+            end
+          rescue
+            @messageflights="La città di destinazione non è valida"
+            return
+          else
+            begin
+              originplace=params[:originplace].downcase.capitalize()
+              if originplace.include? "%20"
+                arr=originplace.split("%20")
+                originplace=""
+                arr.each do |name|
+                  originplace=originplace+name.capitalize()+" "
+                end
+              end
+              if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
+                @messageflights="La città di partenza non è valida"
+                return
+              end
+            rescue
+              @messageflights="La città di partenza non è valida"
+              return
+            end
+          end
+        end 
       end
     end
 
@@ -240,43 +413,47 @@ class PlaceController < ApplicationController
 
   def add_to_favourites
     #before_action :authenticate_user!
-    @user = User.find(current_user.id)
-    if !@user.favourites.include? params[:place]
-      str = @user.favourites
-      if str==""
-        str+=params[:place]
+    if params[:flash_notice]=="Ok" #serve per non permettere all'utente di scrivere l'url e aggiungere la città ai preferiti e garantire che lo si può fare solo dal link
+      @user = User.find(current_user.id)
+      if !@user.favourites.include? params[:place]
+        str = @user.favourites
+        if str==""
+          str+=params[:place]
+        else
+          str=str+","+params[:place]
+        end
+        @user.update(favourites: str)
+        @user.save
+        redirect_back(fallback_location: root_path)
       else
-        str=str+","+params[:place]
+        redirect_back(fallback_location: root_path)
       end
-      @user.update(favourites: str)
-      @user.save
-      redirect_back(fallback_location: root_path)
-    else
-      redirect_back(fallback_location: root_path)
     end
   end
 
   def remove_from_favourites
     #before_action :authenticate_user!
-    @user = User.find(current_user.id)
-    if !@user.favourites.include? params[:place]
-      redirect_back(fallback_location: root_path)
-    else
-      str=""
-      if @user.favourites.include? ","
-        arr=@user.favourites.split(",")
-        arr.delete(params[:place])
-        (0...arr.length).each do |i|
-          if (i==arr.length-1)
-            str=str+arr[i]
-          else
-            str=str+arr[i]+","
+    if params[:flash_notice]=="Ok" #serve per non permettere all'utente di scrivere l'url e rimuovere la città dai preferiti e garantire che lo si può fare solo dal link
+      @user = User.find(current_user.id)
+      if !@user.favourites.include? params[:place]
+        redirect_back(fallback_location: root_path)
+      else
+        str=""
+        if @user.favourites.include? ","
+          arr=@user.favourites.split(",")
+          arr.delete(params[:place])
+          (0...arr.length).each do |i|
+            if (i==arr.length-1)
+              str=str+arr[i]
+            else
+              str=str+arr[i]+","
+            end
           end
         end
+        @user.update(favourites: str)
+        @user.save
+        redirect_back(fallback_location: root_path)
       end
-      @user.update(favourites: str)
-      @user.save
-      redirect_back(fallback_location: root_path)
     end
   end
 end

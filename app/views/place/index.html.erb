@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag "place.css" %>
 
 <%if @message%>
-    <p><%=@message%></p>
+    <h4 style="color:red; text-align: center">Error: <%=@message%></h4>
 <%else%>
     <h1 style="text-align: center"><%=@destinationplace%></h1><br>
     <div style="display: flex; padding: 0px 50px 0px 50px">
@@ -22,10 +22,10 @@
                 <%if user_signed_in?%>
                     <%user=User.find(current_user.id)%>
                     <%if !user.favourites.include? @destinationplace%>
-                        <%= link_to "Add to favourite", place_add_to_favourites_path(:place => @destinationplace)%>
+                        <%= link_to "Add to favourite", place_add_to_favourites_path(:place => @destinationplace, flash_notice:"Ok"), {:class=>"link_to"}%>
                     <!--current_user.add_favourite(@destinationplace)-->
                     <%else%>
-                        <%= link_to "Remove from favourite", place_remove_from_favourites_path(:place => @destinationplace)%>
+                        <%= link_to "Remove from favourite", place_remove_from_favourites_path(:place => @destinationplace, flash_notice:"Ok"), {:class=>"link_to"}%>
                     <%end%>
                 <%end%>
             <%end%>
@@ -91,8 +91,10 @@
                 </div>
             </ul>
             <%if @hotels[1]%>
-                <div style="text-align:center"><%=link_to "View more hotels", controller: "place", action: "gethotels"%></div>
+                <div style="text-align:center"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, {:class=>"link_to"}%></div>
             <%end%>
+        <%elsif @messagehotels%>
+            <div style="text-align:center"><p><%=@messagehotels%></p></div>
         <%else%>
             <div style="text-align:center"><p>Siamo spiacenti, non sono stati trovati hotel disponibili</p></div>
         <%end%>
@@ -200,8 +202,10 @@
                 </ul>
             </div>
             <%if @voliarr[1]%>
-                <div style="text-align:center"><%=link_to "View more flights", controller: "place", action: "getflights"%></div>
+                <div style="text-align:center"><%=link_to "View more flights", {controller: "place", action: "getflights"}, {:class=>"link_to"}%></div>
             <%end%>
+        <%elsif @messageflights%>
+            <div style="text-align:center"><p><%=@messagehotels%></p></div>
         <%else%>
             <div style="text-align:center"><p>Siamo spiacenti, non sono stati trovati voli disponibili</p></div>
         <%end%>

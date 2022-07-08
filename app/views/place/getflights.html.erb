@@ -199,4 +199,8 @@
             <br>
         <%end%>
     </ul>
+<%else%>
+    <%if @messageflights%>
+        <h4 style="color:red; text-align: center">Error: <%=@messageflights%></h4>
+    <%end%>
 <%end%>

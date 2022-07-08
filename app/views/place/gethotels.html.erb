@@ -115,4 +115,8 @@
             <br>
         <%end%>
     </ul>
+<%else%>
+    <%if @messagehotels%>
+        <h4 style="color:red; text-align: center">Error: <%=@messagehotels%></h4>
+    <%end%>
 <%end%>
