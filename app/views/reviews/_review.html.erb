@@ -24,16 +24,15 @@
   <%= review.body %><br>
 
   <strong>Data:</strong>
-  <%=review.created_at%><br>
+  <%=review.created_at%>
 
-  <%if review.user.name==current_user.name%>
-    <%= link_to "Edit this review", edit_review_path(review) %>
-    <%= button_to "Destroy this review", review, method: :delete %>
-  <%elsif current_user.role=="admin"%>
-    <%= link_to "Edit this review", edit_review_path(review) %>
-    <%= button_to "Destroy this review", review, method: :delete %>
-  <%elsif current_user.role=="moderator"%>
-    <%= link_to "Edit this review", edit_review_path(review) %>
-    <%= button_to "Destroy this review", review, method: :delete %>
-  <%end%>
+  <% if user_signed_in? %>
+    <br>
+    <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
+      <div class="d-flex flex-row">
+        <%= link_to "Edit", edit_review_path(review), class: "btn btn-secondary", style: "margin-right: 1%" %>
+        <%= button_to "Delete", review, method: :delete, class: "btn btn-danger" %>
+      </div>
+    <%end%>
+  <% end %>
 </div>

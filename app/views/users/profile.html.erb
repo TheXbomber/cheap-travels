@@ -1,7 +1,7 @@
 <br>
 <div id="profile-div" style ="text-align: center; width: 80%; margin: auto">
 	<h1> <%= @user.name %> </h1>
-	<div id="user-info-div" style="text-align: left; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px">
+	<div id="user-info-div" class= shadow-box style="text-align: left; font-size: 18px">
 		<b>Email:</b> <%= @user.email %><br>
 		<b>Tel:</b> <%= @user.tel %><br>
 		<b>Birthday:</b> <%= @user.bday %><br>
@@ -32,23 +32,23 @@
 
 <div id="bottom-div" class="d-flex flex-row" style="width: 80%; height: 80vh; margin: auto; text-align: center">
 	
-	<div id="reviews-div" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; overflow: auto">
+	<div id="reviews-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
 		<% if @user.banned %>
 			<p>This user is banned from posting reviews</p>
 		<% else %>
  			<% @user.reviews.each do |r| %>
-				<div style="text-align: left; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
+				<div class="shadow-box" style="text-align: left; font-size: 18px; margin: 1%">
 					<%= render "reviews/review", review: r %><br>
 				</div>
 			<% end %> 
 		<% end %>
 	</div>
 
-	<div id="favorites-div" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%">
+	<div id="favorites-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
 		<% arr =@user.favourites.split(",") %>
 		<div class="d-flex flex-row" style="display: flex; flex-wrap: wrap">
 			<% arr.each do |f| %>
-				<div class="d-flex flex-row" style="flex: 48%; margin: 1%; width: 30vw; height: 10vh; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px">
+				<div class="d-flex flex-row shadow-box" style="flex: 48%; margin: 1%; width: 30vw; height: 10vh; padding: 0">
 					<% response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>f, :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"}) %>
 					<% results=JSON.parse(response) %>
 					<% @imageurl=results["hits"][0]["largeImageURL"] %>
