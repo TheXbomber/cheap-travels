@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag "place.css" %>
+<!--<%= stylesheet_link_tag "place.css" %>-->
 
 <div id="<%= dom_id review %>">
   
@@ -40,33 +40,26 @@
     <%end%><br>
   <%end%>
 
-  <!--<strong>Rating:</strong>-->
   <strong>Body:</strong>
   <%= review.body %><br>
 
   <strong>Data:</strong>
-  <%=review.created_at%>
+  <%=review.created_at%><br>
 
-  <!--<%if user_signed_in?%>
-    <%if review.user.name==current_user.name%>
-      <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
-      <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
-    <%elsif current_user.role=="admin"%>
-      <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
-      <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
-    <%elsif current_user.role=="moderator"%>
+  <%if user_signed_in?%>
+    <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
       <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
       <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
     <%end%>
-  <%end%>-->
-  </div>
-    <% if user_signed_in? %>
-      <br>
-      <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
-        <div class="d-flex flex-row">
-          <%= link_to "Edit", edit_review_path(review), class: "btn btn-secondary", style: "margin-right: 1%" %>
-          <%= button_to "Delete", review, method: :delete, class: "btn btn-danger" %>
-        </div>
-      <%end%>
-    <% end %>
-  </div>
+  <%end%>
+  <!--
+  <% if user_signed_in? %><br>
+    <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
+      <div class="d-flex flex-row">
+        <%= link_to "Edit", edit_review_path(review), class: "btn btn-secondary", style: "margin-right: 1%" %>
+        <%= button_to "Delete", review, method: :delete, class: "btn btn-danger" %>
+      </div>
+    <%end%>
+  <% end %>
+  -->
+</div>

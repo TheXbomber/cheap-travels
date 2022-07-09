@@ -30,15 +30,15 @@
 	</div>
 </div>
 
-<div id="bottom-div" class="d-flex flex-row" style="width: 80%; height: 80vh; margin: auto; text-align: center">
+<div id="bottom-div" class="d-flex flex-row" style="width: 80%; height: 50vh; margin: auto; text-align: center">
 	
 	<div id="reviews-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
 		<% if @user.banned %>
 			<p>This user is banned from posting reviews</p>
 		<% else %>
  			<% @user.reviews.each do |r| %>
-				<div class="shadow-box" style="text-align: left; font-size: 18px; margin: 1%">
-					<%= render "reviews/review", review: r %><br>
+				<div class="shadow-box" style="text-align: left; font-size: 18px; margin-bottom: 2%; width: 100%">
+					<%= render "reviews/review", review: r %>
 				</div>
 			<% end %> 
 		<% end %>
