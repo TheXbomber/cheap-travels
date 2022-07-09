@@ -23,8 +23,13 @@
     </div>
 
     <div hidden>
+      <% if !review.place %>
+        <% p = @destinationplace %>
+      <% else %>
+        <% p = review.place %>
+      <% end %>
       <%= form.label :place %><br />
-      <%= form.text_field :place, value: @destinationplace, autofocus: true%>
+      <%= form.text_field :place, value: p, autofocus: true%>
     </div>
 
     <div>

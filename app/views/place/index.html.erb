@@ -239,11 +239,11 @@
     <div style="padding: 50px 100px 0px 100px; text-align: center">
         <% if user_signed_in? %>
             <% if @review %>
-                <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 1%; border-radius: 5px; font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
+                <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
                 <br>
             <% else %>
                 <% @review = Review.new %>
-                <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 1%; border-radius: 5px; font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
+                <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
                 <br>
             <% end %>
         <%else%>
