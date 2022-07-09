@@ -12,11 +12,17 @@
 
 <% if user_signed_in? %>
 	<div id="profile-buttons-div" class="d-flex flex-row" style ="text-align: center; width: fit-content; margin: auto; margin-top: 1%">
-		<% if @user.role == "moderator" || @user.role == "admin" %>
+		<% if @user.id != current_user.id && (current_user.role == "moderator" || current_user.role == "admin") %>
 			<button type="button" class="btn btn-dark" style="margin: 1px">Ban user</button>
-			<button type="button" class="btn btn-dark" style="margin: 1px">Promote to moderator</button>
+			<% if @user.role == "user" %>
+				<%= link_to "Promote to moderator", users_promote_to_moderator_path(:uid => @user.id), method: :get, class: "btn btn-dark" %>
+			<% elsif current_user.role == "admin" && @user.role == "moderator" %>
+				<%= link_to "Demote to user", users_demote_to_user_path(:uid => @user.id), method: :get, class: "btn btn-dark" %>
+			<% end %>
 		<% end %>
-		<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path, style: "text-decoration: none; color: white; font-size: 18px" %></button>
+		<% if @user.id == current_user.id %>
+			<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path, style: "text-decoration: none; color: white; font-size: 18px" %></button>
+		<% end %>
 	</div>
 <% end %>
 <br>

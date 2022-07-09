@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :reviews
   # profili
   get 'users/profile'
+  get 'users/promote_to_moderator'
+  get 'users/demote_to_user'
   get 'place/add_to_favourites'
   get 'place/remove_from_favourites'
   devise_for :users
