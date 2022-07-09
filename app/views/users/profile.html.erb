@@ -58,7 +58,7 @@
 		<% arr =@user.favourites.split(",") %>
 		<div class="d-flex flex-row" style="display: flex; flex-wrap: wrap">
 			<% arr.each do |f| %>
-				<div class="d-flex flex-row shadow-box" style="flex: 48%; margin: 1%; width: 30vw; height: 10vh; padding: 0">
+				<div class="d-flex flex-row shadow-box" style="flex: 48%; margin: 1%; max-width: 48%; width: 30vw; height: 10vh; padding: 0">
 					<% response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>f, :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"}) %>
 					<% results=JSON.parse(response) %>
 					<% @imageurl=results["hits"][0]["largeImageURL"] %>
