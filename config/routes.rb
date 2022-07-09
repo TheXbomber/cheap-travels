@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get 'users/profile'
   get 'users/promote_to_moderator'
   get 'users/demote_to_user'
+  get 'users/ban_user'
+  get 'users/unban_user'
   get 'place/add_to_favourites'
   get 'place/remove_from_favourites'
   devise_for :users

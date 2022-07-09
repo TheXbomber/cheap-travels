@@ -13,7 +13,11 @@
 <% if user_signed_in? %>
 	<div id="profile-buttons-div" class="d-flex flex-row" style ="text-align: center; width: fit-content; margin: auto; margin-top: 1%">
 		<% if @user.id != current_user.id && (current_user.role == "moderator" || current_user.role == "admin") %>
-			<button type="button" class="btn btn-dark" style="margin: 1px">Ban user</button>
+			<% if @user.banned %>
+				<%= link_to "Unban user", users_unban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+			<% else %>
+				<%= link_to "Ban user", users_ban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+			<% end %>
 			<% if @user.role == "user" %>
 				<%= link_to "Promote to moderator", users_promote_to_moderator_path(:uid => @user.id), method: :get, class: "btn btn-dark" %>
 			<% elsif current_user.role == "admin" && @user.role == "moderator" %>

@@ -24,4 +24,20 @@ class UsersController < ApplicationController
     @user.save
     redirect_back(fallback_location: root_path)
   end
+
+  def ban_user
+    id = params[:uid]
+    @user = User.find(id)
+    @user.update(banned: true)
+    @user.save
+    redirect_back(fallback_location: root_path)
+  end
+
+  def unban_user
+    id = params[:uid]
+    @user = User.find(id)
+    @user.update(banned: false)
+    @user.save
+    redirect_back(fallback_location: root_path)
+  end
 end
