@@ -10,14 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_07_145231) do
-  create_table "reviews", force: :cascade do |t|
-    t.text "body"
-    t.integer "rating", null:false
+ActiveRecord::Schema[7.0].define(version: 2022_07_09_115753) do
+  create_table "destinations", force: :cascade do |t|
+    t.string "name"
+    t.string "iata"
+    t.string "countrycode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "place", null:false
-    t.integer "user_id", null:false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "body"
+    t.integer "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "place"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

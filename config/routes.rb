@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   #home
   get 'home/index'
   post "/results", to: "results#index", as: "search_results"
-  get "/results/:origin/:departure/:people", to: "results#index", as: "searchget"
   # Defines the root path route ("/")
   root "home#index"
 

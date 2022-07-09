@@ -6,14 +6,27 @@ class HomeController < ApplicationController
     config.utm_source = "cheap_travels_app"
   end
 
-  def index 
+  def airlabs_cities()
+    #AIRLABS (OTTIENE I DATI DI TUTTE LE CITTA)
+    airlabs_c=HTTP.get("https://airlabs.co/api/v9/cities?api_key=06ec0991-7aff-487e-a815-9eab333258f4")
+    @cities=JSON.parse(airlabs_c)["response"]
+  end
 
-    @home_cities = [["Roma", "AGP"], ["Malaga", "AGP"], ["Milano", "LIN"], ["Parigi", "ORY"]]
-    @photo_home = ["", "", "", ""]
-      (0...4).each do |i|
-        @photos_unsplash = Unsplash::Photo.search("#{@home_cities[i][0]}-city-landscape")
-        @photo_home[i] = @photos_unsplash[rand(2)]["urls"]["regular"]
-      end
+  def cities_for_select
+    airlabs_cities()
+    @cities_select = @cities.map {|c| [ c['name'], c['country_code'] ] }
+  end
+
+
+  def index 
+    @destinations = Destination.all
+    cities_for_select
+
+    @photo_home = {}
+    @destinations.each do |dest|
+      @photos_unsplash = Unsplash::Photo.search("#{dest.name}-city-landscape")
+      @photo_home[dest.iata] = @photos_unsplash[rand(2)]["urls"]["regular"]
+    end
     
 
   end
