@@ -14,10 +14,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace", to:"place#index"
-  get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace", to:"place#add_favourites"
-  # get ":checkindate/:checkoutdate/:numpersone/place/:name", to:"place#index"
-  # get ":checkindate/:checkoutdate/:numpersone/place/:name/viewmorehotels", to:"place#viewmorehotels"
   get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace/viewmorehotels", to:"place#gethotels"
   get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace/viewmoreflights", to:"place#getflights"
-
+  get ":destinationplace/viewmorereviews", to:"place#getreviews"
 end

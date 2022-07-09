@@ -1,13 +1,10 @@
-.elem:hover{
-    background-color: lightgray;
-}
-
 .link_to {
     text-decoration:none;
     color: black;
     font-size:30;
     border-style:solid;
-    padding: 10px 10px 10px 10px
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
 }
 
 .link_to:hover{

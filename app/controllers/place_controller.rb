@@ -105,9 +105,14 @@ class PlaceController < ApplicationController
     end
 
     #PRENDE L'IMMAGINE DELLA CITTà
-    response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace}", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
-    results=JSON.parse(response)
-    @imageurl=results["hits"][0]["largeImageURL"]
+    begin
+      response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace}", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
+      results=JSON.parse(response)
+      @imageurl=results["hits"][0]["largeImageURL"]
+    rescue
+      @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
+      return
+    end
 
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE UN ARRAY DI 20 HOTEL
     #@hotels=gethotels
@@ -120,7 +125,6 @@ class PlaceController < ApplicationController
     response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
     puts results
-    puts results.keys
     x=results["query"]["pages"].to_s
     y=x.split("\"")
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
@@ -240,7 +244,7 @@ class PlaceController < ApplicationController
         end 
       end
     end
-    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{params[:checkoutdate]}", :checkin_date=>"#{params[:checkindate]}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
     results=JSON.parse(response)
     @hotels=results["result"]
   end
@@ -384,7 +388,7 @@ class PlaceController < ApplicationController
     results=JSON.parse(response.read_body)
 
     #FA LA RICHIESTA DEI VOLI
-    response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{params[:checkindate]}", :returnDate=>"#{params[:checkoutdate]}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
+    response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{Date.parse(params[:checkindate])}", :returnDate=>"#{Date.parse(params[:checkoutdate])}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
     @dativoli=JSON.parse(response)
     @voliarr=@dativoli["data"]
     @numerovoli=@voliarr.length

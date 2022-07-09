@@ -5,7 +5,11 @@
 <%else%>
     <h1 style="text-align: center"><%=@destinationplace%></h1><br>
     <div style="display: flex; padding: 0px 50px 0px 50px">
-        <img style="max-height:350px" src="<%=@imageurl%>">
+        <%if @messaggeimage%>
+            <%=@messageimage%>
+        <%else%>
+            <img style="max-height:350px" src="<%=@imageurl%>">
+        <%end%>
         <div style="padding: 20px 20px 20px 20px">
             <%if @errorinfo%>
                 <p><%=@errorinfo%></p>
@@ -40,9 +44,9 @@
                         <%if @hotels[i]%>
                             <li style="width: 50%; padding: 0px 10px 0px 10px">
                                 <a style="text-decoration:none; color: black" href="<%=@hotels[i]["url"]%>">
-                                    <div style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                                    <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
                                         <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[i]["max_1440_photo_url"]%>">
-                                        <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
+                                        <div style="width: 70%; padding: 10px 10px 10px 10px">
                                             <h3><%=@hotels[i]["hotel_name"]%></h3>
                                             <p>Prezzo: <%=@hotels[i]["price_breakdown"]["all_inclusive_price"]%>€</p>
                                             <%if @hotels[i]["is_free_cancellable"]==1%>
@@ -91,7 +95,7 @@
                 </div>
             </ul>
             <%if @hotels[1]%>
-                <div style="text-align:center"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, {:class=>"link_to"}%></div>
+                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, {:class=>"link_to"}%></div>
             <%end%>
         <%elsif @messagehotels%>
             <div style="text-align:center"><p><%=@messagehotels%></p></div>
@@ -107,10 +111,10 @@
                 <ul style="display: flex; list-style-type:none">
                     <%(0...2).each do |k|%>
                         <li style="width: 50%; padding: 0px 10px 0px 10px">
-                            <div style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                            <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
                                 <%@arr=@arrvoliandata[k]["segments"]%>
                                 <img style="width: 39%; height:auto; border-radius: 7px" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
-                                <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
+                                <div style="width: 70%; padding: 10px 10px 10px 10px">
                                     <ul style="list-style-type:none">
                                         <li>
                                             <h5>
@@ -202,30 +206,51 @@
                 </ul>
             </div>
             <%if @voliarr[1]%>
-                <div style="text-align:center"><%=link_to "View more flights", {controller: "place", action: "getflights"}, {:class=>"link_to"}%></div>
+                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more flights", {controller: "place", action: "getflights"}, {:class=>"link_to"}%></div>
             <%end%>
         <%elsif @messageflights%>
-            <div style="text-align:center"><p><%=@messagehotels%></p></div>
+            <div style="text-align:center"><p><%=@messageflights%></p></div>
         <%else%>
             <div style="text-align:center"><p>Siamo spiacenti, non sono stati trovati voli disponibili</p></div>
         <%end%>
     </div>
-    <div style="padding: 50px 0px 0px 0px">
+    <!--<div style="padding: 50px 0px 0px 0px">-->
+    <div style="padding: 50px 50px 0px 50px">
         <h3 style="text-align:center">Reviews</h3>
+        <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
+        <%if @reviews.any?%>
+            <!--<div style="padding: 0px 50px 0px 50px">-->
+                <ul style="display: flex; list-style-type:none">
+                    <%(0...2).each do |i|%>
+                        <%if @reviews[i]%>
+                            <li style="width: 50%; padding: 0px 10px 0px 10px">
+                                <div style="height: auto; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
+                                    <%=render "reviews/review", review: @reviews[i]%>
+                                </div>
+                            </li>
+                        <%end%>
+                    <%end%>
+                </ul>
+            <!--</div>-->
+            <%if @reviews[1]%>
+                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more reviews", {controller: "place", action: "getreviews"}, {:class=>"link_to"}%></div>
+            <%end%>
+        <%else%>
+            <div style="text-align:center"><p>Siamo spiacenti, non sono state trovate recensioni per <%=@destinationplace%></p></div>
+        <%end%>
+    <!--</div>-->
     </div>
-    
-    <% if user_signed_in? %>
-        <% current_user.reviews.each do |r| %>
-            <% if r.place == @destinationplace %>
-               <% @review = r %>
+    <div style="padding: 50px 100px 0px 100px; text-align: center">
+        <% if user_signed_in? %>
+            <% if @review %>
+                <div style=""><%= render "reviews/form", review: @review %></div>
+            <% else %>
+                <% @review = Review.new %>
+                <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 1%; border-radius: 5px; font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
             <% end %>
+        <%else%>
+            <p>Per scrivere una recensione devi essere loggato</p>
+            <%=link_to "Click here to sign in", new_user_session_path ,{:class=>"link_to"}%>
         <% end %>
-        <% if @review %>
-            <%= render "reviews/form", review: @review %>
-        <% else %>
-            <% @review = Review.new %>
-            <%= render "reviews/form", review: @review %>
-        <% end %>
-    <% end %>
-
+    </div>
 <%end%>

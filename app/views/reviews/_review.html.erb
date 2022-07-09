@@ -1,39 +1,66 @@
+<%= stylesheet_link_tag "place.css" %>
+
 <div id="<%= dom_id review %>">
   
   <% unless @hide_user %>   <!-- Nasconde nome utente nel profilo -->
-    <strong>User:</strong>
-    <%= review.user.name %><br>
+    <div>
+      <div style="float:left">
+        <strong>User:</strong>
+        <%= review.user.name %><br>
+      </div>
+      <div style="float:right">
+        <%rating=review.rating %>
+        <%(1..rating).each do |i|%>
+          <%=image_tag("star-on.png", size:"17")%>
+        <%end%>
+        <%rating=5-rating%>
+        <%if rating>0%>
+          <%(1..rating).each do |i|%>
+            <%=image_tag("star-off.png", size:"16")%>
+          <%end%>
+        <%end%>
+      </div>
+    </div>
   <% end %>
 
-  <strong>Place:</strong>
-  <%= review.place %><br>
+  <%if !@destinationplace%>
+    <strong>Place:</strong>
+    <%= review.place %><br>
 
-  <strong>Rating:</strong>
-  <%= review.rating %><br>
-  <!--<%rating=review.rating %>
-  <%(1..rating).each do |i|%>
-    <img src="/star-on.png">
-  <%end%>
-  <%rating=5-rating%>
-  <%if rating>0%>
+    <strong>Rating:</strong>
+    <%rating=review.rating %>
     <%(1..rating).each do |i|%>
-      <img src="/star-off.png">
+      <%=image_tag("star-on.png", size:"17")%>
     <%end%>
-  <%end%>-->
+    <%rating=5-rating%>
+    <%if rating>0%>
+      <%(1..rating).each do |i|%>
+        <%=image_tag("star-off.png", size:"16")%>
+      <%end%>
+    <%end%><br>
+  <%end%>
+
+  <!--<strong>Rating:</strong>-->
+
   <strong>Body:</strong>
   <%= review.body %><br>
 
   <strong>Data:</strong>
   <%=review.created_at%><br>
 
-  <%if review.user.name==current_user.name%>
-    <%= link_to "Edit this review", edit_review_path(review) %>
-    <%= button_to "Destroy this review", review, method: :delete %>
-  <%elsif current_user.role=="admin"%>
-    <%= link_to "Edit this review", edit_review_path(review) %>
-    <%= button_to "Destroy this review", review, method: :delete %>
-  <%elsif current_user.role=="moderator"%>
-    <%= link_to "Edit this review", edit_review_path(review) %>
-    <%= button_to "Destroy this review", review, method: :delete %>
+  <%if user_signed_in?%>
+    <%if review.user.name==current_user.name%>
+      <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
+      <!--<%= button_to "Destroy this review", review, method: :delete %>-->
+      <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
+    <%elsif current_user.role=="admin"%>
+      <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
+      <!--<%= button_to "Destroy this review", review, method: :delete %>-->
+      <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
+    <%elsif current_user.role=="moderator"%>
+      <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
+      <!--<%= button_to "Destroy this review", review, method: :delete %>-->
+      <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
+    <%end%>
   <%end%>
 </div>
