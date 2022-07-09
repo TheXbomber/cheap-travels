@@ -14,7 +14,7 @@
                 <%if @hotels[2*i]%>
                     <li style="width: 50%; padding: 0px 10px 0px 10px">
                         <a style="text-decoration:none; color: black" href="<%=@hotels[2*i]["url"]%>">
-                            <div style="height:100%; display:flex; border-style: solid; border-radius: 10px">
+                            <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
                                 <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[2*i]["max_1440_photo_url"]%>">
                                 <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
                                     <h3><%=@hotels[2*i]["hotel_name"]%></h3>
@@ -64,7 +64,7 @@
                 <%if @hotels[(2*i)+1]%>
                     <li style="width: 50%; padding: 0px 10px 0px 10px">
                         <a style="text-decoration:none; color: black" href="<%=@hotels[(2*i)+1]["url"]%>">
-                            <div style="height: 100%; display:flex; border-style: solid; border-radius: 10px">
+                            <div style="height: 100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
                                 <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[(2*i)+1]["max_1440_photo_url"]%>">
                                 <div class="elem" style="width: 70%; padding: 10px 10px 10px 10px">
                                     <h3><%=@hotels[(2*i)+1]["hotel_name"]%></h3>

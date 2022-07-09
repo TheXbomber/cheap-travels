@@ -13,6 +13,10 @@ class ReviewsController < ApplicationController
   # GET /reviews/new
   def new
     @review = Review.new
+    @review.user_id = params[:user_id]
+    @review.body = params[:body]
+    @review.rating = params[:rating]
+    @review.place = params[:place]
   end
 
   # GET /reviews/1/edit
@@ -25,8 +29,9 @@ class ReviewsController < ApplicationController
 
     respond_to do |format|
       if @review.save
-        format.html { redirect_to review_url(@review), notice: "Review was successfully created." }
-        format.json { render :show, status: :created, location: @review }
+        format.html { redirect_back(fallback_location: root_path, notice: "Review was successfully created.") }
+        # format.html { redirect_to review_url(@review), notice: "Review was successfully created." }
+        # format.json { render :show, status: :created, location: @review }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @review.errors, status: :unprocessable_entity }
@@ -65,6 +70,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def review_params
-      params.require(:review).permit(:body, :rating)
+      params.require(:review).permit(:body, :rating, :user_id, :place)
     end
 end

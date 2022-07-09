@@ -1,54 +1,66 @@
-<!-- Alessandro -->
-<div id="profile-div" style ="text-align: center; width: fit-content; margin: auto">
+<br>
+<div id="profile-div" style ="text-align: center; width: 80%; margin: auto">
 	<h1> <%= @user.name %> </h1>
-	<div id="user-info-div" style="text-align: left">
-		<p> <b>Email:</b> <%= @user.email %> </p>
-		<p> <b>Tel:</b> <%= @user.tel %> </p>
-		<p> <b>Birthday:</b> <%= @user.bday %> </p>
-		<p> <b>Role:</b> <%= @user.role %> </p>
-		<p> <b>Banned:</b> <%= @user.banned %> </p>
+	<div id="user-info-div" class= shadow-box style="text-align: left; font-size: 18px">
+		<b>Email:</b> <%= @user.email %><br>
+		<b>Tel:</b> <%= @user.tel %><br>
+		<b>Birthday:</b> <%= @user.bday %><br>
+		<b>Role:</b> <%= @user.role %>
+		<!--<b>Banned:</b> <%= @user.banned %>-->
 	</div>
 </div>
 
 <% if user_signed_in? %>
-	<div id="profile-buttons-div" class="d-flex flex-row" style ="text-align: center; width: fit-content; margin: auto">
+	<div id="profile-buttons-div" class="d-flex flex-row" style ="text-align: center; width: fit-content; margin: auto; margin-top: 1%">
 		<% if @user.role == "moderator" || @user.role == "admin" %>
 			<button type="button" class="btn btn-dark" style="margin: 1px">Ban user</button>
 			<button type="button" class="btn btn-dark" style="margin: 1px">Promote to moderator</button>
 		<% end %>
-		<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path %></button>
+		<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path, style: "text-decoration: none; color: white; font-size: 18px" %></button>
 	</div>
 <% end %>
 <br>
 
-<div id="bottom-div" class="d-flex flex-row" style="outline: solid; width: 80%; height: 100%; margin: auto; text-align: center">
-	<% if @user.banned %>
-		<p>This user is banned from posting reviews</p>
-	<% else %>
-		<div id="reviews-div" style="outline: solid; width: 100%; height: 100%; margin: 1%">
-			<%
-=begin%>
- <% @user.reviews.each do |r| %>
-				<p><%= r.user %></p>
-				<p><%= r.rating %></p>
-			<% end %> 
-<%
-=end%>
-			Reviews here ...<br>
-			1<br>
-			2<br>
-			3<br>
-			4<br>
-			5
-		</div>
-	<% end %>
-	<div id="favorites-div" style="outline: solid; width: 100%; height: 100%; margin: 1%">
-		<p><%= @user.favourites %></p>
-		Favorite places here ...<br>
-		1<br>
-		2<br>
-		3<br>
-		4<br>
-		5
+<div id="title-div" class="d-flex flex-row" style="width: 80%; margin: auto; text-align: center">
+	<div style="flex: 48%; margin:auto">
+		<h1>Reviews</h1>
 	</div>
+	<div style="flex: 48%; margin:auto">
+		<h1>Favourite places</h1>
+	</div>
+</div>
+
+<div id="bottom-div" class="d-flex flex-row" style="width: 80%; height: 80vh; margin: auto; text-align: center">
+	
+	<div id="reviews-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
+		<% if @user.banned %>
+			<p>This user is banned from posting reviews</p>
+		<% else %>
+ 			<% @user.reviews.each do |r| %>
+				<div class="shadow-box" style="text-align: left; font-size: 18px; margin: 1%">
+					<%= render "reviews/review", review: r %><br>
+				</div>
+			<% end %> 
+		<% end %>
+	</div>
+
+	<div id="favorites-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
+		<% arr =@user.favourites.split(",") %>
+		<div class="d-flex flex-row" style="display: flex; flex-wrap: wrap">
+			<% arr.each do |f| %>
+				<div class="d-flex flex-row shadow-box" style="flex: 48%; margin: 1%; width: 30vw; height: 10vh; padding: 0">
+					<% response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>f, :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"}) %>
+					<% results=JSON.parse(response) %>
+					<% @imageurl=results["hits"][0]["largeImageURL"] %>
+					<div style="width: 40%; height: 100%; margin-right: 2%">
+						<img src=<%= @imageurl %> width=100% height=100% style="border-radius: 5px 0px 0px 5px">
+					</div>
+					<div style="margin: auto; font-size: 24px">
+						<%= f %>
+					</div>
+				</div>
+			<% end %>
+		</div>
+	</div>
+
 </div>
