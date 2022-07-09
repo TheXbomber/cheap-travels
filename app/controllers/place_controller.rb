@@ -38,7 +38,7 @@ class PlaceController < ApplicationController
           return
         else
           begin
-            @destinationplace=params[:destinationplace].downcase.capitalize()
+            @destinationplace=params[:destinationplace]
             if @destinationplace.include? "%20"
               arr=@destinationplace.split("%20")
               @destinationplace=""
@@ -55,7 +55,7 @@ class PlaceController < ApplicationController
             return
           else
             begin
-              originplace=params[:originplace].downcase.capitalize()
+              originplace=params[:originplace]
               if originplace.include? "%20"
                 arr=originplace.split("%20")
                 originplace=""
@@ -106,8 +106,11 @@ class PlaceController < ApplicationController
 
     #PRENDE L'IMMAGINE DELLA CITTà
     begin
-      response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace}", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
+      response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace} city landscape", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
       results=JSON.parse(response)
+      if results["total"]<1
+        @messageimage="C'è stato un errore nel caricamento dell'immagine"
+      end
       @imageurl=results["hits"][0]["largeImageURL"]
     rescue
       @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
@@ -124,7 +127,6 @@ class PlaceController < ApplicationController
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
     response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
-    puts results
     x=results["query"]["pages"].to_s
     y=x.split("\"")
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
@@ -207,7 +209,7 @@ class PlaceController < ApplicationController
           return
         else
           begin
-            @destinationplace=params[:destinationplace].downcase.capitalize()
+            @destinationplace=params[:destinationplace]
             if @destinationplace.include? "%20"
               arr=@destinationplace.split("%20")
               @destinationplace=""
@@ -224,7 +226,7 @@ class PlaceController < ApplicationController
             return
           else
             begin
-              originplace=params[:originplace].downcase.capitalize()
+              originplace=params[:originplace]
               if originplace.include? "%20"
                 arr=originplace.split("%20")
                 originplace=""
@@ -334,7 +336,7 @@ class PlaceController < ApplicationController
           return
         else
           begin
-            @destinationplace=params[:destinationplace].downcase.capitalize()
+            @destinationplace=params[:destinationplace]
             if @destinationplace.include? "%20"
               arr=@destinationplace.split("%20")
               @destinationplace=""
@@ -351,7 +353,7 @@ class PlaceController < ApplicationController
             return
           else
             begin
-              originplace=params[:originplace].downcase.capitalize()
+              originplace=params[:originplace]
               if originplace.include? "%20"
                 arr=originplace.split("%20")
                 originplace=""

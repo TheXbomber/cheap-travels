@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace", to:"place#index"
-  get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace/viewmorehotels", to:"place#gethotels"
-  get ":originplace/:checkindate/:checkoutdate/:numpersone/place/:destinationplace/viewmoreflights", to:"place#getflights"
+  get ":originplace/:checkindate/:checkoutdate/:numpersone/:destinationplace", to:"place#index"
+  get ":originplace/:checkindate/:checkoutdate/:numpersone/:destinationplace/viewmorehotels", to:"place#gethotels"
+  get ":originplace/:checkindate/:checkoutdate/:numpersone/:destinationplace/viewmoreflights", to:"place#getflights"
   get ":destinationplace/viewmorereviews", to:"place#getreviews"
 end

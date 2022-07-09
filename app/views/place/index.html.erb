@@ -217,9 +217,9 @@
     
     <br><br>
     <h3 style="text-align:center">Reviews</h3>
-    <div id="reviews-div" class="d-flex flex-row" style="width: 91%; max-height: 90%; height: fit-content; margin: auto">
-        <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
-        <%if @reviews.any?%>
+    <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
+    <%if @reviews.any?%>
+        <div id="reviews-div" class="d-flex flex-row" style="text-align: center; width: 89%; max-height: 90%; height: fit-content; margin: auto">
             <%(0...2).each do |i|%>
                 <%if @reviews[i]%>
                     <div class="shadow-box" style="flex: 50%; text-align: left; font-size: 18px; margin: 1%; width: 48%; max-width: 48%; min-width: 48%; heigth: max-content">
@@ -227,22 +227,24 @@
                     </div>
                 <% end %>
             <% end %>
-        <%else%>
-            <div style="text-align:center"><p>Siamo spiacenti, non sono state trovate recensioni per <%=@destinationplace%></p></div>
-        <%end%> 
-	</div>
+        </div>
+    <%else%>
+        <div style="text-align:center"><p>Siamo spiacenti, non sono state trovate recensioni per <%=@destinationplace%></p></div>
+    <%end%>
     <%if @reviews[1]%>
-                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more reviews", {controller: "place", action: "getreviews"}, {:class=>"link_to"}%></div>
-            <%end%>
+        <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more reviews", {controller: "place", action: "getreviews"}, {:class=>"link_to"}%></div>
+    <%end%>
 
 
     <div style="padding: 50px 100px 0px 100px; text-align: center">
         <% if user_signed_in? %>
             <% if @review %>
-                <div style=""><%= render "reviews/form", review: @review %></div>
+                <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 1%; border-radius: 5px; font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
+                <br>
             <% else %>
                 <% @review = Review.new %>
                 <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 1%; border-radius: 5px; font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
+                <br>
             <% end %>
         <%else%>
             <p>Per scrivere una recensione devi essere loggato</p>
