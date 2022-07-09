@@ -41,29 +41,25 @@
   <%end%>
 
   <!--<strong>Rating:</strong>-->
-
   <strong>Body:</strong>
   <%= review.body %><br>
 
   <strong>Data:</strong>
   <%=review.created_at%>
 
-  <%if user_signed_in?%>
+  <!--<%if user_signed_in?%>
     <%if review.user.name==current_user.name%>
       <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
-      <!--<%= button_to "Destroy this review", review, method: :delete %>-->
       <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
     <%elsif current_user.role=="admin"%>
       <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
-      <!--<%= button_to "Destroy this review", review, method: :delete %>-->
       <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
     <%elsif current_user.role=="moderator"%>
       <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
-      <!--<%= button_to "Destroy this review", review, method: :delete %>-->
       <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
     <%end%>
-  <%end%>
-  <!--</div>
+  <%end%>-->
+  </div>
     <% if user_signed_in? %>
       <br>
       <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
@@ -73,4 +69,4 @@
         </div>
       <%end%>
     <% end %>
-  </div>-->
+  </div>
