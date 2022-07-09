@@ -19,15 +19,14 @@ class HomeController < ApplicationController
 
 
   def index 
-
+    @destinations = Destination.all
     cities_for_select
 
-    @home_cities = [["Roma", "AGP"], ["Malaga", "AGP"], ["Milano", "LIN"], ["Parigi", "ORY"]]
-    @photo_home = ["", "", "", ""]
-      (0...4).each do |i|
-        @photos_unsplash = Unsplash::Photo.search("#{@home_cities[i][0]}-city-landscape")
-        @photo_home[i] = @photos_unsplash[rand(2)]["urls"]["regular"]
-      end
+    @photo_home = {}
+    @destinations.each do |dest|
+      @photos_unsplash = Unsplash::Photo.search("#{dest.name}-city-landscape")
+      @photo_home[dest.iata] = @photos_unsplash[rand(2)]["urls"]["regular"]
+    end
     
 
   end

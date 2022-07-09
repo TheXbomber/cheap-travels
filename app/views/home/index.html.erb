@@ -46,12 +46,12 @@
 <h4>Destinazioni più cercate</h4>
 	<div class="row g-3 search  d-flex justify-content-center "> 
 
-		<%(0...4).each do |i|%>
+		<%@destinations.each do |dest|%>
 	       <div class="col">
 			<div class="card bg-light text-white h-100 shadow-sm" style="width: 100%rem;">
-				<img class="card-img photo" src="<%= @photo_home[i]%>" alt="Card image">
+				<img class="card-img photo" src="<%= @photo_home[dest.iata]%>" alt="Card image">
 				<div class="card-img-overlay photo">
-					<h5 class="card-title city_name"><%= @home_cities[i][0]%></h5>
+					<h5 class="card-title city_name"><%= dest.name %></h5>
 					 <a href="#" class="stretched-link"></a>
 				</div>
 				</div>
@@ -79,14 +79,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <div id="ricerca">
+          <div id="modifica">
             <%= form_with url: "/home", method: :post do |form| %>  
-				<%= form.select :city, @cities_select, class: "form-control" %>
-				<%= form.select :city, @cities_select, class: "form-control" %>
-				<%= form.select :city, @cities_select, class: "form-control"  %>
-				<%= form.select :city, @cities_select, class: "form-control"  %>
-            <%end%>
-               
+				<% @destinations.each do |dest| %>
+					<div>
+						<p>Attualmente selezionata: <%= dest.name%></p>
+						<%= form.select :"city#{dest.id}", @cities_select, class: "" %>
+					</div>
+				<% end %>
+				<!--<%= form.select :city, @cities_select, class: "form-control" %>-->
+            <%end%>  
       </div>
       </div>
       <div class="modal-footer">
