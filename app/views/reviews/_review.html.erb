@@ -46,7 +46,7 @@
   <%= review.body %><br>
 
   <strong>Data:</strong>
-  <%=review.created_at%><br>
+  <%=review.created_at%>
 
   <%if user_signed_in?%>
     <%if review.user.name==current_user.name%>
@@ -63,4 +63,14 @@
       <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
     <%end%>
   <%end%>
-</div>
+  <!--</div>
+    <% if user_signed_in? %>
+      <br>
+      <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
+        <div class="d-flex flex-row">
+          <%= link_to "Edit", edit_review_path(review), class: "btn btn-secondary", style: "margin-right: 1%" %>
+          <%= button_to "Delete", review, method: :delete, class: "btn btn-danger" %>
+        </div>
+      <%end%>
+    <% end %>
+  </div>-->
