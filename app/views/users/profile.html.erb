@@ -12,14 +12,28 @@
 
 <% if user_signed_in? %>
 	<div id="profile-buttons-div" class="d-flex flex-row" style ="text-align: center; width: fit-content; margin: auto; margin-top: 1%">
-		<% if @user.id != current_user.id && (current_user.role == "moderator" || current_user.role == "admin") %>
+		<% if @user.id != current_user.id %>
 			<% if @user.banned %>
-				<%= link_to "Unban user", users_unban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+				<% if @user.role == "moderator" %>
+					<% if current_user.role == "admin" %>
+						<%= link_to "Unban user", users_unban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+					<% end %>
+				<% elsif @user.role != "admin" && (current_user.role == "admin" || current_user.role == "moderator") %>
+					<%= link_to "Unban user", users_unban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+				<% end %>
 			<% else %>
-				<%= link_to "Ban user", users_ban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+				<% if @user.role == "moderator" %>
+					<% if current_user.role == "admin" %>
+						<%= link_to "Ban user", users_ban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+					<% end %>
+				<% elsif @user.role != "admin" && (current_user.role == "admin" || current_user.role == "moderator") %>
+					<%= link_to "Ban user", users_ban_user_path(:uid => @user.id), method: :get, class: "btn btn-dark me-2" %>
+				<% end %>
 			<% end %>
 			<% if @user.role == "user" %>
-				<%= link_to "Promote to moderator", users_promote_to_moderator_path(:uid => @user.id), method: :get, class: "btn btn-dark" %>
+				<% if current_user.role == "admin" %>
+					<%= link_to "Promote to moderator", users_promote_to_moderator_path(:uid => @user.id), method: :get, class: "btn btn-dark" %>
+				<% end %>
 			<% elsif current_user.role == "admin" && @user.role == "moderator" %>
 				<%= link_to "Demote to user", users_demote_to_user_path(:uid => @user.id), method: :get, class: "btn btn-dark" %>
 			<% end %>

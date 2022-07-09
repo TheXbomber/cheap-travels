@@ -2,50 +2,40 @@
 
 <div id="<%= dom_id review %>">
   
-  <% unless @hide_user %>   <!-- Nasconde nome utente nel profilo -->
-    <div>
-      <div style="float:left">
-        <strong>User:</strong>
-        <%= review.user.name %><br>
-      </div>
-      <div style="float:right">
-        <%rating=review.rating %>
-        <%(1..rating).each do |i|%>
-          <%=image_tag("star-on.png", size:"17")%>
-        <%end%>
-        <%rating=5-rating%>
-        <%if rating>0%>
-          <%(1..rating).each do |i|%>
-            <%=image_tag("star-off.png", size:"16")%>
-          <%end%>
-        <%end%>
-      </div>
-      <br >
+  <!-- Nasconde nome utente nel profilo -->
+<div>
+  <% unless @hide_user %>
+    <div style="float:left">
+      <strong>Author:</strong>
+      <% name = review.user.name %>
+      <%= link_to name, users_profile_path(id: review.user_id), style: "text-decoration: none; color: black" %>
+      <br>
     </div>
   <% end %>
-
-  <%if !@destinationplace%>
-    <div style="float:left">
+  <% if !@destinationplace %>
+  <div style="float:left">
       <strong>Place:</strong>
       <%= review.place %><br>
     </div>
-    <div style="float:right">
-      <%rating=review.rating %>
+  <% end %>
+  <div style="float:right">
+    <%rating=review.rating %>
+    <%(1..rating).each do |i|%>
+      <%=image_tag("star-on.png", size:"17")%>
+    <%end%>
+    <%rating=5-rating%>
+    <%if rating>0%>
       <%(1..rating).each do |i|%>
-        <%=image_tag("star-on.png", size:"17")%>
+        <%=image_tag("star-off.png", size:"16")%>
       <%end%>
-      <%rating=5-rating%>
-      <%if rating>0%>
-        <%(1..rating).each do |i|%>
-          <%=image_tag("star-off.png", size:"16")%>
-        <%end%>
-      <%end%>
-    </div><br>
-  <%end%>
+    <%end%>
+  </div>
+  <br >
+</div>
 
-    <div style="overflow-wrap: break-word; max-width: 100%">
-      <%= review.body %>
-    </div>
+<div style="overflow-wrap: break-word; max-width: 100%">
+  <%= review.body %>
+</div>
 
   <strong>Data:</strong>
   <%=review.created_at%><br>
