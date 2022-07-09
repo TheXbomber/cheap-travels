@@ -12,47 +12,20 @@
     <h1 style="text-align:center">Reviews for <%=@destinationplace%></h1>
     <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
     <%if @reviews%>
-        <ul style="list-style-type:none">
-            <%length=@reviews.length%>
-            <%len=0%>
-            <%if length%2==0%>
-                <%len=length/2%>
-            <%else%>
-                <%len=(length-1)/2%>
-            <%end%>
-            <%(0...len).each do |i|%>
-                <div style="display: flex; padding: 0px 50px 0px 50px">
-                    <%if @reviews[2*i]%>
-                        <li style="width: 50%; padding: 0px 10px 0px 10px">
-                            <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
-                                <%=render "reviews/review", review: @reviews[2*i]%>
-                            </div>
-                        </li>
-                    <%end%>
-                    <%if @reviews[(2*i)+1]%>
-                        <li style="width: 50%; padding: 0px 10px 0px 10px">
-                            <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
-                                <%=render "reviews/review", review: @reviews[(2*i)+1]%>
-                            </div>
-                        </li>
-                    <%end%>
-                </div>
-                <br>
-            <%end%>
-            <%if length%2==1%>
-                <%if @reviews[length-1]%>
-                    <div style="display: flex; padding: 0px 50px 0px 50px">
-                        <%if @reviews[length-1]%>
-                        <li style="width: 50%; padding: 0px 10px 0px 10px">
-                            <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
-                                <%=render "reviews/review", review: @reviews[length-1]%>
-                            </div>
-                        </li>
-                    <%end%>
+        <div id="reviews-div" class="d-flex flex-row" style="display: flex; flex-wrap: wrap; width: 91%; max-height: 90%; height: fit-content; margin: auto">
+        <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
+        <%if @reviews.any?%>
+            <%@reviews.each do |r|%>
+                <%if r%>
+                    <div class="shadow-box" style="flex: 50%; text-align: left; font-size: 18px; margin: 1%; width: 48%; max-width: 48%; min-width: 48%; heigth: max-content">
+                        <%= render "reviews/review", review: r %>
                     </div>
-                <%end%>
-            <%end%>
-        </ul>
+                <% end %>
+            <% end %>
+        <%else%>
+            <div style="text-align:center"><p>Siamo spiacenti, non sono state trovate recensioni per <%=@destinationplace%></p></div>
+        <%end%> 
+	</div>
     <%else%>
         <div style="text-align:center"><p>Siamo spiacenti, non sono state trovate recensioni per <%=@destinationplace%></p></div>
     <%end%>

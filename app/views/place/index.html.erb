@@ -42,7 +42,7 @@
                 <div style="display: flex; padding: 0px 50px 0px 50px">
                     <%(0...2).each do |i|%>
                         <%if @hotels[i]%>
-                            <li style="width: 50%; padding: 0px 10px 0px 10px">
+                            <li style="width: 49%; padding: 0px 10px 0px 10px">
                                 <a style="text-decoration:none; color: black" href="<%=@hotels[i]["url"]%>">
                                     <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
                                         <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[i]["max_1440_photo_url"]%>">
@@ -110,7 +110,7 @@
             <div style="padding: 0px 50px 0px 50px">
                 <ul style="display: flex; list-style-type:none">
                     <%(0...2).each do |k|%>
-                        <li style="width: 50%; padding: 0px 10px 0px 10px">
+                        <li style="width: 49%; padding: 0px 10px 0px 10px">
                             <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
                                 <%@arr=@arrvoliandata[k]["segments"]%>
                                 <img style="width: 39%; height:auto; border-radius: 7px" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
@@ -214,32 +214,28 @@
             <div style="text-align:center"><p>Siamo spiacenti, non sono stati trovati voli disponibili</p></div>
         <%end%>
     </div>
-    <!--<div style="padding: 50px 0px 0px 0px">-->
-    <div style="padding: 50px 50px 0px 50px">
-        <h3 style="text-align:center">Reviews</h3>
+    
+    <br><br>
+    <h3 style="text-align:center">Reviews</h3>
+    <div id="reviews-div" class="d-flex flex-row" style="width: 91%; max-height: 90%; height: fit-content; margin: auto">
         <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
         <%if @reviews.any?%>
-            <!--<div style="padding: 0px 50px 0px 50px">-->
-                <ul style="display: flex; list-style-type:none">
-                    <%(0...2).each do |i|%>
-                        <%if @reviews[i]%>
-                            <li style="width: 50%; padding: 0px 10px 0px 10px">
-                                <div style="height: auto; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
-                                    <%=render "reviews/review", review: @reviews[i]%>
-                                </div>
-                            </li>
-                        <%end%>
-                    <%end%>
-                </ul>
-            <!--</div>-->
-            <%if @reviews[1]%>
-                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more reviews", {controller: "place", action: "getreviews"}, {:class=>"link_to"}%></div>
-            <%end%>
+            <%(0...2).each do |i|%>
+                <%if @reviews[i]%>
+                    <div class="shadow-box" style="flex: 50%; text-align: left; font-size: 18px; margin: 1%; width: 48%; max-width: 48%; min-width: 48%; heigth: max-content">
+                        <%= render "reviews/review", review: @reviews[i] %>
+                    </div>
+                <% end %>
+            <% end %>
         <%else%>
             <div style="text-align:center"><p>Siamo spiacenti, non sono state trovate recensioni per <%=@destinationplace%></p></div>
-        <%end%>
-    <!--</div>-->
-    </div>
+        <%end%> 
+	</div>
+    <%if @reviews[1]%>
+                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more reviews", {controller: "place", action: "getreviews"}, {:class=>"link_to"}%></div>
+            <%end%>
+
+
     <div style="padding: 50px 100px 0px 100px; text-align: center">
         <% if user_signed_in? %>
             <% if @review %>

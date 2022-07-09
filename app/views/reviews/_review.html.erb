@@ -20,28 +20,32 @@
           <%end%>
         <%end%>
       </div>
+      <br >
     </div>
   <% end %>
 
   <%if !@destinationplace%>
-    <strong>Place:</strong>
-    <%= review.place %><br>
-
-    <strong>Rating:</strong>
-    <%rating=review.rating %>
-    <%(1..rating).each do |i|%>
-      <%=image_tag("star-on.png", size:"17")%>
-    <%end%>
-    <%rating=5-rating%>
-    <%if rating>0%>
+    <div style="float:left">
+      <strong>Place:</strong>
+      <%= review.place %><br>
+    </div>
+    <div style="float:right">
+      <%rating=review.rating %>
       <%(1..rating).each do |i|%>
-        <%=image_tag("star-off.png", size:"16")%>
+        <%=image_tag("star-on.png", size:"17")%>
       <%end%>
-    <%end%><br>
+      <%rating=5-rating%>
+      <%if rating>0%>
+        <%(1..rating).each do |i|%>
+          <%=image_tag("star-off.png", size:"16")%>
+        <%end%>
+      <%end%>
+    </div><br>
   <%end%>
 
-  <strong>Body:</strong>
-  <%= review.body %><br>
+    <div style="overflow-wrap: break-word; max-width: 100%">
+      <%= review.body %>
+    </div>
 
   <strong>Data:</strong>
   <%=review.created_at%><br>
