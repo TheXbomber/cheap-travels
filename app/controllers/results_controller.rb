@@ -19,7 +19,7 @@ class ResultsController < ApplicationController
 
   def airlabs_iata(iata_code)
     #AIRLABS (OTTIENE I DATI SULLA CITTA DAL CODICE IATA)
-    airlabs=HTTP.get("https://airlabs.co/api/v9/cities?city_code=#{iata_code}&api_key=06ec0991-7aff-487e-a815-9eab333258f4")
+    airlabs=HTTP.get("https://airlabs.co/api/v9/cities?city_code=#{iata_code}&api_key=d01fc788-33b2-4e75-b59d-10b85ec931ba")
     @airport=JSON.parse(airlabs)["response"]
   end
 

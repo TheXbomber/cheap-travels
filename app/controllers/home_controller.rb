@@ -8,7 +8,7 @@ class HomeController < ApplicationController
 
   def airlabs_cities()
     #AIRLABS (OTTIENE I DATI DI TUTTE LE CITTA)
-    airlabs_c=HTTP.get("https://airlabs.co/api/v9/cities?api_key=06ec0991-7aff-487e-a815-9eab333258f4")
+    airlabs_c=HTTP.get("https://airlabs.co/api/v9/cities?api_key=d01fc788-33b2-4e75-b59d-10b85ec931ba")
     @cities=JSON.parse(airlabs_c)["response"]
   end
 

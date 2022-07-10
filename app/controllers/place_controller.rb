@@ -120,10 +120,10 @@ class PlaceController < ApplicationController
     end
 
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE UN ARRAY DI 20 HOTEL
-    #@hotels=gethotels
+    @hotels=gethotels
 
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE I VOLI
-    #getflights
+    getflights
   end
 
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
