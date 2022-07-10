@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_09_115753) do
     t.string "tel"
     t.string "role"
     t.boolean "banned"
-    t.string "favourites"
+    t.string "favourites", default:""
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

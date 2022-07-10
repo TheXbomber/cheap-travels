@@ -81,7 +81,11 @@
 						<img src=<%= @imageurl %> width=100% height=100% style="border-radius: 5px 0px 0px 5px">
 					</div>
 					<div style="margin: auto; font-size: 24px">
-						<%= f %>
+						<!--<%= f %>-->
+						<%=link_to "#{f}", {controller: "place", action: "getreviews", destinationplace: f}, {:style=>"text-decoration: none;color:black;"}%>
+					</div>
+					<div style="margin: auto; font-size: 24px">
+						<%=link_to "#{image_tag("delete.png", size:"20")}".html_safe, place_remove_from_favourites_path(:place => f, flash_notice:"Ok")%>
 					</div>
 				</div>
 			<% end %>
