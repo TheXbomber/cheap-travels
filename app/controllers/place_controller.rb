@@ -28,51 +28,52 @@ class PlaceController < ApplicationController
         @message="La data di ritorno inserita non è valida"
         return
       else
-        begin
-          if params[:numpersone].to_i == 0
-            @message="Il numero di persone inserito non è valido"
-            return
-          end
-        rescue
+        #CONTROLLO SUL NUMERO DI PERSONE
+        if params[:numpersone].to_i == 0
           @message="Il numero di persone inserito non è valido"
           return
-        else
-          begin
-            @destinationplace=params[:destinationplace]
-            if @destinationplace.include? "%20"
-              arr=@destinationplace.split("%20")
-              @destinationplace=""
-              arr.each do |name|
-                @destinationplace=@destinationplace+name.capitalize()+" "
-              end
-            end
-            if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
-              @message="La città di destinazione non è valida"
-              return
-            end
-          rescue
-            @message="La città di destinazione non è valida"
-            return
-          else
-            begin
-              originplace=params[:originplace]
-              if originplace.include? "%20"
-                arr=originplace.split("%20")
-                originplace=""
-                arr.each do |name|
-                  originplace=originplace+name.capitalize()+" "
-                end
-              end
-              if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
-                @message="La città di partenza non è valida"
-                return
-              end
-            rescue
-              @message="La città di partenza non è valida"
-              return
-            end
+        end
+
+        #CONTROLLO SUL NOME DELLA CITTà DI DESTINAZIONE
+        @destinationplace=params[:destinationplace]
+        if @destinationplace.include? "%20"
+          arr=@destinationplace.split("%20")
+          @destinationplace=""
+          arr.each do |name|
+            @destinationplace=@destinationplace+name.capitalize()+" "
           end
-        end 
+        end
+        if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
+          @message="La città di destinazione non è valida"
+          return
+        end
+
+        #CONTROLLO SULLO IATACODE DELLA CITTà DI ORIGINE
+        originplace=params[:originplace]
+        if originplace.length!=3
+          @message="Iata code della città di partenza non valido"
+        end
+        if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Iata code della città di partenza non valido"
+          return
+        end
+
+        #CONTROLLO SULLO IATACODE DELLA CITTà DI DESTINAZIONE
+        destiata=params[:destiata]
+        if destiata.length!=3
+          @message="Iata code della città di destinazione non valido"
+        end
+        if destiata.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Iata code della città di destinazione non valido"
+          return
+        end
+
+        #CONTROLLO SUL COUNTRY CODE DELLA CITTà DI DESTINAZIONE
+        destcountry=params[:destcountry]
+        if destcountry.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Country code della città di destinazione non valido"
+          return
+        end
       end
     end
 
@@ -80,6 +81,7 @@ class PlaceController < ApplicationController
     #trova le info sulla città
     response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
+    puts results
     if results.keys[0]=="errors" #non è una città
       sleep 1 #INSERITO PER NON ECCEDERE IL NUMERO DI RICHIESTE/SEC DELLA VERSIONE GRATUITA DI GEO-DB
       response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
@@ -166,9 +168,9 @@ class PlaceController < ApplicationController
   end
 =end
 
-  def destid place
+  def destid (place, country)
     #È UNO DEI PARAMETRI PER TROVARE GLI HOTEL
-    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/locations", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:locale=>"en-us",:name=>"#{place}"})
+    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/locations", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:locale=>"en-us",:name=>"#{place}, #{country}"})
     results=JSON.parse(response)
     arr=results[0]
     dataid=arr["dest_id"]
@@ -178,76 +180,77 @@ class PlaceController < ApplicationController
     begin
       Date.parse(params[:checkindate])
       if Date.parse(params[:checkindate]) < Date.today
-        @messagehotels="La data di partenza inserita non è valida"
+        @message="La data di partenza inserita non è valida"
         return
       end
     rescue 
-      @messagehotels="La data di partenza inserita non è valida"
+      @message="La data di partenza inserita non è valida"
       return
     else
       begin
         Date.parse(params[:checkoutdate])
         if Date.parse(params[:checkoutdate]) < Date.today 
-          @messagehotels="La data di ritorno inserita non è valida"
+          @message="La data di ritorno inserita non è valida"
           return 
         end
         if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
-          @messagehotels="La data di ritorno non può precedere quella di andata"
+          @message="La data di ritorno non può precedere quella di andata"
           return
         end
       rescue
-        @messagehotels="La data di ritorno inserita non è valida"
+        @message="La data di ritorno inserita non è valida"
         return
       else
-        begin
-          if params[:numpersone].to_i == 0
-            @messagehotels="Il numero di persone inserito non è valido"
-            return
-          end
-        rescue
-          @messagehotels="Il numero di persone inserito non è valido"
+        #CONTROLLO SUL NUMERO DI PERSONE
+        if params[:numpersone].to_i == 0
+          @message="Il numero di persone inserito non è valido"
           return
-        else
-          begin
-            @destinationplace=params[:destinationplace]
-            if @destinationplace.include? "%20"
-              arr=@destinationplace.split("%20")
-              @destinationplace=""
-              arr.each do |name|
-                @destinationplace=@destinationplace+name.capitalize()+" "
-              end
-            end
-            if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
-              @messagehotels="La città di destinazione non è valida"
-              return
-            end
-          rescue
-            @messagehotels="La città di destinazione non è valida"
-            return
-          else
-            begin
-              originplace=params[:originplace]
-              if originplace.include? "%20"
-                arr=originplace.split("%20")
-                originplace=""
-                arr.each do |name|
-                  originplace=originplace+name.capitalize()+" "
-                end
-              end
-              if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
-                @messagehotels="La città di partenza non è valida"
-                return
-              end
-            rescue
-              @messagehotels="La città di partenza non è valida"
-              return
-            end
+        end
+
+        #CONTROLLO SUL NOME DELLA CITTà DI DESTINAZIONE
+        @destinationplace=params[:destinationplace]
+        if @destinationplace.include? "%20"
+          arr=@destinationplace.split("%20")
+          @destinationplace=""
+          arr.each do |name|
+            @destinationplace=@destinationplace+name.capitalize()+" "
           end
-        end 
+        end
+        if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
+          @message="La città di destinazione non è valida"
+          return
+        end
+
+        #CONTROLLO SULLO IATACODE DELLA CITTà DI ORIGINE
+        originplace=params[:originplace]
+        if originplace.length!=3
+          @message="Iata code della città di partenza non valido"
+        end
+        if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Iata code della città di partenza non valido"
+          return
+        end
+
+        #CONTROLLO SULLO IATACODE DELLA CITTà DI DESTINAZIONE
+        destiata=params[:destiata]
+        if destiata.length!=3
+          @message="Iata code della città di destinazione non valido"
+        end
+        if destiata.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Iata code della città di destinazione non valido"
+          return
+        end
+
+        #CONTROLLO SUL COUNTRY CODE DELLA CITTà DI DESTINAZIONE
+        destcountry=params[:destcountry]
+        if destcountry.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Country code della città di destinazione non valido"
+          return
+        end
       end
     end
     begin
-      response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+      response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid @destinationplace, destcountry}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
       results=JSON.parse(response)
     rescue
       @messagehotels="Siamo spiacenti, non sono stati trovati hotel disponibili"
@@ -257,131 +260,79 @@ class PlaceController < ApplicationController
     end
   end
 
-  def countrycode (place)
-    output=""
-    sleep 1 #INSERITO PER NON ECCEDERE IL NUMERO DI RICHIESTE/SEC DELLA VERSIONE GRATUITA DI GEO-DB
-    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (place)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
-    results=JSON.parse(response)
-    if results.keys[0]=="errors" #non è una città
-      sleep 1 #INSERITO PER NON ECCEDERE IL NUMERO DI RICHIESTE/SEC DELLA VERSIONE GRATUITA DI GEO-DB
-      response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (place)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
-      results=JSON.parse(response)
-      if results.keys[0]!="errors" && results.keys[0]!="message"#se è una nazione
-        output=results["data"]["code"]
-      elsif results.keys[0]=="message"
-        @message="You have exceeded the rate limit per second for your plan, BASIC, by the API provider"
-      end
-    elsif results.keys[0]=="message"
-      @message="You have exceeded the rate limit per second for your plan, BASIC, by the API provider"
-    else
-      #se è una città
-      output=results["data"]["countryCode"]
-    end
-    output
-  end
-
-  def iata_code (origin, destination)
-    origincountrycode=countrycode origin
-    destinationcountrycode=countrycode destination
-    destinationiatacode=""
-    originiatacode=""
-    if origincountrycode!=""
-      if destinationcountrycode!=""
-        response=HTTP.get("https://api.travelpayouts.com/data/en/cities.json", :headers=>{"X-Access-Token"=>'ea6f6d4a8d0b1be515fca155675970bb'})
-        results=JSON.parse(response)
-        results.each do |elem|
-          if elem["name"]==destination
-            if elem["country_code"]==destinationcountrycode
-              destinationiatacode=elem["code"]
-            end
-          end
-          if elem["name"]==origin
-            if elem["country_code"]==origincountrycode
-              originiatacode=elem["code"]
-            end
-          end
-        end
-      end
-    end
-    output=[originiatacode, destinationiatacode]
-  end
-
   def getflights
-    #TROVA I VOLI
     begin
       Date.parse(params[:checkindate])
       if Date.parse(params[:checkindate]) < Date.today
-        @messageflights="La data di partenza inserita non è valida"
+        @message="La data di partenza inserita non è valida"
         return
       end
     rescue 
-      @messageflights="La data di partenza inserita non è valida"
+      @message="La data di partenza inserita non è valida"
       return
     else
       begin
         Date.parse(params[:checkoutdate])
         if Date.parse(params[:checkoutdate]) < Date.today 
-          @messageflights="La data di ritorno inserita non è valida"
+          @message="La data di ritorno inserita non è valida"
           return 
         end
         if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
-          @messageflights="La data di ritorno non può precedere quella di andata"
+          @message="La data di ritorno non può precedere quella di andata"
           return
         end
       rescue
-        @messageflights="La data di ritorno inserita non è valida"
+        @message="La data di ritorno inserita non è valida"
         return
       else
-        begin
-          if params[:numpersone].to_i == 0
-            @messageflights="Il numero di persone inserito non è valido"
-            return
-          end
-        rescue
-          @messageflights="Il numero di persone inserito non è valido"
+        #CONTROLLO SUL NUMERO DI PERSONE
+        if params[:numpersone].to_i == 0
+          @message="Il numero di persone inserito non è valido"
           return
-        else
-          begin
-            @destinationplace=params[:destinationplace]
-            if @destinationplace.include? "%20"
-              arr=@destinationplace.split("%20")
-              @destinationplace=""
-              arr.each do |name|
-                @destinationplace=@destinationplace+name.capitalize()+" "
-              end
-            end
-            if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
-              @messageflights="La città di destinazione non è valida"
-              return
-            end
-          rescue
-            @messageflights="La città di destinazione non è valida"
-            return
-          else
-            begin
-              originplace=params[:originplace]
-              if originplace.include? "%20"
-                arr=originplace.split("%20")
-                originplace=""
-                arr.each do |name|
-                  originplace=originplace+name.capitalize()+" "
-                end
-              end
-              if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
-                @messageflights="La città di partenza non è valida"
-                return
-              end
-            rescue
-              @messageflights="La città di partenza non è valida"
-              return
-            end
+        end
+
+        #CONTROLLO SUL NOME DELLA CITTà DI DESTINAZIONE
+        @destinationplace=params[:destinationplace]
+        if @destinationplace.include? "%20"
+          arr=@destinationplace.split("%20")
+          @destinationplace=""
+          arr.each do |name|
+            @destinationplace=@destinationplace+name.capitalize()+" "
           end
-        end 
+        end
+        if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
+          @message="La città di destinazione non è valida"
+          return
+        end
+
+        #CONTROLLO SULLO IATACODE DELLA CITTà DI ORIGINE
+        originplace=params[:originplace]
+        if originplace.length!=3
+          @message="Iata code della città di partenza non valido"
+        end
+        if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Iata code della città di partenza non valido"
+          return
+        end
+
+        #CONTROLLO SULLO IATACODE DELLA CITTà DI DESTINAZIONE
+        destiata=params[:destiata]
+        if destiata.length!=3
+          @message="Iata code della città di destinazione non valido"
+        end
+        if destiata.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Iata code della città di destinazione non valido"
+          return
+        end
+
+        #CONTROLLO SUL COUNTRY CODE DELLA CITTà DI DESTINAZIONE
+        destcountry=params[:destcountry]
+        if destcountry.match? /0|1|2|3|4|5|6|7|8|9/ 
+          @message="Country code della città di destinazione non valido"
+          return
+        end
       end
     end
-
-    @iataarr=iata_code originplace, @destinationplace
-    puts @iataarr
 
     begin
       #PRENDE IL TOKEN DA AMADEUS
@@ -401,7 +352,7 @@ class PlaceController < ApplicationController
     else
       #FA LA RICHIESTA DEI VOLI
       begin
-        response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{Date.parse(params[:checkindate])}", :returnDate=>"#{Date.parse(params[:checkoutdate])}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
+        response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{params[:originplace]}", :destinationLocationCode=>"#{params[:destiata]}", :departureDate=>"#{Date.parse(params[:checkindate])}", :returnDate=>"#{Date.parse(params[:checkoutdate])}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
         @dativoli=JSON.parse(response)
         if @dativoli["data"].empty?
           @messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
