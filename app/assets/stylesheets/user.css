@@ -1,0 +1,22 @@
+.flash {
+    color: red; 
+    margin:auto; 
+    width: fit-content
+}
+
+.box  {
+    width: 45%; 
+    margin: auto; 
+    font-size: 18px; 
+    text-align: center
+}
+
+.field {
+    margin-bottom: 3%
+
+}
+
+.row {
+    margin-left: 10px;
+    margin-right: 10px;
+}

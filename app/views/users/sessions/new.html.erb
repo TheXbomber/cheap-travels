@@ -1,37 +1,44 @@
-<br><br><br>
+<%= stylesheet_link_tag "user.css" %>
 <div>
   <% flash.each do |key, value| %>
-    <p class="flash <%= key %>" style="color: red; margin:auto; width: fit-content"><%= value %></p>
+    <p class="flash <%= key %>" ><%= value %></p>
   <% end %>
 </div>
 
-<div class="shadow-box" style="width: 20%; margin: auto; font-size: 18px; text-align: center">
-  <h2>Log in</h2>
+<div class="container p-2 box">
+	  <h2>Log in</h2>
+</div>
+
+<div class="shadow-box box">
 
   <div id="form-div">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="field" style="margin-top: 5%; margin-bottom: 5%">
+      <div class="field">
         <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "shadow-box" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form" %>
       </div>
 
-      <div class="field" style="margin-bottom: 5%">
+      <div class="field">
         <%= f.label :password %><br />
         <%= f.password_field :password, autocomplete: "current-password", class: "shadow-box" %>
       </div>
 
       <% if devise_mapping.rememberable? %>
-        <div class="field" style="margin-bottom: 5%">
+        <div class="field">
           <%= f.check_box :remember_me %>
           <%= f.label :remember_me %>
         </div>
       <% end %>
 
-      <div class="actions" style="margin-bottom: 5%">
-        <%= f.submit "Log in", class: "btn btn-dark", style: "margin-bottom: 5%"%>
+      <div class="actions field" >
+        <%= f.submit "Log in", class: "btn btn-dark"%>
       </div>
     <% end %>
   </div>
 
-  <%= render "users/shared/links" %>
+  
+</div>
+
+<div class="container p-2 mt-3 box">
+	  <%= render "users/shared/links" %>
 </div>

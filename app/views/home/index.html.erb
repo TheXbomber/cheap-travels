@@ -65,12 +65,15 @@
 	</div>
 </div>
 
-
-<div class="container d-flex justify-content-end mt-2 p-2">
-	<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#destModal">
-		Modifica destinazioni
-	</button> 
-</div>
+<% if user_signed_in? %>
+	<%if current_user.role == "moderator" %>
+		<div class="container d-flex justify-content-end mt-2 p-2">
+			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#destModal">
+				Modifica destinazioni
+			</button> 
+	<%end%>
+<%end%>
+		</div>
 
 <!-- Modal cambio destinazioni -->
 <div class="modal fade" id="destModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target="ricercaModal">
