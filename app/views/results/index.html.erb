@@ -115,7 +115,7 @@
                         <!--Aereoporto: <%= @locations[@code]["iata"]%><br> -->
                         Voli a partire da: <%= dest[2]%><br>
                       </p></div>
-                      <a href="#" class="stretched-link"></a>
+                      <a href="/<%=params['search']['origin']%>/<%=params['search']['departure']%>/<%=params['search']['return']%>/<%=params['search']['people']%>/<%=@locations[@code]["name"]%>" class="stretched-link"></a>
                     </div>
 
                   </div>

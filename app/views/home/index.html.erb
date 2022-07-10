@@ -21,13 +21,16 @@
 <%= form_with scope: "search", url: search_results_path, method: :post do |form| %>
 	<div class="container search shadow-sm p-3 d-flex justify-content-center rounded-3">
 		<div class="row g-3 search  d-flex justify-content-center ">  
-			<div class="col-4">
+			<div class="col-3">
 				<%= form.text_field :origin, placeholder: "Luogo di partenza", :required => true, autofocus: true, class: "form-control"%>
 			</div>
 			<!--<%= form.select :origin, [["Roma", "AGP"], ["Malaga", "AGP"], ["Milano", "LIN"]],  presence: true%> -->
-			<div class="col-3">
+			<div class="col-2">
 				<%= form.date_field :departure, :value => Time.now.strftime('%Y-%m-%d'), :required => true, class: "form-control"%>
 			</div>	
+			<div class="col-2">
+				<%= form.date_field :return, :value => Time.now.strftime('%Y-%m-%d'), :required => true, class: "form-control"%>
+			</div>
 			<div class="col-2">
 				<%= form.text_field :budget, placeholder: "Budget", :required => true, class: "form-control"%>
 			</div>
@@ -73,25 +76,26 @@
 <div class="modal fade" id="destModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target="ricercaModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-    <%= form_with scope: "search", url: "/results", method: :post do |form| %>  
+    <%= form_with url: update_dest_path, method: :post do |form| %>  
       <div class="modal-header">
         <h6 class="modal-title" id="exampleModalLabel">Modifica destinazioni</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <div id="modifica">
-            <%= form_with url: "/home", method: :post do |form| %>  
+            
 				<% @destinations.each do |dest| %>
 					<div>
-						<p>Attualmente selezionata: <%= dest.name%></p>
-						<%= form.select :"city#{dest.id}", @cities_select, class: "" %>
+						<%= form.select :"city#{dest.id}", @cities_select, :selected => dest.iata, class: "form-control p-5" %>
+						<br>
 					</div>
 				<% end %>
 				<!--<%= form.select :city, @cities_select, class: "form-control" %>-->
-            <%end%>  
+            
       </div>
       </div>
       <div class="modal-footer">
+	  
         <%= form.submit :search, class:"btn btn-primary", value: "Modifica" %>	
       </div>
       <%end%>

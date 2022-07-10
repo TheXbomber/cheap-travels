@@ -14,6 +14,7 @@ class ResultsController < ApplicationController
     @keys = @flights.keys
     @numero_d = @keys.count
     @cheapest = Array.new()
+    @arrival_departure = Array.new()
   end
 
   def airlabs_iata(iata_code)
@@ -77,10 +78,13 @@ class ResultsController < ApplicationController
     @locations = {}
     @count =0
     x = 0
-    puts @cheapest.inspect
 
     @cheap.each do |c|
       @dest = c[0]
+      #arrival= @flights[c[0]][c[1]]['departure_at'].to_s.split('T')
+      #departure = @flights[c[0]][c[1]]['arrival_at'].to_s.split('T')
+      #@arrival_departure.append([arrival.first, departure.first])
+      #puts @arrival_departure
       airlabs_iata(@dest)   
     
         
