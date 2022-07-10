@@ -126,47 +126,18 @@ class PlaceController < ApplicationController
     getflights
   end
 
-  def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
+  def wikidataid (place)
     response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
     x=results["query"]["pages"].to_s
     y=x.split("\"")
-    results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
+    if results["query"]["pages"]["#{y[1]}"].keys.include? "pageprops"
+      results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
+    else
+      @errorinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+      -1
+    end
   end
-
-=begin  #VERSIONE ORIGINALE
-  def translate_the_place (place)
-    #VIENE USATO PERCHÈ WIKIPEDIA VUOLE IL NOME DELLA CITTà IN INGLESE
-    url = URI("https://deep-translate1.p.rapidapi.com/language/translate/v2")
-
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Post.new(url)
-    request["content-type"] = 'application/json'
-    request["X-RapidAPI-Key"] = 'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226'
-    request["X-RapidAPI-Host"] = 'deep-translate1.p.rapidapi.com'
-    request.body = "{\r
-        \"q\": \"#{place}\",\r
-        \"target\": \"en\"\r
-    }"
-
-    response = http.request(request)
-    results=JSON.parse(response.read_body)
-
-    results["data"]["translations"]["translatedText"]
-  end
-
-  def wikidataid (place)
-    #VIENE USATO PER TROVARE INFO SULLE CITTà
-    response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>"#{translate_the_place place}",:format=>'json'})
-    results=JSON.parse(response)
-    x=results["query"]["pages"].to_s
-    y=x.split("\"")
-    results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
-  end
-=end
 
   def destid (place, country)
     #È UNO DEI PARAMETRI PER TROVARE GLI HOTEL
