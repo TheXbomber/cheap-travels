@@ -131,7 +131,12 @@ class PlaceController < ApplicationController
     results=JSON.parse(response)
     x=results["query"]["pages"].to_s
     y=x.split("\"")
-    results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
+    if results["query"]["pages"]["#{y[1]}"].keys.include? "pageprops"
+      results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
+    else
+      @errorinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+      -1
+    end
   end
 
   def destid (place, country)
