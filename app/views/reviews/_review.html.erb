@@ -13,7 +13,7 @@
     </div>
   <% end %>
   <% if !@destinationplace %>
-  <div style="float:left">
+    <div style="float:left">
       <strong>Place:</strong>
       <%= review.place %><br>
     </div>
@@ -41,19 +41,34 @@
   <%=review.created_at%><br>
 
   <%if user_signed_in?%>
-    <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
-      <%= link_to "#{image_tag("edit.png", size:"16")}".html_safe, edit_review_path(review) %>
-      <%= link_to "#{image_tag("delete.png", size:"16")}".html_safe, review, method: "delete"%>
-    <%end%>
+    <div class="d-flex flex-row">
+      <%if review.user.name==current_user.name %>
+          <% if @hide_user %>
+            <button style= "border: none; background-color: white" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><%= image_tag("edit.png", size:"20").html_safe %></button>
+          <% else %>
+            <%= button_to "#{image_tag("edit.png", size:"20")}".html_safe, edit_review_path(review), method: :get, style: "border: none; background-color: white" %>
+          <% end %>
+      <%end%>
+      <% if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin"%>
+        <%= button_to "#{image_tag("delete.png", size:"20")}".html_safe, review, method: :delete, style: "border: none; background-color: white" %>
+      <% end %>
+    </div>
   <%end%>
-  <!--
-  <% if user_signed_in? %><br>
-    <%if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin" %>
-      <div class="d-flex flex-row">
-        <%= link_to "Edit", edit_review_path(review), class: "btn btn-secondary", style: "margin-right: 1%" %>
-        <%= button_to "Delete", review, method: :delete, class: "btn btn-danger" %>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Update review</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    <%end%>
-  <% end %>
-  -->
+      <div class="modal-body">
+        <%= render "reviews/form", review: review %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
 </div>

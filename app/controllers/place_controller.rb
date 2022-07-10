@@ -38,7 +38,7 @@ class PlaceController < ApplicationController
           return
         else
           begin
-            @destinationplace=params[:destinationplace].downcase.capitalize()
+            @destinationplace=params[:destinationplace]
             if @destinationplace.include? "%20"
               arr=@destinationplace.split("%20")
               @destinationplace=""
@@ -55,7 +55,7 @@ class PlaceController < ApplicationController
             return
           else
             begin
-              originplace=params[:originplace].downcase.capitalize()
+              originplace=params[:originplace]
               if originplace.include? "%20"
                 arr=originplace.split("%20")
                 originplace=""
@@ -106,8 +106,11 @@ class PlaceController < ApplicationController
 
     #PRENDE L'IMMAGINE DELLA CITTà
     begin
-      response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace}", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
+      response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace} city landscape", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
       results=JSON.parse(response)
+      if results["total"]<1
+        @messageimage="C'è stato un errore nel caricamento dell'immagine"
+      end
       @imageurl=results["hits"][0]["largeImageURL"]
     rescue
       @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
@@ -124,7 +127,6 @@ class PlaceController < ApplicationController
   def wikidataid (place) #DA TOGLIERE PER LASCIARE LA VERSIONE ORIGINALE
     response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
     results=JSON.parse(response)
-    puts results
     x=results["query"]["pages"].to_s
     y=x.split("\"")
     results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
@@ -207,7 +209,7 @@ class PlaceController < ApplicationController
           return
         else
           begin
-            @destinationplace=params[:destinationplace].downcase.capitalize()
+            @destinationplace=params[:destinationplace]
             if @destinationplace.include? "%20"
               arr=@destinationplace.split("%20")
               @destinationplace=""
@@ -224,7 +226,7 @@ class PlaceController < ApplicationController
             return
           else
             begin
-              originplace=params[:originplace].downcase.capitalize()
+              originplace=params[:originplace]
               if originplace.include? "%20"
                 arr=originplace.split("%20")
                 originplace=""
@@ -244,9 +246,15 @@ class PlaceController < ApplicationController
         end 
       end
     end
-    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
-    results=JSON.parse(response)
-    @hotels=results["result"]
+    begin
+      response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid (@destinationplace)}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+      results=JSON.parse(response)
+    rescue
+      @messagehotels="Siamo spiacenti, non sono stati trovati hotel disponibili"
+      return
+    else
+      @hotels=results["result"]
+    end
   end
 
   def countrycode (place)
@@ -334,7 +342,7 @@ class PlaceController < ApplicationController
           return
         else
           begin
-            @destinationplace=params[:destinationplace].downcase.capitalize()
+            @destinationplace=params[:destinationplace]
             if @destinationplace.include? "%20"
               arr=@destinationplace.split("%20")
               @destinationplace=""
@@ -351,7 +359,7 @@ class PlaceController < ApplicationController
             return
           else
             begin
-              originplace=params[:originplace].downcase.capitalize()
+              originplace=params[:originplace]
               if originplace.include? "%20"
                 arr=originplace.split("%20")
                 originplace=""
@@ -375,43 +383,58 @@ class PlaceController < ApplicationController
     @iataarr=iata_code originplace, @destinationplace
     puts @iataarr
 
-    #PRENDE IL TOKEN DA AMADEUS
-    url = URI("https://test.api.amadeus.com/v1/security/oauth2/token")
+    begin
+      #PRENDE IL TOKEN DA AMADEUS
+      url = URI("https://test.api.amadeus.com/v1/security/oauth2/token")
 
-    https = Net::HTTP.new(url.host, url.port)
-    https.use_ssl = true
+      https = Net::HTTP.new(url.host, url.port)
+      https.use_ssl = true
 
-    request = Net::HTTP::Post.new(url)
-    request.body = "client_id=vekSTCdgC3urGqAhreQlRXA8EBMgGkjS&client_secret=hkFGCQVxWBUkTsLL&grant_type=client_credentials"
+      request = Net::HTTP::Post.new(url)
+      request.body = "client_id=vekSTCdgC3urGqAhreQlRXA8EBMgGkjS&client_secret=hkFGCQVxWBUkTsLL&grant_type=client_credentials"
 
-    response = https.request(request)
-    results=JSON.parse(response.read_body)
+      response = https.request(request)
+      results=JSON.parse(response.read_body)
+    rescue
+      @messageflights="Si è verificato un errore, riprova più tardi"
+      return
+    else
+      #FA LA RICHIESTA DEI VOLI
+      begin
+        response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{Date.parse(params[:checkindate])}", :returnDate=>"#{Date.parse(params[:checkoutdate])}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
+        @dativoli=JSON.parse(response)
+        if @dativoli["data"].empty?
+          @messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
+          return
+        end
+      rescue
+        @messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
+        return
+      else
+        @voliarr=@dativoli["data"]
+        @numerovoli=@voliarr.length
+        @arritinerarioandataeritorno=[]
+        @arrvoliandata=[]
+        @arrvoliritorno=[]
+        @arrnumeroscaliandata=[]
+        @arrnumeroscaliritorno=[]
+        (0...@numerovoli).each do |k|
+          elem=@voliarr[k]
+          @arritinerarioandataeritorno[k]=elem["itineraries"]
 
-    #FA LA RICHIESTA DEI VOLI
-    response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{@iataarr[0]}", :destinationLocationCode=>"#{@iataarr[1]}", :departureDate=>"#{Date.parse(params[:checkindate])}", :returnDate=>"#{Date.parse(params[:checkoutdate])}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
-    @dativoli=JSON.parse(response)
-    @voliarr=@dativoli["data"]
-    @numerovoli=@voliarr.length
-    @arritinerarioandataeritorno=[]
-    @arrvoliandata=[]
-    @arrvoliritorno=[]
-    @arrnumeroscaliandata=[]
-    @arrnumeroscaliritorno=[]
-    (0...@numerovoli).each do |k|
-      elem=@voliarr[k]
-      @arritinerarioandataeritorno[k]=elem["itineraries"]
+          elem=@arritinerarioandataeritorno[k]
+          @arrvoliandata[k]=elem[0]
+          @arrvoliritorno[k]=elem[1]
 
-      elem=@arritinerarioandataeritorno[k]
-      @arrvoliandata[k]=elem[0]
-      @arrvoliritorno[k]=elem[1]
+          elem=@arrvoliandata[k]
+          elem=elem["segments"]
+          @arrnumeroscaliandata[k]=elem.length-1
 
-      elem=@arrvoliandata[k]
-      elem=elem["segments"]
-      @arrnumeroscaliandata[k]=elem.length-1
-
-      elem=@arrvoliritorno[k]
-      elem=elem["segments"]
-      @arrnumeroscaliritorno[k]=elem.length-1
+          elem=@arrvoliritorno[k]
+          elem=elem["segments"]
+          @arrnumeroscaliritorno[k]=elem.length-1
+        end
+      end
     end
   end
 
