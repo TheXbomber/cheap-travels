@@ -21,11 +21,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_09_115753) do
 
   create_table "reviews", force: :cascade do |t|
     t.text "body"
-    t.integer "rating"
+    t.integer "rating", null:false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "place"
-    t.integer "user_id"
+    t.string "place", null:false
+    t.integer "user_id", null:false
   end
 
   create_table "users", force: :cascade do |t|

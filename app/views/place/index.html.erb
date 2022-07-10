@@ -240,15 +240,15 @@
         <% if user_signed_in? %>
             <% if @review %>
                 <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
-                <br>
             <% else %>
                 <% @review = Review.new %>
                 <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
-                <br>
             <% end %>
         <%else%>
             <p>Per scrivere una recensione devi essere loggato</p>
             <%=link_to "Click here to sign in", new_user_session_path ,{:class=>"link_to"}%>
         <% end %>
     </div>
+    <br>
+    <br>
 <%end%>
