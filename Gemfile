@@ -79,7 +79,7 @@ gem "amadeus"
 gem 'unsplash'
 
 gem 'jquery-rails'
-gem 'figaro'
+# gem 'figaro'
 # gem 'omniauth'
 # gem 'omniauth-oauth2'
 gem 'omniauth-facebook'

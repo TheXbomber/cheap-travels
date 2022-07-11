@@ -32,7 +32,7 @@
         <% img = "instagram.png" %>
       <% end %>
       <div>
-        <%= button_to "#{image_tag("#{img}", size:"50")}".html_safe, omniauth_authorize_path(resource_name, provider), method: :post, style:"border: none; margin-left: 3vw; background-color: white; margin-right: 3vw" %>
+        <%= button_to "#{image_tag("#{img}", size:"50")}".html_safe, omniauth_authorize_path(resource_name, provider), method: :post, style:"border: none; margin-left: 1vw; background-color: white; margin-right: 1vw" %>
       </div>
     <% end %>
   </div>
