@@ -30,7 +30,7 @@
           <% p = review.place %>
         <% end %>
         <%= form.label :place %><br />
-        <%= form.text_field :place, value: p, autofocus: true%>
+        <%= form.text_field :place, value: p, autofocus: true, class: "form-control" %>
       </div>
 
       <div>
@@ -39,8 +39,8 @@
       </div>
       <br>
 
-      <div>
-        <%= form.submit %>
+      <div style="margin: auto; text-align: center" >
+        <%= form.submit class: "btn btn-dark" %>
       </div>
     <% end %>
   </div>

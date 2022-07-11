@@ -19,8 +19,21 @@
 <% end %>
 
 <%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <% pretty_provider = provider.to_s == 'google_oauth2' ? "Google": provider %>
-    <%= button_to "Sign in with #{OmniAuth::Utils.camelize(pretty_provider)}", omniauth_authorize_path(resource_name, provider), method: :post, class: "btn btn-secondary", style:"margin-bottom: 5%" %><br />
-  <% end %>
+  <h3 style="margin: auto; text-align: center">Sign in with</h3><br>
+  <div class="d-flex flex-row" style="margin: auto; text-align: center; width: fit-content; align-items: center">
+    <%- resource_class.omniauth_providers.each do |provider| %>
+      <% pretty_provider = provider.to_s == 'google_oauth2' ? "Google": provider %>
+      <% puts "PP: #{pretty_provider}" %>
+      <% if pretty_provider == "Google" %>
+        <% img = "google.png" %>
+      <% elsif pretty_provider.to_s == "facebook" %>
+        <% img = "facebook.png" %>
+      <% elsif pretty_provider.to_s == "instagram" %>
+        <% img = "instagram.png" %>
+      <% end %>
+      <div>
+        <%= button_to "#{image_tag("#{img}", size:"50")}".html_safe, omniauth_authorize_path(resource_name, provider), method: :post, style:"border: none; margin-left: 3vw; background-color: white; margin-right: 3vw" %>
+      </div>
+    <% end %>
+  </div>
 <% end %>

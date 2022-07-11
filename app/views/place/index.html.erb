@@ -271,13 +271,15 @@
 
     <div class="container div_container mt-3">
         <% if user_signed_in? %>
-            <% if $review %>
-                <h3 style="text-align:center">Modifica la tua recenzione</h3>
-                <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: $review %></div>
-            <% else %>
-                <h3 style="text-align:center">Scrivi una recensione:</h3>
-                <% @review = Review.new %>
-                <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: @review %></div>
+            <% if !current_user.banned %>
+                <% if $review %>
+                    <h3 style="text-align:center">Modifica la tua recenzione</h3>
+                    <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: $review %></div>
+                <% else %>
+                    <h3 style="text-align:center">Scrivi una recensione:</h3>
+                    <% @review = Review.new %>
+                    <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: @review %></div>
+                <% end %>
             <% end %>
         <%else%>
             <p>Per scrivere una recensione devi essere loggato</p>

@@ -9,7 +9,7 @@
 	  <h2>Log in</h2>
 </div>
 
-<div class="shadow-box box">
+<div class="shadow-box box" style="padding: 1%">
 
   <div id="form-div">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -36,8 +36,6 @@
     <% end %>
   </div>
 </div>
-<% puts "FB: #{ENV["APP_ID"]}, #{ENV["APP_SECRET"]}" %>
-<% puts "Google: #{ENV["GOOGLE_CLIENT_ID"]}, #{ENV["GOOGLE_CLIENT_SECRET"]}" %>
 
 <div class="container p-2 mt-3 box">
 	  <%= render "users/shared/links" %>
