@@ -8,7 +8,7 @@ class ResultsController < ApplicationController
   def cheapest_flights(origin, departure)
     #TRAVELPAYOUT CHEAPEST FLIGHTS (voli più economici)
     #response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap", :params=>{:origin=>"AGP", :currency=>"EUR", :token=>"ea6f6d4a8d0b1be515fca155675970bb"})
-    response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap?origin=#{origin}&depart_date=#{departure}&currency=eur&token=ea6f6d4a8d0b1be515fca155675970bb")
+    response=HTTP.get("https://api.travelpayouts.com/v1/prices/cheap?origin=#{origin}&depart_date=#{departure}&currency=eur&token=#{Rails.application.credentials.TRAVELPAYOUTS_KEY}")
     results=JSON.parse(response)
     @flights=results["data"]
     @keys = @flights.keys
@@ -19,7 +19,7 @@ class ResultsController < ApplicationController
 
   def airlabs_iata(iata_code)
     #AIRLABS (OTTIENE I DATI SULLA CITTA DAL CODICE IATA)
-    airlabs=HTTP.get("https://airlabs.co/api/v9/cities?city_code=#{iata_code}&api_key=d01fc788-33b2-4e75-b59d-10b85ec931ba")
+    airlabs=HTTP.get("https://airlabs.co/api/v9/cities?city_code=#{iata_code}&api_key=#{Rails.application.credentials.AIRLABS_KEY}")
     @airport=JSON.parse(airlabs)["response"]
   end
 
@@ -34,8 +34,8 @@ class ResultsController < ApplicationController
 =end
 
     Unsplash.configure do |config|
-      config.application_access_key = "pzUPOA8ytHfwfzv3E2a8zAEuw-Gh9X2AHjv9dB0CzwM"
-      config.application_secret = "hZzddCgFD2jVED-craiFSiUNh7VHrEUsY0FafKVhQjE"
+      config.application_access_key = Rails.application.credentials.UNSPLASH_ACCESS_KEY
+      config.application_secret = Rails.application.credentials.UNSPLASH_SECRET
       config.utm_source = "cheap_travels_app"
     end
     

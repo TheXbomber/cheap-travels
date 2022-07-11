@@ -38,8 +38,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <%if @errorinfo%>
-                            <p><%=@errorinfo%></p>
+                        <%if @messageinfo%>
+                            <p><%=@messageinfo%></p>
                         <%else%>
                             <%if @type%><p><b>Tipo: </b><%=@type%></p><%end%>
                             <%if @country%><p><b>Nazione: </b><%=@country%></p><%end%>
@@ -282,8 +282,10 @@
                 <% end %>
             <% end %>
         <%else%>
-            <p>Per scrivere una recensione devi essere loggato</p>
-            <%=link_to "Click here to sign in", new_user_session_path ,cclass:"btn btn-primary"%>
+            <div style="margin: auto; text-align: center">
+                <p>Per scrivere una recensione devi essere loggato</p>
+                <%=link_to "Click here to sign in", new_user_session_path ,class:"btn btn-dark"%>
+            </div>
         <% end %>
     </div>
     <br>
