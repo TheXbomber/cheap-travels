@@ -20,3 +20,69 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
+#user-info-div {
+    text-align: left;
+    font-size: 18px;
+}
+
+.user_div {
+    text-align: center;
+    width: 80%; 
+    margin: auto;
+}
+
+#profile-buttons-div {
+    text-align: center; 
+    width: fit-content; 
+    margin: auto; 
+    margin-top: 1%;
+}
+
+#edit-btn  {
+    text-decoration: none; 
+    color: white; 
+    font-size: 18px;
+}
+
+.titles {
+    flex: 48%; 
+    margin:auto;
+}
+
+#reviews-div {
+    
+    max-height: 90%; 
+    height: fit-content; 
+    overflow: auto;
+}
+
+.review {
+    text-align: left; 
+    font-size: 18px; 
+}
+
+#favorites-div {
+    max-height: 90%; 
+    height: fit-content; 
+    overflow: auto;
+}
+
+#favorite {
+    height: 10vh; 
+    padding-left: 0px;
+    margin-right: 7px;
+    width: 48%;
+    
+}
+
+.image {
+    width: 40%; 
+    height: 100%; 
+}
+
+.link {
+    margin: auto; 
+    font-size: 24px;
+}
+

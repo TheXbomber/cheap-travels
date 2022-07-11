@@ -1,18 +1,26 @@
 <%= stylesheet_link_tag "user.css" %>
 
-<div id="profile-div" style ="text-align: center; width: 80%; margin: auto">
-	<h1> <%= @user.name %> </h1>
-	<div id="user-info-div" class= shadow-box style="text-align: left; font-size: 18px">
-		<b>Email:</b> <%= @user.email %><br>
-		<b>Tel:</b> <%= @user.tel %><br>
-		<b>Birthday:</b> <%= @user.bday %><br>
-		<b>Role:</b> <%= @user.role %>
-		<!--<b>Banned:</b> <%= @user.banned %>-->
+<div id="profile-div" class="container user_div pt-3">
+	<h2> <%= @user.name %> </h2>
+	<div class="row">
+		<div class="col-4">
+		<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+						</svg>
+		</div>
+		<div id="user-info-div" class="shadow-box p-3 col-8">
+			<b>Email:</b> <%= @user.email %><br>
+			<b>Tel:</b> <%= @user.tel %><br>
+			<b>Birthday:</b> <%= @user.bday %><br>
+			<b>Role:</b> <%= @user.role %>
+			<!--<b>Banned:</b> <%= @user.banned %>-->
+		</div>
 	</div>
 </div>
 
 <% if user_signed_in? %>
-	<div id="profile-buttons-div" class="d-flex flex-row" style ="text-align: center; width: fit-content; margin: auto; margin-top: 1%">
+	<div id="profile-buttons-div" class="d-flex flex-row">
 		<% if @user.id != current_user.id %>
 			<% if @user.banned %>
 				<% if @user.role == "moderator" %>
@@ -40,56 +48,59 @@
 			<% end %>
 		<% end %>
 		<% if @user.id == current_user.id %>
-			<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path, style: "text-decoration: none; color: white; font-size: 18px" %></button>
+			<button type="button" class="btn btn-dark" style="margin: 1px"><%= link_to "Edit account info", edit_user_registration_path, id:"edit-btn" %></button>
 		<% end %>
 	</div>
 <% end %>
 <br>
 
-<div id="title-div" class="d-flex flex-row" style="width: 80%; margin: auto; text-align: center">
-	<div style="flex: 48%; margin:auto">
-		<h1>Reviews</h1>
+<div id="title-div" class="d-flex flex-row user_div">
+	<div class="titles">
+		<h3>Reviews</h3>
 	</div>
-	<div style="flex: 48%; margin:auto">
-		<h1>Favourite places</h1>
+	<div class="titles">
+		<h3>Favourite cities</h3>
 	</div>
 </div>
 
-<div id="bottom-div" class="d-flex flex-row" style="width: 80%; height: 50vh; margin: auto; text-align: center">
-	
-	<div id="reviews-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
-		<% if @user.banned %>
-			<p>This user is banned from posting reviews</p>
-		<% else %>
- 			<% @user.reviews.each do |r| %>
-				<div class="shadow-box" style="text-align: left; font-size: 18px; margin-bottom: 2%; width: 100%">
-					<%= render "reviews/review", review: r %>
-				</div>
-			<% end %> 
-		<% end %>
-	</div>
-
-	<div id="favorites-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
-		<% arr = @user.favourites.split(",") %>
-		<div class="d-flex flex-row" style="display: flex; flex-wrap: wrap">
-			<% arr.each do |f| %>
-				<div class="d-flex flex-row shadow-box" style="flex: 48%; margin: 1%; max-width: 48%; width: 30vw; height: 10vh; padding: 0">
-					<% response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>f, :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"}) %>
-					<% results=JSON.parse(response) %>
-					<% @imageurl=results["hits"][0]["largeImageURL"] %>
-					<div style="width: 40%; height: 100%; margin-right: 2%">
-						<img src=<%= @imageurl %> width=100% height=100% style="border-radius: 5px 0px 0px 5px">
+<div id="bottom-div" class="d-flex container user_div">
+	<div class="row">
+		<div id="reviews-div" class="col-6">
+			<% if @user.banned %>
+				<p>This user is banned from posting reviews</p>
+			<% else %>
+				<% @user.reviews.each do |r| %>
+					<div class="shadow-box p-3 m-2 review">
+						<%= render "reviews/review", review: r %>
 					</div>
-					<div style="margin: auto; font-size: 24px">
-						<!--<%= f %>-->
-						<%=link_to "#{f}", {controller: "place", action: "getreviews", destinationplace: f}, {:style=>"text-decoration: none;color:black;"}%>
-					</div>
-					<div style="margin: auto; font-size: 24px">
-						<%=link_to "#{image_tag("delete.png", size:"20")}".html_safe, place_remove_from_favourites_path(:place => f, flash_notice:"Ok")%>
-					</div>
-				</div>
+				<% end %> 
 			<% end %>
 		</div>
-	</div>
 
+		<div id="favorites-div" class="col-6 container ">
+			<% arr = @user.favourites.split(",") %>
+				<div class="row d-flex pl-2">
+					<% arr.each do |f| %>
+						
+							<div  id="favorite" class="d-flex flex-row shadow-box mb-2 col-6 " >
+								<% response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>f, :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"}) %>
+								<% results=JSON.parse(response) %>
+								<% @imageurl=results["hits"][0]["largeImageURL"] %>
+								<div class="image" >
+									<img src=<%= @imageurl %> width=100% height=100% style="border-radius: 5px 0px 0px 5px">
+								</div>
+								<div class="link">
+									<!--<%= f %>-->
+									<%=link_to "#{f}", {controller: "place", action: "getreviews", destinationplace: f}, {:style=>"text-decoration: none;color:black;"}%>
+								</div>
+								<div class="link">
+									<%=link_to "#{image_tag("delete.png", size:"20")}".html_safe, place_remove_from_favourites_path(:place => f, flash_notice:"Ok")%>
+								</div>
+							</div>
+						
+					<% end %>
+				</div>
+			
+		</div>
+	</div>
 </div>

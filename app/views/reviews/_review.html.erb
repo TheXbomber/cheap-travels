@@ -1,6 +1,6 @@
 <!--<%= stylesheet_link_tag "place.css" %>-->
 
-<div id="<%= dom_id review %>">
+<div class="p-3" id="<%= dom_id review %>">
   
   <!-- Nasconde nome utente nel profilo -->
 <div>
@@ -14,7 +14,7 @@
   <% end %>
   <% if !@destinationplace %>
     <div style="float:left">
-      <strong>Place:</strong>
+      <strong>City:</strong>
       <%= review.place %><br>
     </div>
   <% end %>
@@ -33,7 +33,7 @@
   <br >
 </div>
 
-<div style="overflow-wrap: break-word; max-width: 100%">
+<div class="" style="overflow-wrap: break-word; max-width: 100%">
   <%= review.body %>
 </div>
 
@@ -67,8 +67,7 @@
       <div class="modal-body">
         <%= render "reviews/form", review: review %>
       </div>
-      <div class="modal-footer">
-      </div>
+      
     </div>
   </div>
 </div>
