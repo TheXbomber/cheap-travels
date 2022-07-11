@@ -2,6 +2,12 @@ require 'uri'
 require 'net/http'
 require 'openssl'
 
+Unsplash.configure do |config|
+  config.application_access_key = "pzUPOA8ytHfwfzv3E2a8zAEuw-Gh9X2AHjv9dB0CzwM"
+  config.application_secret = "hZzddCgFD2jVED-craiFSiUNh7VHrEUsY0FafKVhQjE"
+  config.utm_source = "cheap_travels_app"
+end
+
 class PlaceController < ApplicationController
   def index
     begin
@@ -107,6 +113,14 @@ class PlaceController < ApplicationController
 
     #PRENDE L'IMMAGINE DELLA CITTà
     begin
+<<<<<<< HEAD
+      @photo_unsplash = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
+      if (@photo_unsplash[0] ==nil) 
+        @messaggeimage="Non sono state trovate immagini"
+      end
+      @imageurl= @photo_unsplash[rand(2)]["urls"]["regular"]
+      puts @imageurl
+=======
       #response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace} city landscape", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
       #results=JSON.parse(response)
       #if results["total"]<1
@@ -115,6 +129,7 @@ class PlaceController < ApplicationController
       #@imageurl=results["hits"][0]["largeImageURL"]
       @photos = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
       @imageurl=@photos[rand(2)]["urls"]["regular"]
+>>>>>>> fd768f9298af7b4e56103f2181c4ca38b156f85a
     rescue
       @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
       return

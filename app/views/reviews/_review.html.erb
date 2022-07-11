@@ -1,6 +1,6 @@
 <!--<%= stylesheet_link_tag "place.css" %>-->
 
-<div id="<%= dom_id review %>">
+<div class="p-3" id="<%= dom_id review %>">
   
   <!-- Nasconde nome utente nel profilo -->
   <div>
@@ -69,4 +69,24 @@
       <% end %>
     </div>
   <%end%>
+<<<<<<< HEAD
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Update review</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render "reviews/form", review: review %>
+      </div>
+      
+    </div>
+  </div>
+</div>
+=======
+</div>
+>>>>>>> fd768f9298af7b4e56103f2181c4ca38b156f85a
