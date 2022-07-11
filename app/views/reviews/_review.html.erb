@@ -3,39 +3,39 @@
 <div class="p-3" id="<%= dom_id review %>">
   
   <!-- Nasconde nome utente nel profilo -->
-<div>
-  <% unless @hide_user %>
-    <div style="float:left">
-      <strong>Author:</strong>
-      <% name = review.user.name %>
-      <%= link_to name, users_profile_path(id: review.user_id), style: "text-decoration: none; color: black" %>
-      <br>
-    </div>
-  <% end %>
-  <% if !@destinationplace %>
-    <div style="float:left">
-      <strong>City:</strong>
-      <%= review.place %><br>
-    </div>
-  <% end %>
-  <div style="float:right">
-    <%rating=review.rating %>
-    <%(1..rating).each do |i|%>
-      <%=image_tag("star-on.png", size:"17")%>
-    <%end%>
-    <%rating=5-rating%>
-    <%if rating>0%>
+  <div>
+    <% unless @hide_user %>
+      <div style="float:left">
+        <strong>Author:</strong>
+        <% name = review.user.name %>
+        <%= link_to name, users_profile_path(id: review.user_id), style: "text-decoration: none; color: black" %>
+        <br>
+      </div>
+    <% end %>
+    <% if !@destinationplace %>
+      <div style="float:left">
+        <strong>Place:</strong>
+        <%= review.place %><br>
+      </div>
+    <% end %>
+    <div style="float:right">
+      <%rating=review.rating %>
       <%(1..rating).each do |i|%>
-        <%=image_tag("star-off.png", size:"16")%>
+        <%=image_tag("star-on.png", size:"17")%>
       <%end%>
-    <%end%>
+      <%rating=5-rating%>
+      <%if rating>0%>
+        <%(1..rating).each do |i|%>
+          <%=image_tag("star-off.png", size:"16")%>
+        <%end%>
+      <%end%>
+    </div>
+    <br >
   </div>
-  <br >
-</div>
 
-<div class="" style="overflow-wrap: break-word; max-width: 100%">
-  <%= review.body %>
-</div>
+  <div style="overflow-wrap: break-word; max-width: 100%">
+    <%= review.body %>
+  </div>
 
   <strong>Data:</strong>
   <%=review.created_at%><br>
@@ -43,17 +43,33 @@
   <%if user_signed_in?%>
     <div class="d-flex flex-row">
       <%if review.user.name==current_user.name %>
-          <% if @hide_user %>
-            <button style= "border: none; background-color: white" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><%= image_tag("edit.png", size:"20").html_safe %></button>
-          <% else %>
-            <%= button_to "#{image_tag("edit.png", size:"20")}".html_safe, edit_review_path(review), method: :get, style: "border: none; background-color: white" %>
-          <% end %>
+        <% if @hide_user || @getreviews%>
+          <button style= "border: none; background-color: white" data-bs-toggle="modal" data-bs-target="#staticBackdrop<%=review.id%>"><%= image_tag("edit.png", size:"20").html_safe %></button>
+          <div class="modal fade" id="staticBackdrop<%=review.id%>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Update here your review for <%=review.place%></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <%= render "reviews/form", review: review %>
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <%= button_to "#{image_tag("edit.png", size:"20")}".html_safe, edit_review_path(review), method: :get, style: "border: none; background-color: white" %>
+        <% end %>
       <%end%>
       <% if review.user.name==current_user.name || current_user.role=="moderator" || current_user.role=="admin"%>
         <%= button_to "#{image_tag("delete.png", size:"20")}".html_safe, review, method: :delete, style: "border: none; background-color: white" %>
       <% end %>
     </div>
   <%end%>
+<<<<<<< HEAD
 </div>
 
 <!-- Modal -->
@@ -71,3 +87,6 @@
     </div>
   </div>
 </div>
+=======
+</div>
+>>>>>>> fd768f9298af7b4e56103f2181c4ca38b156f85a

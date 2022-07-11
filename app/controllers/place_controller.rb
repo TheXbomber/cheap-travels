@@ -87,13 +87,12 @@ class PlaceController < ApplicationController
     #trova le info sulla città
     response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
-    puts results
     if results.keys[0]=="errors" #non è una città
       sleep 1 #INSERITO PER NON ECCEDERE IL NUMERO DI RICHIESTE/SEC DELLA VERSIONE GRATUITA DI GEO-DB
       response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
       results=JSON.parse(response)
       if results.keys[0]=="errors" #non è una nazione
-        @errorinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+        @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
       else
         #se è una nazione
         @type="Nazione"
@@ -114,34 +113,51 @@ class PlaceController < ApplicationController
 
     #PRENDE L'IMMAGINE DELLA CITTà
     begin
+<<<<<<< HEAD
       @photo_unsplash = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
       if (@photo_unsplash[0] ==nil) 
         @messaggeimage="Non sono state trovate immagini"
       end
       @imageurl= @photo_unsplash[rand(2)]["urls"]["regular"]
       puts @imageurl
+=======
+      #response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace} city landscape", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
+      #results=JSON.parse(response)
+      #if results["total"]<1
+        #@messageimage="C'è stato un errore nel caricamento dell'immagine"
+      #end
+      #@imageurl=results["hits"][0]["largeImageURL"]
+      @photos = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
+      @imageurl=@photos[rand(2)]["urls"]["regular"]
+>>>>>>> fd768f9298af7b4e56103f2181c4ca38b156f85a
     rescue
       @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
       return
     end
 
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE UN ARRAY DI 20 HOTEL
-    @hotels=gethotels
+    #@hotels=gethotels
 
     #CHIAMA LA FUNZIONE CHE GLI RESTITUISCE I VOLI
-    getflights
+    #getflights
   end
 
   def wikidataid (place)
-    response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
-    results=JSON.parse(response)
-    x=results["query"]["pages"].to_s
-    y=x.split("\"")
-    if results["query"]["pages"]["#{y[1]}"].keys.include? "pageprops"
-      results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
+    begin
+      response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
+      results=JSON.parse(response)
+    rescue
+      @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+      return
     else
-      @errorinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
-      -1
+      x=results["query"]["pages"].to_s
+      y=x.split("\"")
+      if results["query"]["pages"]["#{y[1]}"].keys.include? "pageprops"
+        results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
+      else
+        @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+        -1
+      end
     end
   end
 

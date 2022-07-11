@@ -21,7 +21,8 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1/edit
   def edit
-    # @review = Review.find(params[:id])
+    $review = Review.find(params[:id])
+    redirect_back fallback_location:root_path
   end
 
   # POST /reviews or /reviews.json
@@ -47,6 +48,7 @@ class ReviewsController < ApplicationController
         format.html { redirect_back(fallback_location: root_path, notice: "Review was successfully updated.") }
         # format.html { redirect_to review_url(@review), notice: "Review was successfully updated." }
         # format.json { render :show, status: :ok, location: @review }
+        $review=nil
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @review.errors, status: :unprocessable_entity }

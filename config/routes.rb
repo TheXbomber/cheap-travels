@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'place/add_to_favourites'
   get 'place/remove_from_favourites'
   #get 'home/dest_update'
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   # resources :users, only: [:show, :edit, :update]
   #home
   get 'home/index'

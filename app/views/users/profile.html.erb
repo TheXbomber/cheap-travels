@@ -73,7 +73,16 @@
 					<div class="shadow-box p-3 m-2 review">
 						<%= render "reviews/review", review: r %>
 					</div>
-				<% end %> 
+					<div style="margin: auto; font-size: 24px">
+						<!--<%= f %>-->
+						<%=link_to "#{f}", {controller: "place", action: "getreviews", destinationplace: f}, {:style=>"text-decoration: none;color:black;"}%>
+					</div>
+					<%if user_signed_in? && current_user.id==@user.id%>
+						<div style="margin: auto; font-size: 24px">
+							<%=link_to "#{image_tag("delete.png", size:"20")}".html_safe, place_remove_from_favourites_path(:place => f, flash_notice:"Ok")%>
+						</div>
+					<%end%>
+				</div>
 			<% end %>
 		</div>
 

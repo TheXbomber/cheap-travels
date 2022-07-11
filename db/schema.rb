@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_09_115753) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_11_081539) do
   create_table "destinations", force: :cascade do |t|
     t.string "name"
     t.string "iata"
@@ -21,11 +21,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_09_115753) do
 
   create_table "reviews", force: :cascade do |t|
     t.text "body"
-    t.integer "rating", null:false
+    t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "place", null:false
-    t.integer "user_id", null:false
+    t.string "place"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,7 +41,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_09_115753) do
     t.string "tel"
     t.string "role"
     t.boolean "banned"
-    t.string "favourites", default:""
+    t.string "favourites"
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
