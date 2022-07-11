@@ -1,15 +1,13 @@
-.link_to {
+
+.link_to_fav {
     text-decoration:none;
     color: black;
     font-size:30;
-    border-style:solid;
-    padding: 10px 10px 10px 10px;
-    border-radius: 10px;
+    
 }
 
-.link_to:hover{
+.link_to_fav:hover{
     color:black;
-    background-color: lightgray;
 }
 
 .div_conteiner {
@@ -19,4 +17,13 @@
 .voli {
 
     font-size: 14px; 
+}
+
+p {
+    padding: 0px;
+    margin: 2px;
+}
+
+.photo {
+    height: 100%;
 }
