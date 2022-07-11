@@ -35,8 +35,9 @@
       </div>
     <% end %>
   </div>
-  
 </div>
+<% puts "FB: #{ENV["APP_ID"]}, #{ENV["APP_SECRET"]}" %>
+<% puts "Google: #{ENV["GOOGLE_CLIENT_ID"]}, #{ENV["GOOGLE_CLIENT_SECRET"]}" %>
 
 <div class="container p-2 mt-3 box">
 	  <%= render "users/shared/links" %>
