@@ -8,6 +8,17 @@ class ApplicationController < ActionController::Base
 		def configure_permitted_parameters
 			devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:name, :email, :password, :password_confirmation, :bday, :tel, :role, :banned, :favourites)}
 
-			devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:name, :email, :password, :password_confirmation, :current_password, :tel)}
+			devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:name, :email, :password, :password_confirmation, :current_password, :tel, :bday)}
+		end
+
+	private
+		
+		def after_sign_in_path_for(resource)
+			# users_profile_path(id: @user.id)
+			root_path
+		end
+		
+		def after_sign_out_path_for(resource_or_scope)
+			new_user_session_path
 		end
 end

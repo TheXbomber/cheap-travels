@@ -20,7 +20,7 @@
 </div>
 
 <% if user_signed_in? %>
-	<div id="profile-buttons-div" class="d-flex flex-row">
+	<div id="profile-buttons-div" class="d-flex flex-row" style="float: right; margin-right: 17%; margin-top: 0.5%">
 		<% if @user.id != current_user.id %>
 			<% if @user.banned %>
 				<% if @user.role == "moderator" %>
@@ -53,13 +53,16 @@
 	</div>
 <% end %>
 <br>
+<br>
+<br>
+<br>
 
 <div id="title-div" class="d-flex flex-row user_div">
 	<div class="titles">
 		<h3>Reviews</h3>
 	</div>
 	<div class="titles">
-		<h3>Favourite cities</h3>
+		<h3>Favourite places</h3>
 	</div>
 </div>
 
@@ -67,19 +70,21 @@
 	
 	<div id="reviews-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto; padding: 1%">
 		<% if @user.banned %>
-			<p>This user is banned from posting reviews</p>
-		<% else %>
+			<p style="margin: auto; text-align: center; padding: 1%">This user is banned from posting reviews</p>
+		<% elsif @user.reviews.count != 0 %>
  			<% @user.reviews.each do |r| %>
 				<div class="shadow-box" style="text-align: left; font-size: 18px; margin-bottom: 2%; width: 100%">
 					<%= render "reviews/review", review: r %>
 				</div>
 			<% end %> 
+		<% else %>
+			<p style="margin: auto; text-align: center; padding: 1%">This user has not posted any review</p>
 		<% end %>
 	</div>
 
-	<div id="favorites-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto">
+	<div id="favorites-div" class="shadow-box" style="width: 100%; max-height: 90%; height: fit-content; margin: 1%; overflow: auto; padding: 1%">
 		<div class="d-flex flex-row" style="display: flex; flex-wrap: wrap">
-			<% if @user.favourites %>
+			<% if @user.favourites && @user.favourites != "" %>
 				<% arr = @user.favourites.split(",") %>
 				<% arr.each do |f| %>
 					<div class="d-flex flex-row shadow-box" style="flex: 48%; margin: 1%; max-width: 48%; width: 30vw; height: 10vh; padding: 0">
@@ -101,6 +106,8 @@
 						<%end%>
 					</div>
 				<% end %>
+			<% else %>
+				<p style="margin: auto; text-align: center; padding: 1%">This user does not have any favourite places</p>
 			<% end %>
 		</div>
 	</div>

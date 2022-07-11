@@ -12,7 +12,7 @@ class User < ApplicationRecord
             user.uid = auth.uid
             user.email = auth.info.email
             user.password = Devise.friendly_token[0, 20]
-            user.bday = auth.info.user_birthday
+            # user.bday = auth.info.user_birthday
             user.role = "user"
             user.favourites = ""
             user.name = auth.info.name   # assuming the user model has a name
