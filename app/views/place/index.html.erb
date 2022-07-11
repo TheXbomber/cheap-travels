@@ -11,8 +11,8 @@
             <img style="max-height:350px" src="<%=@imageurl%>">
         <%end%>
         <div style="padding: 20px 20px 20px 20px">
-            <%if @errorinfo%>
-                <p><%=@errorinfo%></p>
+            <%if @messageinfo%>
+                <p><%=@messageinfo%></p>
             <%else%>
                 <%if @type%><p><b>Tipo: </b><%=@type%><p><%end%>
                 <%if @country%><p><b>Nazione: </b><%=@country%><p><%end%>
@@ -238,9 +238,11 @@
 
     <div style="padding: 50px 100px 0px 100px; text-align: center">
         <% if user_signed_in? %>
-            <% if @review %>
-                <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
+            <% if $review %>
+                <h3 style="text-align:center">Update here your review</h3>
+                <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: $review %></div>
             <% else %>
+                <h3 style="text-align:center">Write here your review</h3>
                 <% @review = Review.new %>
                 <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: @review %></div>
             <% end %>
