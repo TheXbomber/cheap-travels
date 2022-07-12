@@ -23,13 +23,14 @@
   <div class="d-flex flex-row" style="margin: auto; text-align: center; width: fit-content; align-items: center">
     <%- resource_class.omniauth_providers.each do |provider| %>
       <% pretty_provider = provider.to_s == 'google_oauth2' ? "Google": provider %>
-      <% puts "PP: #{pretty_provider}" %>
       <% if pretty_provider == "Google" %>
         <% img = "google.png" %>
       <% elsif pretty_provider.to_s == "facebook" %>
         <% img = "facebook.png" %>
       <% elsif pretty_provider.to_s == "instagram" %>
         <% img = "instagram.png" %>
+      <% elsif pretty_provider.to_s == "twitter" %>
+        <% img = "twitter.png" %>
       <% end %>
       <div>
         <%= button_to "#{image_tag("#{img}", size:"50")}".html_safe, omniauth_authorize_path(resource_name, provider), method: :post, style:"border: none; margin-left: 1vw; background-color: white; margin-right: 1vw" %>
