@@ -3,8 +3,8 @@ require 'net/http'
 require 'openssl'
 
 Unsplash.configure do |config|
-  config.application_access_key = "pzUPOA8ytHfwfzv3E2a8zAEuw-Gh9X2AHjv9dB0CzwM"
-  config.application_secret = "hZzddCgFD2jVED-craiFSiUNh7VHrEUsY0FafKVhQjE"
+  config.application_access_key = Rails.application.credentials.UNSPLASH_ACCESS_KEY
+  config.application_secret = Rails.application.credentials.UNSPLASH_SECRET
   config.utm_source = "cheap_travels_app"
 end
 
@@ -83,13 +83,12 @@ class PlaceController < ApplicationController
       end
     end
 
-    @country=""
     #trova le info sulla città
-    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
+    response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
     if results.keys[0]=="errors" #non è una città
       sleep 1 #INSERITO PER NON ECCEDERE IL NUMERO DI RICHIESTE/SEC DELLA VERSIONE GRATUITA DI GEO-DB
-      response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
+      response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
       results=JSON.parse(response)
       if results.keys[0]=="errors" #non è una nazione
         @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
@@ -113,14 +112,12 @@ class PlaceController < ApplicationController
 
     #PRENDE L'IMMAGINE DELLA CITTà
     begin
-      #response=HTTP.get("https://pixabay.com/api/", :params=>{:key=>"28482200-fa6da61f3cb68d66c0df9caf9", :q=>"#{@destinationplace} city landscape", :lang=>"en", :category=>"places", :safesearch=>"true", :per_page=>"3"})
-      #results=JSON.parse(response)
-      #if results["total"]<1
-        #@messageimage="C'è stato un errore nel caricamento dell'immagine"
-      #end
-      #@imageurl=results["hits"][0]["largeImageURL"]
-      @photos = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
-      @imageurl=@photos[rand(2)]["urls"]["regular"]
+      @photo_unsplash = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
+      if (@photo_unsplash[0] ==nil) 
+        @messaggeimage="Non sono state trovate immagini"
+      end
+      @imageurl= @photo_unsplash[rand(2)]["urls"]["regular"]
+      puts @imageurl
     rescue
       @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
       return
@@ -154,7 +151,7 @@ class PlaceController < ApplicationController
 
   def destid (place, country)
     #È UNO DEI PARAMETRI PER TROVARE GLI HOTEL
-    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/locations", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:locale=>"en-us",:name=>"#{place}, #{country}"})
+    response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/locations", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:locale=>"en-us",:name=>"#{place}, #{country}"})
     results=JSON.parse(response)
     arr=results[0]
     dataid=arr["dest_id"]
@@ -234,7 +231,7 @@ class PlaceController < ApplicationController
       end
     end
     begin
-      response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>'a1e0b78f93mshde8dafd691a0df9p199ec6jsn8521ec4e8226',"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid @destinationplace, destcountry}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
+      response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid @destinationplace, destcountry}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
       results=JSON.parse(response)
     rescue
       @messagehotels="Siamo spiacenti, non sono stati trovati hotel disponibili"
@@ -326,7 +323,7 @@ class PlaceController < ApplicationController
       https.use_ssl = true
 
       request = Net::HTTP::Post.new(url)
-      request.body = "client_id=vekSTCdgC3urGqAhreQlRXA8EBMgGkjS&client_secret=hkFGCQVxWBUkTsLL&grant_type=client_credentials"
+      request.body = "client_id=#{Rails.application.credentials.FLIGHT_CLIENT_ID}&client_secret=#{Rails.application.credentials.FLIGHT_CLIENT_SECRET}&grant_type=client_credentials"
 
       response = https.request(request)
       results=JSON.parse(response.read_body)

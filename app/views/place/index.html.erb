@@ -38,8 +38,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <%if @errorinfo%>
-                            <p><%=@errorinfo%></p>
+                        <%if @messageinfo%>
+                            <p><%=@messageinfo%></p>
                         <%else%>
                             <%if @type%><p><b>Tipo: </b><%=@type%></p><%end%>
                             <%if @country%><p><b>Nazione: </b><%=@country%></p><%end%>
@@ -116,7 +116,7 @@
                 </div>
             </ul>
             <%if @hotels[1]%>
-                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-primary"%></div>
+                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-dark"%></div>
             <%end%>
         <%elsif @messagehotels%>
             <div style="text-align:center"><p><%=@messagehotels%></p></div>
@@ -236,7 +236,7 @@
             
             <%if @voliarr[1]%>
                 <div style="text-align:center" class="mt-1">
-                    <%=link_to "View more flights", {controller: "place", action: "getflights"}, class:" btn btn-primary"%>
+                    <%=link_to "View more flights", {controller: "place", action: "getflights"}, class:" btn btn-dark"%>
                 </div>
             <%end%>
         <%elsif @messageflights%>
@@ -264,24 +264,28 @@
     <%end%>
     <%if @reviews[1]%>
         <div style="text-align:center" class="mt-1">
-            <%=link_to "View more reviews", {controller: "place", action: "getreviews"}, class:"btn btn-primary"%>
+            <%=link_to "View more reviews", {controller: "place", action: "getreviews"}, class:"btn btn-dark"%>
             </div>
     <%end%>
 
 
     <div class="container div_container mt-3">
         <% if user_signed_in? %>
-            <% if $review %>
-                <h3 style="text-align:center">Modifica la tua recenzione</h3>
-                <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: $review %></div>
-            <% else %>
-                <h3 style="text-align:center">Scrivi una recensione:</h3>
-                <% @review = Review.new %>
-                <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: @review %></div>
+            <% if !current_user.banned %>
+                <% if $review %>
+                    <h3 style="text-align:center">Modifica la tua recenzione</h3>
+                    <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: $review %></div>
+                <% else %>
+                    <h3 style="text-align:center">Scrivi una recensione:</h3>
+                    <% @review = Review.new %>
+                    <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: @review %></div>
+                <% end %>
             <% end %>
         <%else%>
-            <p>Per scrivere una recensione devi essere loggato</p>
-            <%=link_to "Click here to sign in", new_user_session_path ,cclass:"btn btn-primary"%>
+            <div style="margin: auto; text-align: center">
+                <p>Per scrivere una recensione devi essere loggato</p>
+                <%=link_to "Click here to sign in", new_user_session_path ,class:"btn btn-dark"%>
+            </div>
         <% end %>
     </div>
     <br>

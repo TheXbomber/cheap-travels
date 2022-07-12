@@ -1,14 +1,14 @@
 class HomeController < ApplicationController
 
   Unsplash.configure do |config|
-    config.application_access_key = "pzUPOA8ytHfwfzv3E2a8zAEuw-Gh9X2AHjv9dB0CzwM"
-    config.application_secret = "hZzddCgFD2jVED-craiFSiUNh7VHrEUsY0FafKVhQjE"
+    config.application_access_key = Rails.application.credentials.UNSPLASH_ACCESS_KEY
+    config.application_secret = Rails.application.credentials.UNSPLASH_SECRET
     config.utm_source = "cheap_travels_app"
   end
 
   def airlabs_cities()
     #AIRLABS (OTTIENE I DATI DI TUTTE LE CITTA)
-    airlabs_c=HTTP.get("https://airlabs.co/api/v9/cities?api_key=d01fc788-33b2-4e75-b59d-10b85ec931ba")
+    airlabs_c=HTTP.get("https://airlabs.co/api/v9/cities?api_key=#{Rails.application.credentials.AIRLABS_KEY}")
     @cities=JSON.parse(airlabs_c)["response"]
   end
 

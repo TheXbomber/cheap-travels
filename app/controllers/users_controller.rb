@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def edit
     before_action :authenticate_user!
+    redirect_back(fallback_location: root_path)
   end
 
   def promote_to_moderator

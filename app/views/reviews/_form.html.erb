@@ -19,7 +19,7 @@
       </div>
 
       <div>
-        <%= form.label :body, style: "display: flex" %>
+        <%= form.label :body, style: "display: flex; margin: auto; text-align: center; width: fit-content" %>
         <%= form.text_area :body, :rows=>4, :cols=>50 %>
       </div>
 
@@ -30,17 +30,17 @@
           <% p = review.place %>
         <% end %>
         <%= form.label :place %><br />
-        <%= form.text_field :place, value: p, autofocus: true%>
+        <%= form.text_field :place, value: p, autofocus: true, class: "form-control" %>
       </div>
 
-      <div>
+      <div style="margin: auto; text-align: center">
         <%= form.label :rating %><br />
         <%= form.select :rating, [1, 2, 3, 4, 5], autofocus: true%>
       </div>
       <br>
 
-      <div>
-        <%= form.submit %>
+      <div style="margin: auto; text-align: center" >
+        <%= form.submit class: "btn btn-dark" %>
       </div>
     <% end %>
   </div>

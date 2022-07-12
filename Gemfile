@@ -78,8 +78,12 @@ gem "http"
 gem "amadeus"
 gem 'unsplash'
 
-gem 'figaro'
-gem 'omniauth-oauth2'
+gem 'jquery-rails'
+# gem 'figaro'
+gem 'omniauth'
+# gem 'omniauth-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-instagram'
+gem 'omniauth-twitter'
 gem 'omniauth-rails_csrf_protection'
