@@ -34,6 +34,8 @@
 =end
 %> 
 <!--mappa -->
+
+<% if @flights_not_found==false%>
   <body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
     <div id="my-map"></div>
     <%if @locations%>
@@ -150,13 +152,6 @@
   </div>
 </div>
 
-
-
-
-<%if @cheapest.count()==0%>
- 
-   
-  
 <%end%>
 
 <!-- Modal cambio ricerca -->
@@ -192,6 +187,16 @@
 </div>
 
 
+
+<% if @flights_not_found ==true%>
+
+<div class="container shadow-box pt-3 pr-3 pl-3 w-50 p-3 mt-5">
+		<div class="row justify-content-center p-3">
+      <p class="text-center">Sfortunatamente non abbiamo trovato voli dall'aeroporto selezionato, torna alla home e riprova.</p>
+      <%=link_to "Home", "/", class:"btn btn-dark w-30"%>
+    </div>
+</div>
+<%end%>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 

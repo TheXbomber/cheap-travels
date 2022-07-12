@@ -17,7 +17,13 @@
 	<div class="container shadow-sm pt-3 pr-3 pl-3">
 		<div class="row g-3 search  d-flex justify-content-center ">  
 			<div class="col-3" id="container">
-				<%= form.text_field :origin, placeholder: "Luogo di partenza", :required => true, autofocus: true, class: "form-control", id: "origin" %>
+				<%= form.text_field :origin, placeholder: "Luogo di partenza", :required => true, autofocus: true, class: "form-control", id: "origin", list: 'cities' %>
+				<datalist id="cities">
+    			<% @cities_select.each do |city| %>
+      				<option value="<%= city[1] %>"><%= city[0] %></option>
+   	 			<% end %>
+				</datalist>
+			
 			</div>
 			<!--<%= form.select :origin, [["Roma", "AGP"], ["Malaga", "AGP"], ["Milano", "LIN"]],  presence: true%> -->
 			<div class="col-2">
@@ -38,7 +44,7 @@
 		</div>
 		<div class="row justify-content-left">
 			<div class="check col-3" >
-				<p id ="trovato" class="trovato"> Inserisci città per continuare</p>
+				<p id ="trovato" class="trovato">Inserisci città per continuare</p>
 			</div>
 
 			<div class="col-2" id="andata">
@@ -80,7 +86,7 @@
 </div>
 
 <% if user_signed_in? %>
-	<%if current_user.role == "moderator" %>
+	<%if current_user.role == "moderator" || current_user.role=="admin"%>
 		<div class="container d-flex justify-content-end mt-2 p-2">
 			<button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#destModal">
 				Modifica destinazioni
@@ -125,11 +131,9 @@
 	var origin_input = document.getElementById("origin");
 	var cerca_btn = document.getElementById("cerca");
 	origin_input.addEventListener("focusout", control_city);
-
 	var trovato = document.getElementById("trovato");
 	var non_trovato = document.getElementById("non_trovato");
 	var city_valid = false;
-
 	var departure = document.getElementById("departure");
 	var ret = document.getElementById("return");
 	var people = document.getElementById("people");
@@ -144,60 +148,34 @@
 	var ritorno = document.getElementById("ritorno");
 	var aereoporto_scelto = null;
 
-	
-    
- 
-    for (const val of values)
-    {
-        var option = document.createElement("option");
-        option.value = val;
-        option.text = val.charAt(0).toUpperCase() + val.slice(1);
-        select.appendChild(option);
-    }
-
 
 	function control_city() {
+		console.log(origin_input.value);
 
 		if (aereoporto_scelto==null || aereoporto_scelto!=origin_input.value) {
-			
-			if (!origin_input.value=="") {
-				city_valid=false;
-
-				var cities = [<%= raw @cities_select.to_json %>];
-				
-				var select = document.createElement("select");
-				select.name = "cities";
-    			select.id = "cities"
-				var label = document.createElement("label");
-    			label.innerHTML = "Choose your pets: "
-    			label.htmlFor = "pets";
-				cities[0].forEach(item => {
-					console.log(origin_input.value.toUpperCase());
-					if (origin_input.value.toUpperCase() == item[0].toUpperCase()) {
-						var option = document.createElement("option");
-						option.value = item[1];
-						option.text = item[1];
-						select.appendChild(option);
-						//origin_input.value = item[1];
-						//non_trovato.hidden = true;
-						//trovato.hidden = false;
-						trovato.innerHTML = "Aereoporto trovato";
-						aereoporto_scelto = item[1];
-						trovato.style.color = "green";
-						city_valid = true;
-						document.getElementById("container").appendChild(select);
-					} 
+				if (origin_input.value!="") {
+					city_valid=false;
+					var cities = [<%= raw @cities_select.to_json %>];
 					
- 
-    				
-				})
-				if (city_valid==false) {
-					//non_trovato.hidden = false;
-					trovato.innerHTML = "Aereoporto non trovato, riprova";
-					trovato.style.color = "red";
-				}
+					cities[0].forEach(item => {
+						if (origin_input.value == item[1].toUpperCase()) {
+							//non_trovato.hidden = true;
+							trovato.hidden = false;
+							trovato.innerHTML = "Aereoporto trovato";
+							aereoporto_scelto = item[1];
+							trovato.style.color = "green";
+							city_valid = true;
+							}
+						
+					});
+					if (city_valid==false) {
+						//non_trovato.hidden = false;
+						trovato.innerHTML = "Aereoporto non trovato, riprova";
+						trovato.style.color = "red";
+					}
+				
+				enable();
 			}
-			enable();
 		}
 	}
 
@@ -228,3 +206,5 @@
 
 	
 </script>
+
+
