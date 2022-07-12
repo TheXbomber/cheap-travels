@@ -109,7 +109,8 @@
             
 				<% @destinations.each do |dest| %>
 					<div>
-						<%= form.select :"city#{dest.id}", @cities_select, :selected => dest.iata, class: "form-control p-5" %>
+						<p style="margin-bottom:0px; margin-top:5px"> Selezionata: <%= dest.name %> </p>
+						<%= form.select :"city#{dest.id}", @cities_select, :selected => dest.iata, class: "form-control" %>
 						<br>
 					</div>
 				<% end %>
@@ -182,7 +183,6 @@
 	function control_date() {
 	
 		if (departure.value>ret.value) {
-
 			data_p.hidden=false;
 			date_valid = false;
 			andata.hidden = true;
