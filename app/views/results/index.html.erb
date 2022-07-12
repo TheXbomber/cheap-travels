@@ -169,6 +169,8 @@
               <%= form.text_field :origin, value: params["search"]["origin"], class: "form-control" %><br>
               <%= form.label :data_di_partenza %>
               <%= form.date_field :departure, value: params["search"]["departure"], class: "form-control" %><br>
+              <%= form.label :data_di_ritorno %>
+              <%= form.date_field :return, value: params["search"]["return"], class: "form-control" %><br>
               <%= form.label :budget %>
               <%= form.text_field :budget, value: params["search"]["budget"], class: "form-control" %><br>
               <%= form.label :persone %>

@@ -133,9 +133,9 @@
                                 <div class="row">
                                     <%@arr=@arrvoliandata[k]["segments"]%>
                                     <div class="col-2">
-                                        <img style="width:90%" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
+                                        <img style="width:80%" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
                                     </div>
-                                        <div class="col-5">
+                                        <div class="col-5 align-middle align-self-center">
                                                 <h5>
                                                     Andata (scali: <%=@arrnumeroscaliandata[k]%>)
                                                     <%if @arrnumeroscaliandata[k]==0%>
@@ -176,7 +176,7 @@
                                                 </p>
                                             
                                         </div>
-                                        <div class="col-5">
+                                        <div class="col-5 align-middle align-self-center">
                                                 <%@arr=@arrvoliritorno[k]["segments"]%>
                                                 <h5>
                                                     Ritorno (scali: <%=@arrnumeroscaliritorno[k]%>)
