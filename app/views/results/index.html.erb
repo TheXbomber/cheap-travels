@@ -88,7 +88,7 @@
       <h5>Destinazioni economiche trovate</h5>
     </div>  
     <div class="col d-flex justify-content-end pt-1">
-      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ricercaModal">
+      <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#ricercaModal">
           Modifica ricerca
       </button> 
     </div>  
@@ -160,7 +160,7 @@
 <%end%>
 
 <!-- Modal cambio ricerca -->
-<div class="modal fade" id="ricercaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target="ricercaModal">
+<div class="modal fade" id="ricercaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target="ricercaModal" style="margin: auto; text-align: center">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
     <%= form_with scope: "search", url: "/results", method: :post do |form| %>  
@@ -170,16 +170,21 @@
       </div>
       <div class="modal-body">
           <div id="ricerca">
-            
-             <%= form.text_field :origin, value: params["search"]["origin"] %><br>
-              <%= form.date_field :departure, value: params["search"]["departure"] %><br>
-              <%= form.text_field :budget, value: params["search"]["budget"] %><br>
-              <%= form.number_field :people, in: 1.0..10.0, step: 1.0, value: params["search"]["people"] %><br>
+              <%= form.label :luogo_di_partenza %>
+              <%= form.text_field :origin, value: params["search"]["origin"], class: "form-control" %><br>
+              <%= form.label :data_di_partenza %>
+              <%= form.date_field :departure, value: params["search"]["departure"], class: "form-control" %><br>
+              <%= form.label :budget %>
+              <%= form.text_field :budget, value: params["search"]["budget"], class: "form-control" %><br>
+              <%= form.label :persone %>
+              <%= form.number_field :people, in: 1.0..10.0, step: 1.0, value: params["search"]["people"], class: "form-control" %><br>
                
       </div>
       </div>
       <div class="modal-footer">
-        <%= form.submit :search, class:"btn btn-primary", value: "Cerca" %>	
+        <div style="margin: auto; text-align: center; width: fit-content">
+          <%= form.submit :search, class:"btn btn-dark", value: "Cerca" %>
+        </div>
       </div>
       <%end%>
     </div>

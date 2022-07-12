@@ -280,6 +280,7 @@ Devise.setup do |config|
   config.omniauth :google_oauth2, Rails.application.credentials.GOOGLE_CLIENT_ID, Rails.application.credentials.GOOGLE_CLIENT_SECRET
   config.omniauth :facebook, Rails.application.credentials.APP_ID, Rails.application.credentials.APP_SECRET, scope: "email, user_birthday"
   config.omniauth :instagram, Rails.application.credentials.IG_APP_ID, Rails.application.credentials.IG_APP_SECRET
+  config.omniauth :twitter, Rails.application.credentials.TWITTER_API_KEY, Rails.application.credentials.TWITTER_API_SECRET
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
