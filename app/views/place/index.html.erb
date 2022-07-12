@@ -272,17 +272,10 @@
     <div class="container div_container mt-3">
         <% if user_signed_in? %>
             <% if $review %>
-<<<<<<< HEAD
                 <h3 style="text-align:center">Modifica la tua recenzione</h3>
                 <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: $review %></div>
             <% else %>
                 <h3 style="text-align:center">Scrivi una recensione:</h3>
-=======
-                <h3 style="text-align:center">Update here your review</h3>
-                <div class="shadow-box" style="font-size: 18px; margin: 1%"><%= render "reviews/form", review: $review %></div>
-            <% else %>
-                <h3 style="text-align:center">Write here your review</h3>
->>>>>>> fd768f9298af7b4e56103f2181c4ca38b156f85a
                 <% @review = Review.new %>
                 <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: @review %></div>
             <% end %>
