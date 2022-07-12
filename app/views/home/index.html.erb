@@ -33,7 +33,7 @@
 				<%= form.number_field :people, in: 1.0..10.0, step: 1.0, placeholder: "Persone", :required => true, class: "form-control" , id: "people" %>
 			</div>
 			<div class="col-1">
-				<%= form.submit :search, class:"btn btn-primary", value: "Cerca", id: "cerca", disabled: true %>	
+				<%= form.submit :search, class:"btn btn-dark", value: "Cerca", id: "cerca", disabled: true %>	
 			</div>
 		</div>
 		<div class="row justify-content-left">
@@ -82,7 +82,7 @@
 <% if user_signed_in? %>
 	<%if current_user.role == "moderator" %>
 		<div class="container d-flex justify-content-end mt-2 p-2">
-			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#destModal">
+			<button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#destModal">
 				Modifica destinazioni
 			</button> 
 	<%end%>
@@ -113,7 +113,7 @@
       </div>
       <div class="modal-footer">
 	  
-        <%= form.submit :search, class:"btn btn-primary", value: "Modifica" %>	
+        <%= form.submit :search, class:"btn btn-dark", value: "Modifica" %>	
       </div>
       <%end%>
     </div>

@@ -116,7 +116,7 @@
                 </div>
             </ul>
             <%if @hotels[1]%>
-                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-primary"%></div>
+                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-dark"%></div>
             <%end%>
         <%elsif @messagehotels%>
             <div style="text-align:center"><p><%=@messagehotels%></p></div>
@@ -236,7 +236,7 @@
             
             <%if @voliarr[1]%>
                 <div style="text-align:center" class="mt-1">
-                    <%=link_to "View more flights", {controller: "place", action: "getflights"}, class:" btn btn-primary"%>
+                    <%=link_to "View more flights", {controller: "place", action: "getflights"}, class:" btn btn-dark"%>
                 </div>
             <%end%>
         <%elsif @messageflights%>
@@ -264,7 +264,7 @@
     <%end%>
     <%if @reviews[1]%>
         <div style="text-align:center" class="mt-1">
-            <%=link_to "View more reviews", {controller: "place", action: "getreviews"}, class:"btn btn-primary"%>
+            <%=link_to "View more reviews", {controller: "place", action: "getreviews"}, class:"btn btn-dark"%>
             </div>
     <%end%>
 
