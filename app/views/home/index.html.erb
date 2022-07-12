@@ -41,16 +41,16 @@
 				<p id ="trovato" class="trovato"> Inserisci città per continuare</p>
 			</div>
 
-			<div class="col-4" style="width: 11vw" >
+			<div class="col-2" id="andata">
 				<p>Andata</p>
 			</div>
 
-			<div class="col-4" >
+			<div class="col-2" id="ritorno">
 				<p>Ritorno</p>
 			</div>
 	
-			<div class="col-4" >
-				<p id ="data" class="data" hidden="true">Il ritorno deve essere successivo all'andata</p>
+			<div class="col-4" id="data" hidden="true">
+				<p class="data" >Il ritorno deve essere successivo all'andata</p>
 			</div>
 			
 		</div>
@@ -134,53 +134,68 @@
 	var ret = document.getElementById("return");
 	var people = document.getElementById("people");
 	var budget = document.getElementById("budget");
-	ret.addEventListener("focusout", control_date);
+	ret.addEventListener("focusout", enable);
 	departure.addEventListener("focusout", enable);
 	budget.addEventListener("focusout", enable);
 	people.addEventListener("focusout", enable);
 	var data_p = document.getElementById("data");
 	var date_valid = false;
+	var andata = document.getElementById("andata");
+	var ritorno = document.getElementById("ritorno");
+	var aereoporto_scelto = null;
+
+	
 
 
 	function control_city() {
-		if (!origin_input.value=="") {
-			city_valid=false;
 
-			var cities = [<%= raw @cities_select.to_json %>];
-			cities[0].forEach(item => {
-				console.log(origin_input.value.toUpperCase());
-				if (origin_input.value.toUpperCase() == item[0].toUpperCase()) {
-					origin_input.value = item[1];
-					//non_trovato.hidden = true;
-					//trovato.hidden = false;
-					trovato.innerHTML = "Aereoporto trovato";
-					trovato.style.color = "green";
-					city_valid = true;
-				} 
-			})
-			if (city_valid==false) {
-				//non_trovato.hidden = false;
-				trovato.innerHTML = "Aereoporto non trovato, riprova";
-				trovato.style.color = "red";
+		if (aereoporto_scelto==null || aereoporto_scelto!=origin_input.value) {
+			
+			if (!origin_input.value=="") {
+				city_valid=false;
+
+				var cities = [<%= raw @cities_select.to_json %>];
+				cities[0].forEach(item => {
+					console.log(origin_input.value.toUpperCase());
+					if (origin_input.value.toUpperCase() == item[0].toUpperCase()) {
+						origin_input.value = item[1];
+						//non_trovato.hidden = true;
+						//trovato.hidden = false;
+						trovato.innerHTML = "Aereoporto trovato";
+						aereoporto_scelto = item[1];
+						trovato.style.color = "green";
+						city_valid = true;
+					} 
+				})
+				if (city_valid==false) {
+					//non_trovato.hidden = false;
+					trovato.innerHTML = "Aereoporto non trovato, riprova";
+					trovato.style.color = "red";
+				}
 			}
+			enable();
 		}
-		enable();
 	}
 
 	function control_date() {
 	
 		if (departure.value>ret.value) {
+
 			data_p.hidden=false;
 			date_valid = false;
+			andata.hidden = true;
+			ritorno.hidden=true;
 		} else {
 			data_p.hidden=true;
 			date_valid = true;
+			andata.hidden = false;
+			ritorno.hidden=false
 		}
-		enable();
 	
 	}
 
 	function enable() {
+		control_date();
 
 	if (city_valid & date_valid & !people.value=="" & !budget.value=="") {
 		cerca_btn.disabled = false;
@@ -188,5 +203,4 @@
 	}
 
 	
-
 </script>
