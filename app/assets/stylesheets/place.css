@@ -7,7 +7,7 @@
 }
 
 .link_to_fav:hover{
-    color:black;
+    color:black; 
 }
 
 .div_conteiner {
@@ -15,8 +15,7 @@
 }
 
 .voli {
-
-    font-size: 14px; 
+    font-size: 16px; 
 }
 
 p {
@@ -26,4 +25,18 @@ p {
 
 .photo {
     height: 100%;
+}
+
+.hotel_div {
+    height:100%; 
+    display:flex; 
+    font-size: 16px; 
+ 
+}
+
+.hotel_img {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 7px;
 }

@@ -59,16 +59,17 @@
     <div class="container pt-2">
         <h3 style="text-align:center">Hotels</h3>
         <%if @hotels%>
-            <ul style="list-style-type:none">
-                <div style="display: flex; padding: 0px 50px 0px 50px">
+                <div class="container row">
                     <%(0...2).each do |i|%>
                         <%if @hotels[i]%>
-                            <li style="width: 49%; padding: 0px 10px 0px 10px">
+                            <div class="col ">
                                 <a style="text-decoration:none; color: black" href="<%=@hotels[i]["url"]%>">
-                                    <div style="height:100%; display:flex; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 5px; padding: 1%; font-size: 18px; margin: 1%">
-                                        <img style="width: 39%; height:auto; border-radius: 7px"src="<%=@hotels[i]["max_1440_photo_url"]%>">
-                                        <div style="width: 70%; padding: 10px 10px 10px 10px">
-                                            <h3><%=@hotels[i]["hotel_name"]%></h3>
+                                    <div class="hotel_div shadow-box container">
+                                        <div class="col-5 mt-2 mb-2">
+                                            <img class="hotel_img " src="<%=@hotels[i]["max_1440_photo_url"]%>">
+                                        </div>
+                                        <div class="col-7 mt-2">
+                                            <h4><%=@hotels[i]["hotel_name"]%></h4>
                                             <p>Prezzo: <%=@hotels[i]["price_breakdown"]["all_inclusive_price"]%>€</p>
                                             <%if @hotels[i]["is_free_cancellable"]==1%>
                                                 <p>Cancellazione gratuita: SI</p>
@@ -110,20 +111,22 @@
                                         </div>
                                     </div>
                                 </a>
-                            </li>
+                            </div>
                         <%end%>
                     <%end%>
                 </div>
-            </ul>
-            <%if @hotels[1]%>
-                <div style="text-align:center; padding: 25px 0px 0px 0px"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-dark"%></div>
-            <%end%>
+            
+            
         <%elsif @messagehotels%>
             <div style="text-align:center"><p><%=@messagehotels%></p></div>
         <%else%>
             <div style="text-align:center"><p>Siamo spiacenti, non sono stati trovati hotel disponibili</p></div>
         <%end%>
     </div>
+
+    <%if @hotels[1]%>
+        <div style="text-align:center" class="pt-4"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-dark"%></div>
+    <%end%>
 
     <div class="container div_container pt-3" >
         <h3 style="text-align:center">Voli</h3>
