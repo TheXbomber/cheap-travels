@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-Destination.create(:name => "Rome", :iata => "FCO", :countrycode => "IT")
-Destination.create(:name => "New York", :iata => "JFK", :countrycode => "US")
-Destination.create(:name => "Tokyo", :iata => "HND", :countrycode => "JP")
-Destination.create(:name => "Sydney", :iata => "SYD", :countrycode => "AUS")
+Destination.create(:id => "1", :name => "Rome", :iata => "FCO", :countrycode => "IT")
+Destination.create(:id => "2", :name => "New York", :iata => "JFK", :countrycode => "US")
+Destination.create(:id => "3", :name => "Tokyo", :iata => "HND", :countrycode => "JP")
+Destination.create(:id => "4", :name => "Sydney", :iata => "SYD", :countrycode => "AUS")

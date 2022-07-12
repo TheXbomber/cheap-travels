@@ -110,7 +110,14 @@
 				<% @destinations.each do |dest| %>
 					<div>
 						<p style="margin-bottom:0px; margin-top:5px"> Selezionata: <%= dest.name %> </p>
-						<%= form.select :"city#{dest.id}", @cities_select, :selected => dest.iata, class: "form-control" %>
+						<!--<%= form.select :"city#{dest.id}", @cities_select, :selected => dest.iata, class: "form-control" %>-->
+						<%= form.text_field :"city#{dest.id}", placeholder: dest.name, autofocus: true, class: "form-control", id: "city#{dest.id}", list: 'cities_dest' %>
+						<datalist id="cities_dest" value="<%dest.name%>" >
+    						<% @cities_dest.each do |city| %>
+      							<option value="<%= city %>"><%= city %></option>
+   	 						<% end %>
+						</datalist>
+						
 						<br>
 					</div>
 				<% end %>
@@ -151,7 +158,6 @@
 
 
 	function control_city() {
-		console.log(origin_input.value);
 
 		if (aereoporto_scelto==null || aereoporto_scelto!=origin_input.value) {
 				if (origin_input.value!="") {

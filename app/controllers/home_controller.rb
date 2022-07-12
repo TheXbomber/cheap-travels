@@ -14,8 +14,15 @@ class HomeController < ApplicationController
 
   def cities_for_select
     airlabs_cities()
+    @cities_dest = Array.new()
     @cities_select = @cities.map {|c| [ c['name'],  c['city_code'] ] }
-    @cities_update = @cities.map { |c| [ c['city_code'],  c['name'] ]}.to_h
+    @cities_update = @cities.map { |c| [ c['name'], c['city_code'] ]}.to_h
+    @cities.each do |city| 
+      if !@cities_dest.include?(city['name'])
+        @cities_dest.append(city['name'])
+      end
+    end
+    puts @cities_dest.inspect
   end
 
 
@@ -33,9 +40,10 @@ class HomeController < ApplicationController
     cities_for_select
     (1...5).each do |id|
       @dest = Destination.find(id)
-
-      @dest.update(name: @cities_update[params["city#{id}"]], iata: params["city#{id}"])
-      @dest.save
+      if params["city#{id}"]!=""
+        @dest.update(iata: @cities_update[params["city#{id}"]], name: params["city#{id}"])
+        @dest.save
+      end
     end
     #@dest1.update(name: params["city1"][0], iata: params["city1"][1], countrycode: params["city1"][2])
     redirect_back(fallback_location: root_path)
