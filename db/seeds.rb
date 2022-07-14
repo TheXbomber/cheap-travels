@@ -10,3 +10,5 @@ Destination.create(:id => "1", :name => "Rome", :iata => "FCO", :countrycode => 
 Destination.create(:id => "2", :name => "New York", :iata => "JFK", :countrycode => "US")
 Destination.create(:id => "3", :name => "Tokyo", :iata => "HND", :countrycode => "JP")
 Destination.create(:id => "4", :name => "Sydney", :iata => "SYD", :countrycode => "AUS")
+
+User.create(:email => "admin@admin.com", :password => "adminpass", :password_confirmation => "adminpass", :name => "Admin", :role => "admin", :favourites => "")
