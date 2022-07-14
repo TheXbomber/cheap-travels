@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_11_081539) do
     t.date "bday"
     t.string "tel"
     t.string "role"
-    t.boolean "banned"
+    t.boolean "banned", default: false
     t.string "favourites"
     t.string "provider"
     t.string "uid"

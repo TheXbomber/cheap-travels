@@ -5,118 +5,119 @@
 <%else%>
     <div class="container pt-2">
         <div class="row div-container voli shadow-box m-3 p-3">
-                <div class="col-4">
-                    <%if @messaggeimage%>
-                        <%=@messageimage%>
-                    <%else%>
-                        <img class="card-img photo" src="<%= @imageurl%>" alt="Card image">
-                    <%end%>
-                </div>
-                <div class="col-8 container">
-                    <div class="row">
-                        <div class="col-11 ">
-                            <h1><%=@destinationplace%></h1>
-                        </div>
-                            <div class="col-1 pt-2">
-                            <%if user_signed_in?%>
-                                <%user=User.find(current_user.id)%>
-                                <%if !user.favourites.include? @destinationplace%>
-                                    <%= link_to place_add_to_favourites_path(:place => @destinationplace, flash_notice:"Ok"), class: "link_to_fav" do%>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                        </svg>
-                                    <%end%>
-                                <!--current_user.add_favourite(@destinationplace)-->
-                                <%else%>
-                                    <%= link_to place_remove_from_favourites_path(:place => @destinationplace, flash_notice:"Ok"), class: "link_to_fav"  do%>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                        </svg>
-                                    <%end%>
+            <div class="col-4">
+                <%if @messaggeimage%>
+                    <%=@messageimage%>
+                <%else%>
+                    <img class="card-img photo" src="<%= @imageurl%>" alt="Card image">
+                <%end%>
+            </div>
+            <div class="col-8 container">
+                <div class="row">
+                    <div class="col-11 ">
+                        <h1><%=@destinationplace%></h1>
+                    </div>
+                        <div class="col-1 pt-2">
+                        <%if user_signed_in?%>
+                            <%user=User.find(current_user.id)%>
+                            <%if !user.favourites.include? @destinationplace%>
+                                <%= link_to place_add_to_favourites_path(:place => @destinationplace, flash_notice:"Ok"), class: "link_to_fav" do%>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                    </svg>
+                                <%end%>
+                            <!--current_user.add_favourite(@destinationplace)-->
+                            <%else%>
+                                <%= link_to place_remove_from_favourites_path(:place => @destinationplace, flash_notice:"Ok"), class: "link_to_fav"  do%>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                    </svg>
                                 <%end%>
                             <%end%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <%if @messageinfo%>
-                            <p><%=@messageinfo%></p>
-                        <%else%>
-                            <%if @type%><p><b>Tipo: </b><%=@type%></p><%end%>
-                            <%if @country%><p><b>Nazione: </b><%=@country%></p><%end%>
-                            <%if @region%><p><b>Regione: </b><%=@region%></p><%end%>
-                            <%if @elevationmeters%><p><b>Altitudine: </b><%=@elevationmeters%> m</p><%end%>
-                            <%if @population%><p><b>Popolazione: </b><%=@population%> abitanti</p><%end%>
-                            <%if @longitude%><p><b>Longitudine: </b><%=@longitude%></p><%end%>
-                            <%if @latitude%><p><b>Latitudine: </b><%=@latitude%></p><%end%>
-                            <%if @capital%><p><b>Capitale: </b><%=@capital%></p><%end%>
-                            <%if @numregions%><p><b>Numero di regioni: </b><%=@numregions%></p><%end%>
                         <%end%>
                     </div>
                 </div>
+                <div class="row">
+                    <%if @messageinfo%>
+                        <p><%=@messageinfo%></p>
+                    <%else%>
+                        <%if @type%><p><b>Tipo: </b><%=@type%></p><%end%>
+                        <%if @country%><p><b>Nazione: </b><%=@country%></p><%end%>
+                        <%if @region%><p><b>Regione: </b><%=@region%></p><%end%>
+                        <%if @elevationmeters%><p><b>Altitudine: </b><%=@elevationmeters%> m s.l.m</p><%end%>
+                        <%if @population%><p><b>Popolazione: </b><%=@population%> abitanti</p><%end%>
+                        <%if @longitude%><p><b>Longitudine: </b><%=@longitude%></p><%end%>
+                        <%if @latitude%><p><b>Latitudine: </b><%=@latitude%></p><%end%>
+                        <%if @capital%><p><b>Capitale: </b><%=@capital%></p><%end%>
+                        <%if @numregions%><p><b>Numero di regioni: </b><%=@numregions%></p><%end%>
+                    <%end%>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="container pt-2">
         <h3 style="text-align:center">Hotels</h3>
         <%if @hotels%>
-                <div class="container row">
-                    <%(0...2).each do |i|%>
-                        <%if @hotels[i]%>
-                            <div class="col ">
-                                <a style="text-decoration:none; color: black" href="<%=@hotels[i]["url"]%>">
-                                    <div class="hotel_div shadow-box container">
-                                        <div class="col-5 mt-2 mb-2">
-                                            <img class="hotel_img " src="<%=@hotels[i]["max_1440_photo_url"]%>">
-                                        </div>
-                                        <div class="col-7 mt-2">
-                                            <h4><%=@hotels[i]["hotel_name"]%></h4>
-                                            <p>Prezzo: <%=@hotels[i]["price_breakdown"]["all_inclusive_price"]%>€</p>
-                                            <%if @hotels[i]["is_free_cancellable"]==1%>
-                                                <p>Cancellazione gratuita: SI</p>
-                                            <%else%>
-                                                <p>Cancellazione gratuita: NO</p>
-                                            <%end%>
-                                            <p>Review Score: <%=@hotels[i]["review_score"]%></p>
-                                            <p>
-                                                <%if @hotels[i]["hotel_include_breakfast"]==0%>
-                                                    Colazione inclusa: NO
-                                                <%else%>
-                                                    Colazione inclusa: SI
-                                                <%end%>
-                                            </p>
-                                            <p>Check-in 
-                                                <%if @hotels[i]["checkin"]["from"]!=""%>
-                                                    dalle <%=@hotels[0]["checkin"]["from"]%> 
-                                                <%end%>
-                                                <%if @hotels[i]["checkin"]["until"]!=""%>
-                                                    <%if @hotels[0]["checkin"]["from"]!=""%>
-                                                        alle <%=@hotels[i]["checkin"]["until"]%>
-                                                    <%else%>
-                                                        fino alle <%=@hotels[i]["checkin"]["until"]%>
-                                                    <%end%>
-                                                <%end%>
-                                            </p>
-                                            <p>Check-out
-                                                <%if @hotels[i]["checkout"]["from"]!=""%>
-                                                    dalle <%=@hotels[i]["checkout"]["from"]%> 
-                                                <%end%>
-                                                <%if @hotels[i]["checkout"]["until"]!=""%>
-                                                    <%if @hotels[i]["checkout"]["from"]!=""%>
-                                                        alle <%=@hotels[i]["checkout"]["until"]%>
-                                                    <%else%>
-                                                        fino alle <%=@hotels[i]["checkout"]["until"]%>
-                                                    <%end%>
-                                                <%end%>
-                                            </p>
-                                        </div>
+            <div class="container row">
+                <%(0...2).each do |i|%>
+                    <%if @hotels[i]%>
+                        <div class="col ">
+                            <a style="text-decoration:none; color: black" href="<%=@hotels[i]["url"]%>">
+                                <div class="hotel_div shadow-box container">
+                                    <div class="col-5 mt-2 mb-2">
+                                        <img class="hotel_img " src="<%=@hotels[i]["max_1440_photo_url"]%>">
                                     </div>
-                                </a>
-                            </div>
-                        <%end%>
+                                    <div class="col-7 mt-2">
+                                        <h4><%=@hotels[i]["hotel_name"]%></h4>
+                                        <p>Prezzo: <%=@hotels[i]["price_breakdown"]["all_inclusive_price"]%>€</p>
+                                        <%if @hotels[i]["is_free_cancellable"]==1%>
+                                            <p>Cancellazione gratuita: SI</p>
+                                        <%else%>
+                                            <p>Cancellazione gratuita: NO</p>
+                                        <%end%>
+                                        <p>Review Score: <%=@hotels[i]["review_score"]%></p>
+                                        <p>
+                                            <%if @hotels[i]["hotel_include_breakfast"]==0%>
+                                                Colazione inclusa: NO
+                                            <%else%>
+                                                Colazione inclusa: SI
+                                            <%end%>
+                                        </p>
+                                        <p>Check-in 
+                                            <%if @hotels[i]["checkin"]["from"]!=""%>
+                                                dalle <%=@hotels[0]["checkin"]["from"]%> 
+                                            <%end%>
+                                            <%if @hotels[i]["checkin"]["until"]!=""%>
+                                                <%if @hotels[0]["checkin"]["from"]!=""%>
+                                                    alle <%=@hotels[i]["checkin"]["until"]%>
+                                                <%else%>
+                                                    fino alle <%=@hotels[i]["checkin"]["until"]%>
+                                                <%end%>
+                                            <%end%>
+                                        </p>
+                                        <p>Check-out
+                                            <%if @hotels[i]["checkout"]["from"]!=""%>
+                                                dalle <%=@hotels[i]["checkout"]["from"]%> 
+                                            <%end%>
+                                            <%if @hotels[i]["checkout"]["until"]!=""%>
+                                                <%if @hotels[i]["checkout"]["from"]!=""%>
+                                                    alle <%=@hotels[i]["checkout"]["until"]%>
+                                                <%else%>
+                                                    fino alle <%=@hotels[i]["checkout"]["until"]%>
+                                                <%end%>
+                                            <%end%>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     <%end%>
-                </div>
-            
-            
+                <%end%>
+            </div>
+            <%if @hotels[1]%>
+                <div style="text-align:center" class="pt-4"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-dark"%></div>
+            <%end%>
         <%elsif @messagehotels%>
             <div style="text-align:center"><p><%=@messagehotels%></p></div>
         <%else%>
@@ -124,119 +125,107 @@
         <%end%>
     </div>
 
-    <%if @hotels[1]%>
-        <div style="text-align:center" class="pt-4"><%=link_to "View more hotels", {controller: "place", action: "gethotels"}, class:"btn btn-dark"%></div>
-    <%end%>
-
     <div class="container div_container pt-3" >
         <h3 style="text-align:center">Voli</h3>
         <%if @voliarr%>
-                    <%(0...2).each do |k|%>
-                            <div class="voli shadow-box container mb-3  p-3">
-                                <div class="row">
-                                    <%@arr=@arrvoliandata[k]["segments"]%>
-                                    <div class="col-2">
-                                        <img style="width:80%" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
-                                    </div>
-                                        <div class="col-5 align-middle align-self-center">
-                                                <h5>
-                                                    Andata (scali: <%=@arrnumeroscaliandata[k]%>)
-                                                    <%if @arrnumeroscaliandata[k]==0%>
-                                                        <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
-                                                    <%else%>
-                                                        <%(0..@arrnumeroscaliandata[k]).each do |i|%>
-                                                            <%if i==@arrnumeroscaliandata[k]%>
-                                                                - <%=@arr[i]["departure"]["iataCode"]%> - <%=@arr[i]["arrival"]["iataCode"]%>
-                                                            <%else-if i!=0%>
-                                                                - <%=@arr[i]["departure"]["iataCode"]%>
-                                                            <%else%>
-                                                                <%=@arr[i]["departure"]["iataCode"]%>
-                                                            <%end%>
-                                                            <%end%>
-                                                        <%end%>
-                                                    <%end%>
-                                                </h5>
-                                                <p>
-                                                    <%if @arrnumeroscaliandata[k]==0%>
-                                                        <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%> 
-                                                                <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
-                                                                    <%if @arr[0]["carrierCode"]==compagniacode%>
-                                                                        (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
-                                                                    <%end%>
-                                                                <%end%><br>
-                                                        <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
-                                                    <%else%>
-                                                        <%(0..@arrnumeroscaliandata[k]).each do |i|%>
-                                                            <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
-                                                                <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
-                                                                    <%if @arr[i]["carrierCode"]==compagniacode%>
-                                                                        (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
-                                                                    <%end%>
-                                                                <%end%><br>
-                                                            <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
-                                                        <%end%>
-                                                    <%end%>
-                                                </p>
-                                            
-                                        </div>
-                                        <div class="col-5 align-middle align-self-center">
-                                                <%@arr=@arrvoliritorno[k]["segments"]%>
-                                                <h5>
-                                                    Ritorno (scali: <%=@arrnumeroscaliritorno[k]%>)
-                                                    <%if @arrnumeroscaliritorno[k]==0%>
-                                                        <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
-                                                    <%else%>
-                                                        <%(0..@arrnumeroscaliritorno[k]).each do |i|%>
-                                                            <%if i==@arrnumeroscaliritorno[k]%>
-                                                                - <%=@arr[i]["departure"]["iataCode"]%> - <%=@arr[i]["arrival"]["iataCode"]%>
-                                                            <%else-if i!=0%>
-                                                                - <%=@arr[i]["departure"]["iataCode"]%>
-                                                            <%else%>
-                                                                <%=@arr[i]["departure"]["iataCode"]%>
-                                                            <%end%>
-                                                            <%end%>
-                                                        <%end%>
-                                                    <%end%>
-                                                </h5>
-                                                <p>
-                                                    <%if @arrnumeroscaliritorno[k]==0%>
-                                                        <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%>
-                                                            <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
-                                                                <%if @arr[0]["carrierCode"]==compagniacode%>
-                                                                    (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
-                                                                <%end%>
-                                                            <%end%><br>
-                                                        <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
-                                                    <%else%>
-                                                        <%(0..@arrnumeroscaliritorno[k]).each do |i|%>
-                                                            <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
-                                                                <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
-                                                                    <%if @arr[i]["carrierCode"]==compagniacode%>
-                                                                        (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
-                                                                    <%end%>
-                                                                <%end%><br>
-                                                            <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
-                                                        <%end%>
-                                                    <%end%>
-                                                </p>
-                                            </li>
-                                           
-                                        </div>
-                                    
-                                
-                                </div>
-                                <div class="row">
-                                    <div class="col-2">
-                                    </div>
-                                    <div class="col-8">
-                                        <p><strong>Prezzo totale per persona: <%=@voliarr[k]["price"]["grandTotal"]%>€ </strong> (i prezzi includono sia l'andata che il ritorno) </p>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                    <%end%>
-                
-            
+            <%(0...2).each do |k|%>
+                <div class="voli shadow-box container mb-3  p-3">
+                    <div class="row">
+                        <%@arr=@arrvoliandata[k]["segments"]%>
+                        <div class="col-2">
+                            <img style="width:80%" src="http://pics.avs.io/200/200/<%=@arr[0]["carrierCode"]%>.png">
+                        </div>
+                        <div class="col-5 align-middle align-self-center">
+                            <h5>
+                                Andata (scali: <%=@arrnumeroscaliandata[k]%>)
+                                <%if @arrnumeroscaliandata[k]==0%>
+                                    <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
+                                <%else%>
+                                    <%(0..@arrnumeroscaliandata[k]).each do |i|%>
+                                        <%if i==@arrnumeroscaliandata[k]%>
+                                            - <%=@arr[i]["departure"]["iataCode"]%> - <%=@arr[i]["arrival"]["iataCode"]%>
+                                        <%else-if i!=0%>
+                                            - <%=@arr[i]["departure"]["iataCode"]%>
+                                        <%else%>
+                                            <%=@arr[i]["departure"]["iataCode"]%>
+                                        <%end%>
+                                        <%end%>
+                                    <%end%>
+                                <%end%>
+                            </h5>
+                            <p>
+                                <%if @arrnumeroscaliandata[k]==0%>
+                                    <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%> 
+                                            <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
+                                                <%if @arr[0]["carrierCode"]==compagniacode%>
+                                                    (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
+                                                <%end%>
+                                            <%end%><br>
+                                    <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
+                                <%else%>
+                                    <%(0..@arrnumeroscaliandata[k]).each do |i|%>
+                                        <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
+                                            <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
+                                                <%if @arr[i]["carrierCode"]==compagniacode%>
+                                                    (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
+                                                <%end%>
+                                            <%end%><br>
+                                        <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
+                                    <%end%>
+                                <%end%>
+                            </p>
+                        </div>
+                        <div class="col-5 align-middle align-self-center">
+                            <%@arr=@arrvoliritorno[k]["segments"]%>
+                            <h5>
+                                Ritorno (scali: <%=@arrnumeroscaliritorno[k]%>)
+                                <%if @arrnumeroscaliritorno[k]==0%>
+                                    <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
+                                <%else%>
+                                    <%(0..@arrnumeroscaliritorno[k]).each do |i|%>
+                                        <%if i==@arrnumeroscaliritorno[k]%>
+                                            - <%=@arr[i]["departure"]["iataCode"]%> - <%=@arr[i]["arrival"]["iataCode"]%>
+                                        <%else-if i!=0%>
+                                            - <%=@arr[i]["departure"]["iataCode"]%>
+                                        <%else%>
+                                            <%=@arr[i]["departure"]["iataCode"]%>
+                                        <%end%>
+                                        <%end%>
+                                    <%end%>
+                                <%end%>
+                            </h5>
+                            <p>
+                                <%if @arrnumeroscaliritorno[k]==0%>
+                                    <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%>
+                                        <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
+                                            <%if @arr[0]["carrierCode"]==compagniacode%>
+                                                (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
+                                            <%end%>
+                                        <%end%><br>
+                                    <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
+                                <%else%>
+                                    <%(0..@arrnumeroscaliritorno[k]).each do |i|%>
+                                        <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
+                                            <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
+                                                <%if @arr[i]["carrierCode"]==compagniacode%>
+                                                    (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
+                                                <%end%>
+                                            <%end%><br>
+                                        <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
+                                    <%end%>
+                                <%end%>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-8">
+                            <p><strong>Prezzo totale per persona: <%=@voliarr[k]["price"]["grandTotal"]%>€ </strong> (i prezzi includono sia l'andata che il ritorno) </p>
+                        </div>
+                    </div>
+                </div>      
+            <%end%>
             <%if @voliarr[1]%>
                 <div style="text-align:center" class="mt-1">
                     <%=link_to "View more flights", {controller: "place", action: "getflights"}, class:" btn btn-dark"%>
@@ -268,7 +257,7 @@
     <%if @reviews[1]%>
         <div style="text-align:center" class="mt-1">
             <%=link_to "View more reviews", {controller: "place", action: "getreviews"}, class:"btn btn-dark"%>
-            </div>
+        </div>
     <%end%>
 
 
@@ -276,7 +265,7 @@
         <% if user_signed_in? %>
             <% if !current_user.banned %>
                 <% if $review %>
-                    <h3 style="text-align:center">Modifica la tua recenzione</h3>
+                    <h3 style="text-align:center">Modifica la tua recensione</h3>
                     <div class="shadow-box p-3" style="font-size: 18px"><%= render "reviews/form", review: $review %></div>
                 <% else %>
                     <h3 style="text-align:center">Scrivi una recensione:</h3>
