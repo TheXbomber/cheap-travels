@@ -12,6 +12,7 @@ RSpec.describe User do
             expect(@user.banned).to eq(true)
             #allow(@user).to receive(:update).and_return(true)
             #allow(@user).to receive(:save).and_return(true)
+            #expect{@user.save!}.to change{User.banned}.to eq(true)
         end
     end
 end
