@@ -22,7 +22,7 @@ class HomeController < ApplicationController
         @cities_dest.append(city['name'])
       end
     end
-    puts @cities_dest.inspect
+    #puts @cities_dest.inspect
   end
 
 

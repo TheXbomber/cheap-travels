@@ -39,9 +39,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_11_081539) do
     t.string "name"
     t.date "bday"
     t.string "tel"
-    t.string "role", default: "user"
-    t.boolean "banned", default: false
-    t.string "favourites", default: ""
+    t.string "role"
+    t.boolean "banned"
+    t.string "favourites"
     t.string "provider"
     t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
