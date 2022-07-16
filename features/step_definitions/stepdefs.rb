@@ -1,3 +1,5 @@
+### SEARCH TEST
+
 Given('the user is in the home page') do
     # pending # Write code here that turns the phrase above into concrete actions
     visit(root_path)
@@ -58,4 +60,93 @@ Then('should see a list of the destinations') do
     # pending # Write code here that turns the phrase above into concrete actions
     expect(page).to have_selector("#results_div")
 end
+
+#### REVIEW TEST
+
+Given('the user has previously registered with username {string}') do |string|
+    # pending # Write code here that turns the phrase above into concrete actions
+    visit(new_user_registration_path)
+    expect(page).to have_selector("#reg-div")
+    if string.length != 0
+        fill_in "user[name]", :with => string
+    end
+end
   
+Given('with email {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    if string.length != 0
+        fill_in "user[email]", :with => string
+    end
+end
+
+Given('with password {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    if string.length != 0
+        fill_in "user[password]", :with => string
+        fill_in "user[password_confirmation]", :with => string
+    end
+    click_on "commit"
+    visit("/MAD/2022-07-16/2022-07-18/1/ES/VLC/Valencia")
+end
+
+Given('has logged in with username {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css(".navbar-text", text: string)
+end
+
+Given('they are in the place page') do
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page.current_path).to eq("/MAD/2022-07-16/2022-07-18/1/ES/VLC/Valencia")
+end
+
+Given('the place is {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_selector("h1", text: string)
+end
+
+When('the user inserts {string} in the body field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_selector("#rev-div")
+    if string.length != 0
+        fill_in "review[body]", :with => string
+    end
+end
+
+When('they select {string} in the rating field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_selector("#review_rating")
+    if string.length != 0
+        select string, :from => "review[rating]"
+    end
+end
+
+When('they click the create review button') do
+    expect(page).to have_selector("#submit-btn")
+    click_on "commit"
+end
+
+Then('they should be redirected to the same page') do
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page.current_path).to eq("/MAD/2022-07-16/2022-07-18/1/ES/VLC/Valencia")
+end
+
+Then('they should see the review list') do
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_selector("#reviews-div")
+end
+
+Then('they should see a review with the author {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#user-link", text: string)
+end
+
+Then('they should see a review with the body {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#rev-body", text: string)
+end
+
+Then('they should see a review with the the rating {string}') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css(".star-on", count: string.to_i)
+    expect(page).to have_css(".star-off", count: 5-string.to_i)
+end
