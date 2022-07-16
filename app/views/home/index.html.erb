@@ -101,7 +101,7 @@
     <div class="modal-content">
     <%= form_with url: update_dest_path, method: :post do |form| %>  
       <div class="modal-header">
-        <h6 class="modal-title" id="exampleModalLabel">Modifica destinazioni</h6>
+        <h6 class="modal-title" id="exampleModalLabel">Edit destinations</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -109,7 +109,7 @@
             
 				<% @destinations.each do |dest| %>
 					<div>
-						<p style="margin-bottom:0px; margin-top:5px"> Selezionata: <%= dest.name %> </p>
+						<p style="margin-bottom:0px; margin-top:5px"> Selected: <%= dest.name %> </p>
 						<!--<%= form.select :"city#{dest.id}", @cities_select, :selected => dest.iata, class: "form-control" %>-->
 						<%= form.text_field :"city#{dest.id}", placeholder: dest.name, autofocus: true, class: "form-control", id: "city#{dest.id}", list: 'cities_dest' %>
 						<datalist id="cities_dest" value="<%dest.name%>" >
@@ -126,8 +126,9 @@
       </div>
       </div>
       <div class="modal-footer">
-	  
-        <%= form.submit :search, class:"btn btn-dark", value: "Modifica" %>	
+	  	<div style="text-align: center; margin: auto">
+        <%= form.submit :search, class:"btn btn-dark", value: "Save" %>	
+		</div>
       </div>
       <%end%>
     </div>
