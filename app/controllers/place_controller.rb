@@ -13,30 +13,36 @@ class PlaceController < ApplicationController
     begin
       Date.parse(params[:checkindate])
       if Date.parse(params[:checkindate]) < Date.today
-        @message="La data di partenza inserita non è valida"
+        #@message="La data di partenza inserita non è valida"
+        @message="Departure date is not valid"
         return
       end
     rescue 
-      @message="La data di partenza inserita non è valida"
+      #@message="La data di partenza inserita non è valida"
+      @message="Departure date is not valid"
       return
     else
       begin
         Date.parse(params[:checkoutdate])
         if Date.parse(params[:checkoutdate]) < Date.today 
-          @message="La data di ritorno inserita non è valida"
+          #@message="La data di ritorno inserita non è valida"
+          @message="Arrival date is not valid"
           return 
         end
         if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
-          @message="La data di ritorno non può precedere quella di andata"
+          #@message="La data di ritorno non può precedere quella di andata"
+          @message="Return date cannot precede departure date"
           return
         end
       rescue
-        @message="La data di ritorno inserita non è valida"
+        #@message="La data di ritorno inserita non è valida"
+        @message="Return date is not valid"
         return
       else
         #CONTROLLO SUL NUMERO DI PERSONE
         if params[:numpersone].to_i == 0
-          @message="Il numero di persone inserito non è valido"
+          #@message="Il numero di persone inserito non è valido"
+          @message="Number of people is not valid"
           return
         end
 
@@ -50,34 +56,40 @@ class PlaceController < ApplicationController
           end
         end
         if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
-          @message="La città di destinazione non è valida"
+          #@message="La città di destinazione non è valida"
+          @message="Destination city is not valid"
           return
         end
 
         #CONTROLLO SULLO IATACODE DELLA CITTà DI ORIGINE
         originplace=params[:originplace]
         if originplace.length!=3
-          @message="Iata code della città di partenza non valido"
+          #@message="Iata code della città di partenza non valido"
+          @message="Iata code of starting city is not valid"
         end
         if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Iata code della città di partenza non valido"
+          #@message="Iata code della città di partenza non valido"
+          @message="Iata code of starting city is not valid"
           return
         end
 
         #CONTROLLO SULLO IATACODE DELLA CITTà DI DESTINAZIONE
         destiata=params[:destiata]
         if destiata.length!=3
-          @message="Iata code della città di destinazione non valido"
+          #@message="Iata code della città di destinazione non valido"
+          @message="Iata code of destination city is not valid"
         end
         if destiata.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Iata code della città di destinazione non valido"
+          #@message="Iata code della città di destinazione non valido"
+          @message="Iata code of destination city is not valid"
           return
         end
 
         #CONTROLLO SUL COUNTRY CODE DELLA CITTà DI DESTINAZIONE
         destcountry=params[:destcountry]
         if destcountry.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Country code della città di destinazione non valido"
+          #@message="Country code della città di destinazione non valido"
+          @message="Country code of destination city is not valid"
           return
         end
       end
@@ -91,17 +103,17 @@ class PlaceController < ApplicationController
       response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/countries/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
       results=JSON.parse(response)
       if results.keys[0]=="errors" #non è una nazione
-        @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+        @messageinfo="No info was found about #{@destinationplace}"
       else
         #se è una nazione
-        @type="Nazione"
+        @type="Nation"
         @country=@destinationplace
         @capital=results["data"]["capital"]
         @numregions=results["data"]["numRegions"]
       end
     else
       #se è una città
-      @type="Città"
+      @type="City"
       @country=results["data"]["country"]
       @region=results["data"]["region"]
       @elevationmeters=results["data"]["elevationMeters"]
@@ -114,12 +126,12 @@ class PlaceController < ApplicationController
     begin
       @photo_unsplash = Unsplash::Photo.search("#{@destinationplace}-city-landscape")
       if (@photo_unsplash[0] ==nil) 
-        @messaggeimage="Non sono state trovate immagini"
+        @messaggeimage="No images were found"
       end
       @imageurl= @photo_unsplash[rand(2)]["urls"]["regular"]
       puts @imageurl
     rescue
-      @messaggeimage="C'è stato un errore nel caricamento dell'immagine"
+      @messaggeimage="There was an error loading the image"
       return
     end
 
@@ -135,7 +147,7 @@ class PlaceController < ApplicationController
       response=HTTP.get("https://en.wikipedia.org/w/api.php", :params=>{:action=>'query',:prop=>'pageprops',:titles=>place,:format=>'json'})
       results=JSON.parse(response)
     rescue
-      @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+      @messageinfo="No info was found about #{@destinationplace}"
       return
     else
       x=results["query"]["pages"].to_s
@@ -143,7 +155,7 @@ class PlaceController < ApplicationController
       if results["query"]["pages"]["#{y[1]}"].keys.include? "pageprops"
         results["query"]["pages"]["#{y[1]}"]["pageprops"]["wikibase_item"]
       else
-        @messageinfo="Non è stato possibile trovare informazioni su #{@destinationplace}"
+        @messageinfo="No info was found about #{@destinationplace}"
         -1
       end
     end
@@ -161,30 +173,36 @@ class PlaceController < ApplicationController
     begin
       Date.parse(params[:checkindate])
       if Date.parse(params[:checkindate]) < Date.today
-        @message="La data di partenza inserita non è valida"
+        #@message="La data di partenza inserita non è valida"
+        @message="Departure date is not valid"
         return
       end
     rescue 
-      @message="La data di partenza inserita non è valida"
+      #@message="La data di partenza inserita non è valida"
+      @message="Departure date is not valid"
       return
     else
       begin
         Date.parse(params[:checkoutdate])
         if Date.parse(params[:checkoutdate]) < Date.today 
-          @message="La data di ritorno inserita non è valida"
+          #@message="La data di ritorno inserita non è valida"
+          @message="Return date is not valid"
           return 
         end
         if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
-          @message="La data di ritorno non può precedere quella di andata"
+          #@message="La data di ritorno non può precedere quella di andata"
+          @message="Return date cannot precede departure date"
           return
         end
       rescue
-        @message="La data di ritorno inserita non è valida"
+        #@message="La data di ritorno inserita non è valida"
+        @message="Return date is not valid"
         return
       else
         #CONTROLLO SUL NUMERO DI PERSONE
         if params[:numpersone].to_i == 0
-          @message="Il numero di persone inserito non è valido"
+          #@message="Il numero di persone inserito non è valido"
+          @message="Number of people is not valid"
           return
         end
 
@@ -198,34 +216,40 @@ class PlaceController < ApplicationController
           end
         end
         if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
-          @message="La città di destinazione non è valida"
+          #@message="La città di destinazione non è valida"
+          @message="Destination city is not valid"
           return
         end
 
         #CONTROLLO SULLO IATACODE DELLA CITTà DI ORIGINE
         originplace=params[:originplace]
         if originplace.length!=3
-          @message="Iata code della città di partenza non valido"
+          #@message="Iata code della città di partenza non valido"
+          @message="Iata code of starting city is not valid"
         end
         if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Iata code della città di partenza non valido"
+          #@message="Iata code della città di partenza non valido"
+          @message="Iata code of starting city is not valid"
           return
         end
 
         #CONTROLLO SULLO IATACODE DELLA CITTà DI DESTINAZIONE
         destiata=params[:destiata]
         if destiata.length!=3
-          @message="Iata code della città di destinazione non valido"
+          #@message="Iata code della città di destinazione non valido"
+          @message="Iata code of destination city is not valid"
         end
         if destiata.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Iata code della città di destinazione non valido"
+          #@message="Iata code della città di destinazione non valido"
+          @message="Iata code of destination city is not valid"
           return
         end
 
         #CONTROLLO SUL COUNTRY CODE DELLA CITTà DI DESTINAZIONE
         destcountry=params[:destcountry]
         if destcountry.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Country code della città di destinazione non valido"
+          #@message="Country code della città di destinazione non valido"
+          @message="Country code of destination city is not valid"
           return
         end
       end
@@ -234,7 +258,8 @@ class PlaceController < ApplicationController
       response=HTTP.get("https://booking-com.p.rapidapi.com/v1/hotels/search", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'booking-com.p.rapidapi.com'}, :params=>{:dest_id=>"#{destid @destinationplace, destcountry}", :dest_type=>"city", :locale=>"en-us",:checkout_date=>"#{Date.parse(params[:checkoutdate])}", :checkin_date=>"#{Date.parse(params[:checkindate])}", :units=>"metric",:adults_number=>"#{params[:numpersone]}", :order_by=>"price", :filter_by_currency=>"EUR", :room_number=>"1"})
       results=JSON.parse(response)
     rescue
-      @messagehotels="Siamo spiacenti, non sono stati trovati hotel disponibili"
+      #@messagehotels="Siamo spiacenti, non sono stati trovati hotel disponibili"
+      @messagehotels="Sorry, no available hotels were found"
       return
     else
       @hotels=results["result"]
@@ -245,30 +270,36 @@ class PlaceController < ApplicationController
     begin
       Date.parse(params[:checkindate])
       if Date.parse(params[:checkindate]) < Date.today
-        @message="La data di partenza inserita non è valida"
+        #@message="La data di partenza inserita non è valida"
+        @message="Departure date is not valid"
         return
       end
     rescue 
-      @message="La data di partenza inserita non è valida"
+      #@message="La data di partenza inserita non è valida"
+      @message="Departure date is not valid"
       return
     else
       begin
         Date.parse(params[:checkoutdate])
         if Date.parse(params[:checkoutdate]) < Date.today 
-          @message="La data di ritorno inserita non è valida"
+          #@message="La data di ritorno inserita non è valida"
+          @message="Return date is not valid"
           return 
         end
         if Date.parse(params[:checkoutdate]) < Date.parse(params[:checkindate])
-          @message="La data di ritorno non può precedere quella di andata"
+          #@message="La data di ritorno non può precedere quella di andata"
+          @message="Return date cannot preced departure date"
           return
         end
       rescue
-        @message="La data di ritorno inserita non è valida"
+        #@message="La data di ritorno inserita non è valida"
+        @message="Return date is not valid"
         return
       else
         #CONTROLLO SUL NUMERO DI PERSONE
         if params[:numpersone].to_i == 0
-          @message="Il numero di persone inserito non è valido"
+          #@message="Il numero di persone inserito non è valido"
+          @message="Number of people is not valid"
           return
         end
 
@@ -282,34 +313,40 @@ class PlaceController < ApplicationController
           end
         end
         if @destinationplace.match? /0|1|2|3|4|5|6|7|8|9/
-          @message="La città di destinazione non è valida"
+          #@message="La città di destinazione non è valida"
+          @message="Destination city is not valid"
           return
         end
 
         #CONTROLLO SULLO IATACODE DELLA CITTà DI ORIGINE
         originplace=params[:originplace]
         if originplace.length!=3
-          @message="Iata code della città di partenza non valido"
+          #@message="Iata code della città di partenza non valido"
+          @message="Country code of starting city is not valid"
         end
         if originplace.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Iata code della città di partenza non valido"
+          #@message="Iata code della città di partenza non valido"
+          @message="Country code of starting city is not valid"
           return
         end
 
         #CONTROLLO SULLO IATACODE DELLA CITTà DI DESTINAZIONE
         destiata=params[:destiata]
         if destiata.length!=3
-          @message="Iata code della città di destinazione non valido"
+          #@message="Iata code della città di destinazione non valido"
+          @message="Iata code of destination city is not valid"
         end
         if destiata.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Iata code della città di destinazione non valido"
+          #@message="Iata code della città di destinazione non valido"
+          @message="Iata code of destination city is not valid"
           return
         end
 
         #CONTROLLO SUL COUNTRY CODE DELLA CITTà DI DESTINAZIONE
         destcountry=params[:destcountry]
         if destcountry.match? /0|1|2|3|4|5|6|7|8|9/ 
-          @message="Country code della città di destinazione non valido"
+          #@message="Country code della città di destinazione non valido"
+          @message="Country code of destination city is not valid"
           return
         end
       end
@@ -328,7 +365,8 @@ class PlaceController < ApplicationController
       response = https.request(request)
       results=JSON.parse(response.read_body)
     rescue
-      @messageflights="Si è verificato un errore, riprova più tardi"
+      #@messageflights="Si è verificato un errore, riprova più tardi"
+      @messageflights="An error has occurred, try again later"
       return
     else
       #FA LA RICHIESTA DEI VOLI
@@ -336,11 +374,13 @@ class PlaceController < ApplicationController
         response=HTTP.get("https://test.api.amadeus.com/v2/shopping/flight-offers",:headers=>{'Authorization'=>"#{results["token_type"]} #{results["access_token"]}"}, :params=>{:originLocationCode=>"#{params[:originplace]}", :destinationLocationCode=>"#{params[:destiata]}", :departureDate=>"#{Date.parse(params[:checkindate])}", :returnDate=>"#{Date.parse(params[:checkoutdate])}", :adults=>"#{params[:numpersone]}", :currencyCode=>"EUR"})
         @dativoli=JSON.parse(response)
         if @dativoli["data"].empty?
-          @messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
+          #@messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
+          @messageflights="Sorry, no available flights were found"
           return
         end
       rescue
-        @messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
+        #@messageflights="Siamo spiacenti, non sono stati trovati voli disponibili"
+        @messageflights="Sorry, no available flights were found"
         return
       else
         @voliarr=@dativoli["data"]

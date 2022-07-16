@@ -34,7 +34,6 @@
 =end
 %> 
 <!--mappa -->
-<% puts "NOT FOUND: #{@flights_not_found}" %>
 <% if @flights_not_found==false%>
   <body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
     <div id="my-map"></div>
@@ -87,11 +86,11 @@
 <div class="pt-2 pb-2 container-fluid">
   <div class="row d-flex">
     <div class="col ">
-      <h5>Destinazioni economiche trovate</h5>
+      <h5>Cheap destinations found</h5>
     </div>  
     <div class="col d-flex justify-content-end pt-1">
       <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#ricercaModal">
-          Modifica ricerca
+          Modify search
       </button> 
     </div>  
   </div>  
@@ -115,7 +114,7 @@
                     <div class="row">
                       <div class="col"><p class="card-text">
                         <!--Aereoporto: <%= @locations[@code]["iata"]%><br> -->
-                        Voli a partire da: <%= dest[2]%><br>
+                        Flights starting from: €<%= dest[2]%><br>
                       </p></div>
                       <a href="/<%=params['search']['origin']%>/<%=params['search']['departure']%>/<%=params['search']['return']%>/<%=params['search']['people']%>/<%=@locations[@code]["countryCode"]%>/<%=@locations[@code]["iata"]%>/<%=@locations[@code]["name"]%>" class="stretched-link"></a>
                       
@@ -160,27 +159,27 @@
     <div class="modal-content">
     <%= form_with scope: "search", url: "/results", method: :post do |form| %>  
       <div class="modal-header">
-        <h6 class="modal-title" id="exampleModalLabel">Modifica parametri di ricerca</h6>
+        <h6 class="modal-title" id="exampleModalLabel">Modify search parameters</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <div id="ricerca">
-              <%= form.label :luogo_di_partenza %>
+              <%= form.label :starting_place %>
               <%= form.text_field :origin, value: params["search"]["origin"], class: "form-control" %><br>
-              <%= form.label :data_di_partenza %>
+              <%= form.label :departure_date %>
               <%= form.date_field :departure, value: params["search"]["departure"], class: "form-control" %><br>
-              <%= form.label :data_di_ritorno %>
+              <%= form.label :return_date %>
               <%= form.date_field :return, value: params["search"]["return"], class: "form-control" %><br>
               <%= form.label :budget %>
               <%= form.text_field :budget, value: params["search"]["budget"], class: "form-control" %><br>
-              <%= form.label :persone %>
+              <%= form.label :people %>
               <%= form.number_field :people, in: 1.0..10.0, step: 1.0, value: params["search"]["people"], class: "form-control" %><br>
                
       </div>
       </div>
       <div class="modal-footer">
         <div style="margin: auto; text-align: center; width: fit-content">
-          <%= form.submit :search, class:"btn btn-dark", value: "Cerca" %>
+          <%= form.submit :search, class:"btn btn-dark", value: "Search" %>
         </div>
       </div>
       <%end%>
@@ -194,7 +193,7 @@
 
 <div class="container shadow-box pt-3 pr-3 pl-3 w-50 p-3 mt-5">
 		<div class="row justify-content-center p-3">
-      <p class="text-center">Sfortunatamente non abbiamo trovato voli dall'aeroporto selezionato, torna alla home e riprova.</p>
+      <p class="text-center">Unfortunately no fligths were found for the selected airport, go back to the home page and retry.</p>
       <%=link_to "Home", "/", class:"btn btn-dark w-30"%>
     </div>
 </div>

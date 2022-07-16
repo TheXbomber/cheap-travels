@@ -23,7 +23,7 @@
 				<%= link_to "Sign in", new_user_session_path, class: "navbar-brand" %>
 			<% else %>
 				<span class="navbar-text" style="margin:auto">
-				Ciao <%=current_user.name %>
+					<%=current_user.name %>
 				</span>
 				<li class="nav-item dropdown">
 					<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -34,7 +34,7 @@
 						
 					</a>
 					<div class="dropdown-menu dropdown-menu-end">
-						<%= link_to "Profilo",  users_profile_path(:id => current_user.id), class: "dropdown-item" %>
+						<%= link_to "Profile",  users_profile_path(:id => current_user.id), class: "dropdown-item" %>
 						<%= link_to "Edit Account", edit_user_registration_path, class: "dropdown-item" %>
 						<div class="dropdown-divider"></div>
 						<%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>

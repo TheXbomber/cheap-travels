@@ -7,7 +7,7 @@
 
 
 <div class="container p-3 ">
-	<h4>Nuova ricerca</h4>
+	<h4>New search</h4>
 </div>
 
 <!--<div class="autocomplete-container" id="autocomplete-container"></div>-->
@@ -17,7 +17,7 @@
 	<div class="container shadow-sm pt-3 pr-3 pl-3">
 		<div class="row g-3 search  d-flex justify-content-center ">  
 			<div class="col-3" id="container">
-				<%= form.text_field :origin, placeholder: "Luogo di partenza", :required => true, autofocus: true, class: "form-control", id: "origin", list: 'cities' %>
+				<%= form.text_field :origin, placeholder: "Starting place", :required => true, autofocus: true, class: "form-control", id: "origin", list: 'cities' %>
 				<datalist id="cities">
     			<% @cities_select.each do |city| %>
       				<option value="<%= city[1] %>"><%= city[0] %></option>
@@ -36,27 +36,27 @@
 				<%= form.text_field :budget, placeholder: "Budget", :required => true, class: "form-control", id: "budget"%>
 			</div>
 			<div class="col-2">
-				<%= form.number_field :people, in: 1.0..10.0, step: 1.0, placeholder: "Persone", :required => true, class: "form-control" , id: "people" %>
+				<%= form.number_field :people, in: 1.0..10.0, step: 1.0, placeholder: "People", :required => true, class: "form-control" , id: "people" %>
 			</div>
 			<div class="col-1">
-				<%= form.submit :search, class:"btn btn-dark", value: "Cerca", id: "cerca", disabled: true %>	
+				<%= form.submit :search, class:"btn btn-dark", value: "Search", id: "cerca", disabled: true %>	
 			</div>
 		</div>
 		<div class="row justify-content-left">
 			<div class="check col-3" >
-				<p id ="trovato" class="trovato">Inserisci città per continuare</p>
+				<p id ="trovato" class="trovato">Insert city to continue</p>
 			</div>
 
 			<div class="col-2" id="andata">
-				<p>Andata</p>
+				<p>Departure</p>
 			</div>
 
 			<div class="col-2" id="ritorno">
-				<p>Ritorno</p>
+				<p>Return</p>
 			</div>
 	
 			<div class="col-4" id="data" hidden="true">
-				<p class="data" >Il ritorno deve essere successivo all'andata</p>
+				<p class="data">Return must be after departure</p>
 			</div>
 			
 		</div>
@@ -66,7 +66,7 @@
 <br>
 
 <div class="container p-2">
-<h4>Destinazioni più cercate</h4>
+<h4>Hot destinations</h4>
 	<div class="row g-3 search  d-flex justify-content-center "> 
 
 		<%@destinations.each do |dest|%>
@@ -89,7 +89,7 @@
 	<%if current_user.role == "moderator" || current_user.role=="admin"%>
 		<div class="container d-flex justify-content-end mt-2 p-2">
 			<button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#destModal">
-				Modifica destinazioni
+				Edit destinations
 			</button> 
 	<%end%>
 <%end%>
@@ -168,7 +168,7 @@
 						if (origin_input.value == item[1].toUpperCase()) {
 							//non_trovato.hidden = true;
 							trovato.hidden = false;
-							trovato.innerHTML = "Aereoporto trovato";
+							trovato.innerHTML = "Airport found";
 							aereoporto_scelto = item[1];
 							trovato.style.color = "green";
 							city_valid = true;
@@ -177,7 +177,7 @@
 					});
 					if (city_valid==false) {
 						//non_trovato.hidden = false;
-						trovato.innerHTML = "Aereoporto non trovato, riprova";
+						trovato.innerHTML = "Airport not found, try again";
 						trovato.style.color = "red";
 					}
 				

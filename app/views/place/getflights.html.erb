@@ -19,7 +19,7 @@
                             <ul style="list-style-type:none">
                                 <li>
                                     <h5>
-                                        Andata (n°scali: <%=@arrnumeroscaliandata[2*k]%>):
+                                        Departure (no. stopovers: <%=@arrnumeroscaliandata[2*k]%>):
                                         <%if @arrnumeroscaliandata[2*k]==0%>
                                             <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
                                         <%else%>
@@ -37,22 +37,22 @@
                                     </h5>
                                     <p>
                                         <%if @arrnumeroscaliandata[2*k]==0%>
-                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%> 
+                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%> 
                                                     <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                         <%if @arr[0]["carrierCode"]==compagniacode%>
                                                             (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                         <%end%>
                                                     <%end%><br>
-                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
+                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
                                         <%else%>
                                             <%(0..@arrnumeroscaliandata[2*k]).each do |i|%>
-                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
+                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
                                                     <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                         <%if @arr[i]["carrierCode"]==compagniacode%>
                                                             (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                         <%end%>
                                                     <%end%><br>
-                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
+                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
                                             <%end%>
                                         <%end%>
                                     </p>
@@ -60,7 +60,7 @@
                                 <li>
                                     <%@arr=@arrvoliritorno[2*k]["segments"]%>
                                     <h5>
-                                        Ritorno (n°scali: <%=@arrnumeroscaliritorno[2*k]%>):
+                                        Reutn (no. stopovers: <%=@arrnumeroscaliritorno[2*k]%>):
                                         <%if @arrnumeroscaliritorno[2*k]==0%>
                                             <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
                                         <%else%>
@@ -78,27 +78,27 @@
                                     </h5>
                                     <p>
                                         <%if @arrnumeroscaliritorno[2*k]==0%>
-                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%>
+                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%>
                                                 <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                     <%if @arr[0]["carrierCode"]==compagniacode%>
                                                         (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                     <%end%>
                                                 <%end%><br>
-                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
+                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
                                         <%else%>
                                             <%(0..@arrnumeroscaliritorno[2*k]).each do |i|%>
-                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
+                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
                                                     <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                         <%if @arr[i]["carrierCode"]==compagniacode%>
                                                             (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                         <%end%>
                                                     <%end%><br>
-                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
+                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
                                             <%end%>
                                         <%end%>
                                     </p>
                                 </li>
-                                <li><p>Prezzo totale a persona: <%=@voliarr[2*k]["price"]["grandTotal"]%>€ (i prezzi includono sia l'andata che il ritorno) </p></li>
+                                <li><p>Total price per person: <%=@voliarr[2*k]["price"]["grandTotal"]%>€ (prices include both departure and return) </p></li>
                             </ul>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                             <ul style="list-style-type:none">
                                 <li>
                                     <h5>
-                                        Andata (n°scali: <%=@arrnumeroscaliandata[(2*k)+1]%>):
+                                        Departure (no stopovers: <%=@arrnumeroscaliandata[(2*k)+1]%>):
                                         <%if @arrnumeroscaliandata[(2*k)+1]==0%>
                                             <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
                                         <%else%>
@@ -129,22 +129,22 @@
                                     </h5>
                                     <p>
                                         <%if @arrnumeroscaliandata[(2*k)+1]==0%>
-                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%> 
+                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%> 
                                                     <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                         <%if @arr[0]["carrierCode"]==compagniacode%>
                                                             (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                         <%end%>
                                                     <%end%><br>
-                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
+                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
                                         <%else%>
                                             <%(0..@arrnumeroscaliandata[(2*k)+1]).each do |i|%>
-                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
+                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
                                                     <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                         <%if @arr[i]["carrierCode"]==compagniacode%>
                                                             (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                         <%end%>
                                                     <%end%><br>
-                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
+                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
                                             <%end%>
                                         <%end%>
                                     </p>
@@ -152,7 +152,7 @@
                                 <li>
                                     <%@arr=@arrvoliritorno[(2*k)+1]["segments"]%>
                                     <h5>
-                                        Ritorno (n°scali: <%=@arrnumeroscaliritorno[(2*k)+1]%>):
+                                        Return (no. stopovers: <%=@arrnumeroscaliritorno[(2*k)+1]%>):
                                         <%if @arrnumeroscaliritorno[(2*k)+1]==0%>
                                             <%=@arr[0]["departure"]["iataCode"]%> - <%=@arr[0]["arrival"]["iataCode"]%>
                                         <%else%>
@@ -170,27 +170,27 @@
                                     </h5>
                                     <p>
                                         <%if @arrnumeroscaliritorno[(2*k)+1]==0%>
-                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%>
+                                            <b><%=@arr[0]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[0]["departure"]["at"].split("T")%><%=elem[1]%>
                                                 <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                     <%if @arr[0]["carrierCode"]==compagniacode%>
                                                         (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                     <%end%>
                                                 <%end%><br>
-                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
+                                            <b><%=@arr[0]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[0]["arrival"]["at"].split("T")%><%=elem[1]%>
                                         <%else%>
                                             <%(0..@arrnumeroscaliritorno[(2*k)+1]).each do |i|%>
-                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Partenza: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
+                                                <b><%=@arr[i]["departure"]["iataCode"]%></b> - Departure: <%elem=@arr[i]["departure"]["at"].split("T")%><%=elem[1]%>
                                                     <%@dativoli["dictionaries"]["carriers"].keys.each do |compagniacode|%>
                                                         <%if @arr[i]["carrierCode"]==compagniacode%>
                                                             (<%=@dativoli["dictionaries"]["carriers"]["#{compagniacode}"]%>)
                                                         <%end%>
                                                     <%end%><br>
-                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrivo: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
+                                                <b><%=@arr[i]["arrival"]["iataCode"]%></b> - Arrival: <%elem=@arr[i]["arrival"]["at"].split("T")%><%=elem[1]%><br>
                                             <%end%>
                                         <%end%>
                                     </p>
                                 </li>
-                                <li><p>Prezzo totale a persona: <%=@voliarr[(2*k)+1]["price"]["grandTotal"]%>€ (i prezzi includono sia l'andata che il ritorno) </p></li>
+                                <li><p>Total price per person: <%=@voliarr[(2*k)+1]["price"]["grandTotal"]%>€ (prices include both departure and return) </p></li>
                             </ul>
                         </div>
                     </div>
