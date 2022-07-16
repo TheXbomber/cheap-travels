@@ -13,7 +13,7 @@
     <h1 style="text-align:center">Reviews for <%=@destinationplace%></h1>
     <%@reviews=Review.where("place=?", @destinationplace).to_ary%>
     <%if @reviews.any?%>
-        <div id="reviews-div" class="d-flex flex-row" style="display: flex; flex-wrap: wrap; width: 91%; max-height: 90%; height: fit-content; margin: auto">
+        <div class="d-flex flex-row" style="display: flex; flex-wrap: wrap; width: 91%; margin: auto">
             <%@reviews.each do |r|%>
                 <%if r%>
                     <div class="shadow-box" style="flex: 50%; text-align: left; font-size: 18px; margin: 1%; width: 48%; max-width: 48%; min-width: 48%; heigth: max-content">
