@@ -2,7 +2,7 @@ require 'user'
 
 RSpec.describe User do
     describe ".ban_user" do
-        before(:each){@user=User.new(1, "Test", "test@test.com", "user", false)}
+        subject{User.new(1, "Test", "test@test.com", "user", false)}
         #before(:each){get :ban_user, {:uid=>@user.id}}
         it "ban a user" do
             #id=params[:uid]

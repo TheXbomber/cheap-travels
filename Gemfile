@@ -72,10 +72,13 @@ group :test do
   gem "webdrivers"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
-  # gem "rspec"
 end
 
-gem "rspec"
+group :development, :test do
+  gem 'rspec-rails'
+end
+
+# gem "rspec"
 gem "http"
 
 gem "amadeus"
