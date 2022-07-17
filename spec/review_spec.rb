@@ -3,6 +3,22 @@ require 'rails_helper'
 RSpec.describe Review, type: :model do
     subject {Review.new(body: "Body", rating: 3, place: "Paris", user_id: 1)}
     context 'Attributes' do
+        context 'user_id' do
+            it 'should have a place ' do
+                expect(subject).to respond_to(:user_id)
+            end
+
+            it 'should be invalid without a user id' do
+                subject.user_id=nil
+                expect(subject).to be_invalid
+            end
+
+            it 'should be a number' do
+                subject.user_id='a'
+                expect(subject).to be_invalid
+            end
+        end
+
         context 'place' do
             it 'should have a place attribute' do
                 expect(subject).to respond_to(:place)
