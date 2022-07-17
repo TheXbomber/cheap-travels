@@ -4,11 +4,11 @@ RSpec.describe Review, type: :model do
     subject {Review.new(body: "Body", rating: 3, place: "Paris", user_id: 1)}
     context 'Attributes' do
         context 'user_id' do
-            it 'should have a place ' do
+            it 'should have a user_id' do
                 expect(subject).to respond_to(:user_id)
             end
 
-            it 'should be invalid without a user id' do
+            it 'should be invalid without a user_id' do
                 subject.user_id=nil
                 expect(subject).to be_invalid
             end
