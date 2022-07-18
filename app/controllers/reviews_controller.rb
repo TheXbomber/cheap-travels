@@ -4,10 +4,12 @@ class ReviewsController < ApplicationController
   # GET /reviews or /reviews.json
   def index
     @reviews = Review.all
+    redirect_back fallback_location:root_path
   end
 
   # GET /reviews/1 or /reviews/1.json
   def show
+    redirect_back fallback_location:root_path
   end
 
   # GET /reviews/new

@@ -44,7 +44,7 @@ end
 When('they click on the search button') do
     # pending # Write code here that turns the phrase above into concrete actions
     click_button(id: "cerca", disabled: true)
-  end
+end
 
 Then('they should be redirected to the results page') do
     # pending # Write code here that turns the phrase above into concrete actions
@@ -86,7 +86,7 @@ Given('with password {string}') do |string|
         fill_in "user[password_confirmation]", :with => string
     end
     click_on "commit"
-    visit("/MAD/2022-07-16/2022-07-18/1/ES/VLC/Valencia")
+    visit("/MAD/2022-08-01/2022-08-03/1/ES/VLC/Valencia")
 end
 
 Given('has logged in with username {string}') do |string|
@@ -96,7 +96,7 @@ end
 
 Given('they are in the place page') do
     #pending # Write code here that turns the phrase above into concrete actions
-    expect(page.current_path).to eq("/MAD/2022-07-16/2022-07-18/1/ES/VLC/Valencia")
+    expect(page.current_path).to eq("/MAD/2022-08-01/2022-08-03/1/ES/VLC/Valencia")
 end
 
 Given('the place is {string}') do |string|
@@ -127,7 +127,7 @@ end
 
 Then('they should be redirected to the same page') do
     #pending # Write code here that turns the phrase above into concrete actions
-    expect(page.current_path).to eq("/MAD/2022-07-16/2022-07-18/1/ES/VLC/Valencia")
+    expect(page.current_path).to eq("/MAD/2022-08-01/2022-08-03/1/ES/VLC/Valencia")
 end
 
 Then('they should see the review list') do
@@ -150,3 +150,104 @@ Then('they should see a review with the the rating {string}') do |string|
     expect(page).to have_css(".star-on", count: string.to_i)
     expect(page).to have_css(".star-off", count: 5-string.to_i)
 end
+
+### USER REGISTRATION TEST
+
+# Already implemented
+# Given('the user is in the home page') do
+#     # pending # Write code here that turns the phrase above into concrete actions
+#     visit(root_path)
+#     expect(page.current_path).to eq(root_path)
+# end
+
+When('the user clicks on the {string} button') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#sign-up-btn")
+    click_on "sign-up-btn"
+end
+  
+Then('they are redirected to the sign up page') do
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page.current_path).to eq(new_user_registration_path)
+end
+  
+Then('they insert {string} in the name field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_selector("#reg-div")
+    if string.length != 0
+        fill_in "user[name]", :with => string
+    end
+end
+  
+Then('they insert {string} in the email field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    if string.length != 0
+        fill_in "user[email]", :with => string
+    end
+ end
+  
+Then('they insert {string} in the password field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    if string.length != 0
+        fill_in "user[password]", :with => string
+        fill_in "user[password_confirmation]", :with => string
+    end
+end
+  
+Then('they insert {string} in the birthday field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    if string.length != 0
+        fill_in "user[bday]", :with => string
+    end
+end
+  
+Then('they insert {string} in the telephone field') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    if string.length != 0
+        fill_in "user[tel]", :with => string
+    end
+end
+  
+Then('they click the {string} button') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    click_on "commit"
+end
+  
+Then('they should be redirected to the home page') do
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page.current_path).to eq(root_path)
+end
+  
+Then('if they visit their profile page') do
+    #pending # Write code here that turns the phrase above into concrete actions
+    #visit(users_profile_path)
+    expect(page).to have_css("#profile-btn")
+    click_on "profile-btn"
+    expect(page.current_path).to eq(users_profile_path)
+end
+  
+Then('they should see {string} as their profile name') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("h2", text: string)
+end
+  
+Then('they should see {string} as their email') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#email-field", text: string)
+end
+  
+  Then('they should see {string} as their birthday') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#bday-field", text: string)
+  end
+  
+Then('they should see {string} as their telephone number') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#tel-field", text: string)
+end
+
+Then('they should see {string} as their role') do |string|
+    #pending # Write code here that turns the phrase above into concrete actions
+    expect(page).to have_css("#role-field", text: string)
+end
+  

@@ -36,14 +36,6 @@ class ResultsController < ApplicationController
 
   def index
 
-=begin
-    require 'amadeus'
-    amadeus = Amadeus::Client.new({
-      client_id: 'WGG9CFp9tcAAAxjdN9txErfJhXviCCoK',
-      client_secret: 'v2bxNaDnO61AZKqz'
-    })
-=end
-
     Unsplash.configure do |config|
       config.application_access_key = Rails.application.credentials.UNSPLASH_ACCESS_KEY
       config.application_secret = Rails.application.credentials.UNSPLASH_SECRET
@@ -108,9 +100,6 @@ class ResultsController < ApplicationController
               #@city_noblank= @airport[i]["address"]["cityName"]
               #@city_noblank.gsub!(" ","-").to_s
               #@city2 = ["barcelona", "malaga", "london", "milan"]
-
-              #unspl=HTTP.get("https://api.unsplash.com/search/photos?query=malaga&per_page=1&orientation=landscape&page=1?&client_id=6fa91622109e859b1c40218a5dead99f7262cf4f698b1e2cb89dd18fc5824d15&ar=9:3&fit=fill&fill=solid&fill-color=orange")
-              #r=JSON.parse(unspl)
 
               @photos = Unsplash::Photo.search("#{@city}-city-landscape")
               @locations[@dest] = {}

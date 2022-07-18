@@ -23,28 +23,6 @@ class User < ApplicationRecord
         end
     end
 
-    # def self.from_omniauth(access_token)
-    #     data = access_token.info
-    #     user = User.where(email: data['email']).first
-    
-    #     # Uncomment the section below if you want users to be created if they don't exist
-    #     unless user
-    #         user = User.create(name: data['name'],
-    #            email: data['email'],
-    #            password: Devise.friendly_token[0,20]
-    #         )
-    #     end
-    #     user
-    # end
-        
-    # def self.new_with_session(params, session)
-    #     super.tap do |user|
-    #         if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-    #             user.email = data["email"] if user.email.blank?
-    #         end
-    #     end
-    # end
-
     def self.new_with_session(params, session)
         if session["devise.user_attributes"]
           new(session["devise.user_attributes"], without_protection: true) do |user|
@@ -55,5 +33,14 @@ class User < ApplicationRecord
           super
         end
     end
+
+    #validates :id, :presence => true, :numericality => {:only_integer => true}, :uniqueness => true
+    validates :name, :presence => true
+    validates :email, :presence => true, :format => {:with => /\A\w+@\w+\.\w+\Z/}
+    validates :encrypted_password, :presence => true
+    validates :role, :presence => true, :format => {:with => /user|moderator|admin/}
+    validates :tel, :format => {:with => /\A(\d+)*\Z/}
+    validates :banned, :inclusion => {:in => [true, false]} #, :presence => true 
+    #validates :favourites, :presence => true
 
 end

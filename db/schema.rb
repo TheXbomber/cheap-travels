@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_11_081539) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_18_162058) do
   create_table "destinations", force: :cascade do |t|
     t.string "name"
     t.string "iata"
@@ -36,12 +36,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_11_081539) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
+    t.string "name", null: false
     t.date "bday"
     t.string "tel"
-    t.string "role"
-    t.boolean "banned"
-    t.string "favourites"
+    t.string "role", default: "user"
+    t.boolean "banned", default: false
+    t.string "favourites", default: ""
     t.string "provider"
     t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true

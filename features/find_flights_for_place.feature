@@ -4,8 +4,8 @@ Feature: Find destinations after search
     Scenario: The user gets to the results page
         Given the user is in the home page
         When they insert "BER" in the origin form field
-        And they insert "2022-07-24" in the departure form field
-        And they insert "2022-07-28" in the return form field
+        And they insert "2022-08-01" in the departure form field
+        And they insert "2022-08-03" in the return form field
         And they insert "1000" in the budget form field
         And they insert "1" in the people form field
         And they click on the search button

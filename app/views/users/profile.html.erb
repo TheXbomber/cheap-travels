@@ -10,10 +10,10 @@
 						</svg>
 		</div>
 		<div id="user-info-div" class="shadow-box p-3 col-8">
-			<b>Email:</b> <%= @user.email %><br>
-			<b>Telephone:</b> <%= @user.tel %><br>
-			<b>Birthday:</b> <%= @user.bday %><br>
-			<b>Role:</b> <%= @user.role %>
+			<div id="email-field"><b>Email: </b><%= @user.email %><br></div>
+			<div id="tel-field"><b>Telephone: </b><%= @user.tel %><br></div>
+			<div id="bday-field"><b>Birthday: </b><%= @user.bday %><br></div>
+			<div id="role-field"><b>Role: </b><%= @user.role %></div>
 			<!--<b>Banned:</b> <%= @user.banned %>-->
 		</div>
 	</div>

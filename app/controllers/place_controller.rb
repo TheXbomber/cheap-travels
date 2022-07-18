@@ -96,6 +96,7 @@ class PlaceController < ApplicationController
     end
 
     #trova le info sulla città
+    sleep 1
     response=HTTP.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities/#{wikidataid (@destinationplace)}", :headers=>{"X-RapidAPI-Key"=>Rails.application.credentials.RAPID_API_KEY,"X-RapidAPI-Host"=>'wft-geo-db.p.rapidapi.com'})
     results=JSON.parse(response)
     if results.keys[0]=="errors" #non è una città
