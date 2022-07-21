@@ -1,7 +1,7 @@
 #require 'user'
 require 'rails_helper'
 
-# RSpec.describe User do
+# RSpec.describe UserController, type: :controller do
 #     describe ".ban_user" do
 #         user = User.new(1, "Test", "test@test.com", "user", false)
 #         #before(:each){get :ban_user, {:uid=>@user.id}}
