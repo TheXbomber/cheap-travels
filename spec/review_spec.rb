@@ -1,13 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe ReviewsController, type: :controller do
-    describe "create" do
-        it "create a review" do
-            expect {post :create, params: {review: attributes_for(:review)}}.to change(Review, :count).by(1)
-        end
-    end
-end
-
 RSpec.describe Review, type: :model do
     subject {Review.new(body: "Body", rating: 3, place: "Paris", user_id: 1)}
     context 'Attributes' do

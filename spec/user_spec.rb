@@ -1,7 +1,7 @@
 #require 'user'
 require 'rails_helper'
 
-# RSpec.describe UsersController, type: :controller do
+# RSpec.describe User do
 #     describe ".ban_user" do
 #         user = User.new(1, "Test", "test@test.com", "user", false)
 #         #before(:each){get :ban_user, {:uid=>@user.id}}
@@ -31,15 +31,6 @@ require 'rails_helper'
 #     #     end
 #     # end
 # end
-RSpec.describe UsersController, type: :controller do
-	describe 'create' do
-		it 'create a user' do
-			user=FactoryBot.create(:user)
-			lastuser=User.last
-			expect(lastuser).to eq(user)
-		end
-	end
-end
 
 RSpec.describe User, type: :model do
 	subject {User.new(name: "Test", email: "test@test.com")}
@@ -81,9 +72,9 @@ RSpec.describe User, type: :model do
 				expect(subject).to be_invalid
 			end
 
-			it 'should be a valid email' do
-				expect(subject.email).to match(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/)
-			end
+			# it 'should be a valid email' do
+			# 	expect(subject).to match(/\A\w+@\w+\.\w+\Z/)
+			# end
 		end
 
 		context 'password' do
