@@ -72,9 +72,10 @@ RSpec.describe User, type: :model do
 				expect(subject).to be_invalid
 			end
 
-			# it 'should be a valid email' do
+			it 'should be a valid email' do
 			# 	expect(subject).to match(/\A\w+@\w+\.\w+\Z/)
-			# end
+				expect(subject.email).to match(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/)
+			end
 		end
 
 		context 'password' do
