@@ -1,36 +1,4 @@
-#require 'user'
 require 'rails_helper'
-
-# RSpec.describe UserController, type: :controller do
-#     describe ".ban_user" do
-#         user = User.new(1, "Test", "test@test.com", "user", false)
-#         #before(:each){get :ban_user, {:uid=>@user.id}}
-#         it "ban a user" do
-#             #id=params[:uid]
-#             id=user.id
-#             allow(User).to receive(:find).with(id).and_return(user)
-#             user.ban_user
-#             expect(user.banned).to eq(true)
-#             #allow(@user).to receive(:update).and_return(true)
-#             #allow(@user).to receive(:save).and_return(true)
-#             #expect{@user.save!}.to change{User.banned}.to eq(true)
-#         end
-#     end
-    
-#     # describe ".promote_to_moderator" do
-#     #     before(:each){@user=User.new(1, "Test", "test@test.com", "user", false)}
-#     #     #before(:each){get :ban_user, {:uid=>@user.id}}
-#     #     it "ban a user" do
-#     #         #id=params[:uid]
-#     #         id=@user.id
-#     #         allow(User).to receive(:find).with(id).and_return(@user)
-#     #         @user.ban_user
-#     #         expect(@user.banned).to eq(true)
-#     #         #allow(@user).to receive(:update).and_return(true)
-#     #         #allow(@user).to receive(:save).and_return(true)
-#     #     end
-#     # end
-# end
 
 RSpec.describe User, type: :model do
 	subject {User.new(name: "Test", email: "test@test.com")}
@@ -73,7 +41,6 @@ RSpec.describe User, type: :model do
 			end
 
 			it 'should be a valid email' do
-			# 	expect(subject).to match(/\A\w+@\w+\.\w+\Z/)
 				expect(subject.email).to match(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/)
 			end
 		end
