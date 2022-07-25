@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
     #validates :id, :presence => true, :numericality => {:only_integer => true}, :uniqueness => true
     validates :name, :presence => true
-    validates :email, :presence => true, :format => {:with => /\A\w+@\w+\.\w+\Z/}
+    validates :email, :presence => true #,:format => {:with => /\A\w+@\w+\.\w+\Z/}
     validates :encrypted_password, :presence => true
     validates :role, :presence => true, :format => {:with => /user|moderator|admin/}
     validates :tel, :format => {:with => /\A(\d+)*\Z/}
